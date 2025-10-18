@@ -28,11 +28,6 @@
         .timeline-item {
             position: relative;
             margin: 2.5rem 0;
-            transition: opacity 0.3s, transform 0.3s;
-        }
-
-        .timeline-item.hidden-stage {
-            display: none;
         }
         
         .timeline-item.active .timeline-dot {
@@ -102,38 +97,6 @@
         .timeline-item:nth-child(even) .timeline-content {
             margin-right: 55%;
         }
-
-        .route-selector {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .route-option {
-            padding: 1.5rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 0.75rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-        }
-
-        .route-option:hover {
-            border-color: #6366f1;
-            background: #eef2ff;
-        }
-
-        .route-option.selected {
-            border-color: #6366f1;
-            background: #eef2ff;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        .route-option i {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
         
         @media (max-width: 768px) {
             .timeline::before {
@@ -148,10 +111,6 @@
                 width: calc(100% - 60px);
                 margin-left: 60px !important;
                 margin-right: 0 !important;
-            }
-
-            .route-selector {
-                grid-template-columns: 1fr;
             }
         }
 
@@ -248,6 +207,27 @@
                         </div>
                         <div class="text-lg font-semibold text-gray-800" id="display-dept">-</div>
                     </div>
+                    <div class="p-4 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-lg border border-yellow-100">
+                        <div class="text-xs text-gray-500 mb-1 flex items-center">
+                            <i data-lucide="user" class="w-3 h-3 mr-1"></i>
+                            <span id="label-requester-display">申請人員</span>
+                        </div>
+                        <div class="text-lg font-semibold text-gray-800" id="display-requester">-</div>
+                    </div>
+                    <div class="p-4 bg-gradient-to-br from-red-50 to-pink-50 rounded-lg border border-red-100">
+                        <div class="text-xs text-gray-500 mb-1 flex items-center">
+                            <i data-lucide="check-circle" class="w-3 h-3 mr-1"></i>
+                            <span id="label-result-display">測試結果</span>
+                        </div>
+                        <div class="text-lg font-semibold text-gray-800" id="display-result">-</div>
+                    </div>
+                    <div class="p-4 bg-gradient-to-br from-gray-50 to-slate-50 rounded-lg border border-gray-100">
+                        <div class="text-xs text-gray-500 mb-1 flex items-center">
+                            <i data-lucide="calendar" class="w-3 h-3 mr-1"></i>
+                            <span id="label-time-display">建立時間</span>
+                        </div>
+                        <div class="text-sm font-semibold text-gray-800" id="display-time">-</div>
+                    </div>
                 </div>
             </div>
 
@@ -264,22 +244,20 @@
                 
                 <div class="timeline">
                     <div class="progress-bar" id="progress-bar"></div>
-
-                    <!-- Stage 1: Kick Off -->
                     <div class="timeline-item pending" id="stage-1" data-stage="1">
                         <div class="stage-number">Stage 1</div>
                         <div class="timeline-dot"></div>
                         <div class="timeline-content">
                             <div class="flex items-start mb-3">
                                 <div class="stage-icon">
-                                    <i data-lucide="rocket" class="w-5 h-5"></i>
+                                    <i data-lucide="file-check" class="w-5 h-5"></i>
                                 </div>
                                 <div class="flex-1">
                                     <div class="flex items-center justify-between mb-2">
-                                        <h3 class="text-lg font-bold text-gray-800" id="stage-1-title">Kick Off</h3>
+                                        <h3 class="text-lg font-bold text-gray-800" id="stage-1-title">簽核中</h3>
                                         <span class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-700" id="stage-1-badge">待處理</span>
                                     </div>
-                                    <p class="text-xs text-gray-500 mb-3" id="stage-1-desc">RTV 流程啟動</p>
+                                    <p class="text-xs text-gray-500 mb-3" id="stage-1-desc">RTV 申請文件簽核審批中</p>
                                 </div>
                             </div>
                             <div class="space-y-2">
@@ -290,21 +268,20 @@
                         </div>
                     </div>
 
-                    <!-- Stage 2: 已離廠 -->
                     <div class="timeline-item pending" id="stage-2" data-stage="2">
                         <div class="stage-number">Stage 2</div>
                         <div class="timeline-dot"></div>
                         <div class="timeline-content">
                             <div class="flex items-start mb-3">
                                 <div class="stage-icon">
-                                    <i data-lucide="package-open" class="w-5 h-5"></i>
+                                    <i data-lucide="send" class="w-5 h-5"></i>
                                 </div>
                                 <div class="flex-1">
                                     <div class="flex items-center justify-between mb-2">
-                                        <h3 class="text-lg font-bold text-gray-800" id="stage-2-title">已離廠</h3>
+                                        <h3 class="text-lg font-bold text-gray-800" id="stage-2-title">放行中</h3>
                                         <span class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-700" id="stage-2-badge">待處理</span>
                                     </div>
-                                    <p class="text-xs text-gray-500 mb-3" id="stage-2-desc">物料已離開工廠</p>
+                                    <p class="text-xs text-gray-500 mb-3" id="stage-2-desc">簽核完成，準備放行物料</p>
                                 </div>
                             </div>
                             <div class="space-y-2">
@@ -315,39 +292,56 @@
                         </div>
                     </div>
 
-                    <!-- Stage 3: 選擇運送方式 -->
                     <div class="timeline-item pending" id="stage-3" data-stage="3">
                         <div class="stage-number">Stage 3</div>
                         <div class="timeline-dot"></div>
                         <div class="timeline-content">
                             <div class="flex items-start mb-3">
                                 <div class="stage-icon">
-                                    <i data-lucide="git-branch" class="w-5 h-5"></i>
+                                    <i data-lucide="user-check" class="w-5 h-5"></i>
                                 </div>
                                 <div class="flex-1">
                                     <div class="flex items-center justify-between mb-2">
-                                        <h3 class="text-lg font-bold text-gray-800" id="stage-3-title">選擇運送方式</h3>
+                                        <h3 class="text-lg font-bold text-gray-800" id="stage-3-title">已交給FAE</h3>
                                         <span class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-700" id="stage-3-badge">待處理</span>
                                     </div>
-                                    <p class="text-xs text-gray-500 mb-3" id="stage-3-desc">請選擇快遞或退運</p>
+                                    <p class="text-xs text-gray-500 mb-3" id="stage-3-desc">物料已移交給 FAE 處理</p>
                                 </div>
                             </div>
-                            <div class="route-selector">
-                                <div class="route-option" onclick="selectRoute('express')" id="route-express">
-                                    <i data-lucide="truck" class="w-12 h-12 mx-auto text-indigo-600"></i>
-                                    <div class="font-semibold text-gray-800 mt-2" id="route-express-label">快遞</div>
-                                </div>
-                                <div class="route-option" onclick="selectRoute('return')" id="route-return">
-                                    <i data-lucide="package-x" class="w-12 h-12 mx-auto text-orange-600"></i>
-                                    <div class="font-semibold text-gray-800 mt-2" id="route-return-label">退運</div>
-                                </div>
+                            <div class="space-y-2">
+                                <button onclick="completeStage(3)" class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-all">
+                                    <i data-lucide="check" class="w-4 h-4 mr-2"></i><span id="btn-complete-3">完成此階段</span>
+                                </button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Stage 4A: 輸入快遞單號 (快遞路線) -->
-                    <div class="timeline-item pending hidden-stage" id="stage-4a" data-stage="4a" data-route="express">
+                    <div class="timeline-item pending" id="stage-4" data-stage="4">
                         <div class="stage-number">Stage 4</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="flex items-start mb-3">
+                                <div class="stage-icon">
+                                    <i data-lucide="loader" class="w-5 h-5"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h3 class="text-lg font-bold text-gray-800" id="stage-4-title">快遞單號生成中</h3>
+                                        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-700" id="stage-4-badge">待處理</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mb-3" id="stage-4-desc">系統正在生成快遞追蹤單號</p>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <button onclick="completeStage(4)" class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-all">
+                                    <i data-lucide="check" class="w-4 h-4 mr-2"></i><span id="btn-complete-4">完成此階段</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item pending" id="stage-5" data-stage="5">
+                        <div class="stage-number">Stage 5</div>
                         <div class="timeline-dot"></div>
                         <div class="timeline-content">
                             <div class="flex items-start mb-3">
@@ -356,10 +350,10 @@
                                 </div>
                                 <div class="flex-1">
                                     <div class="flex items-center justify-between mb-2">
-                                        <h3 class="text-lg font-bold text-gray-800" id="stage-4a-title">輸入快遞單號</h3>
-                                        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-700" id="stage-4a-badge">待處理</span>
+                                        <h3 class="text-lg font-bold text-gray-800" id="stage-5-title">快遞單號</h3>
+                                        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-700" id="stage-5-badge">待處理</span>
                                     </div>
-                                    <p class="text-xs text-gray-500 mb-3" id="stage-4a-desc">請輸入快遞追蹤單號</p>
+                                    <p class="text-xs text-gray-500 mb-3" id="stage-5-desc">請輸入快遞追蹤單號</p>
                                 </div>
                             </div>
                             <div class="space-y-2">
@@ -367,16 +361,15 @@
                                     <label class="block text-xs font-medium text-gray-600 mb-1" id="label-tracking">快遞單號</label>
                                     <input type="text" id="tracking-number" placeholder="請輸入快遞單號" class="w-full rounded-lg border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                 </div>
-                                <button onclick="completeStage('4a')" class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-all">
-                                    <i data-lucide="check" class="w-4 h-4 mr-2"></i><span id="btn-complete-4a">確認單號並繼續</span>
+                                <button onclick="completeStage(5)" class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-all">
+                                    <i data-lucide="check" class="w-4 h-4 mr-2"></i><span id="btn-complete-5">確認單號並繼續</span>
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Stage 5A: 已抵達廠商端 (快遞路線) -->
-                    <div class="timeline-item pending hidden-stage" id="stage-5a" data-stage="5a" data-route="express">
-                        <div class="stage-number">Stage 5</div>
+                    <div class="timeline-item pending" id="stage-6" data-stage="6">
+                        <div class="stage-number">Stage 6</div>
                         <div class="timeline-dot"></div>
                         <div class="timeline-content">
                             <div class="flex items-start mb-3">
@@ -385,10 +378,10 @@
                                 </div>
                                 <div class="flex-1">
                                     <div class="flex items-center justify-between mb-2">
-                                        <h3 class="text-lg font-bold text-gray-800" id="stage-5a-title">已抵達廠商端</h3>
-                                        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-700" id="stage-5a-badge">待處理</span>
+                                        <h3 class="text-lg font-bold text-gray-800" id="stage-6-title">已抵達廠商端</h3>
+                                        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-700" id="stage-6-badge">待處理</span>
                                     </div>
-                                    <p class="text-xs text-gray-500 mb-3" id="stage-5a-desc">物料已送達廠商 (快遞)</p>
+                                    <p class="text-xs text-gray-500 mb-3" id="stage-6-desc">物料已送達廠商</p>
                                 </div>
                             </div>
                             <div class="space-y-2">
@@ -398,41 +391,15 @@
                                         <span id="tracking-display">快遞單號：<span class="font-mono font-semibold" id="tracking-value">-</span></span>
                                     </div>
                                 </div>
-                                <button onclick="completeStage('5a')" class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-all">
-                                    <i data-lucide="check" class="w-4 h-4 mr-2"></i><span id="btn-complete-5a">完成此階段</span>
+                                <button onclick="completeStage(6)" class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-all">
+                                    <i data-lucide="check" class="w-4 h-4 mr-2"></i><span id="btn-complete-6">完成此階段</span>
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Stage 4B: 已抵達廠商端 (退運路線) -->
-                    <div class="timeline-item pending hidden-stage" id="stage-4b" data-stage="4b" data-route="return">
-                        <div class="stage-number">Stage 4</div>
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <div class="flex items-start mb-3">
-                                <div class="stage-icon">
-                                    <i data-lucide="map-pin" class="w-5 h-5"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <h3 class="text-lg font-bold text-gray-800" id="stage-4b-title">已抵達廠商端</h3>
-                                        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-700" id="stage-4b-badge">待處理</span>
-                                    </div>
-                                    <p class="text-xs text-gray-500 mb-3" id="stage-4b-desc">物料已送達廠商 (退運)</p>
-                                </div>
-                            </div>
-                            <div class="space-y-2">
-                                <button onclick="completeStage('4b')" class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-all">
-                                    <i data-lucide="check" class="w-4 h-4 mr-2"></i><span id="btn-complete-4b">完成此階段</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Stage 6: FA進行中 -->
-                    <div class="timeline-item pending hidden-stage" id="stage-6" data-stage="6">
-                        <div class="stage-number">Stage 6</div>
+                    <div class="timeline-item pending" id="stage-7" data-stage="7">
+                        <div class="stage-number">Stage 7</div>
                         <div class="timeline-dot"></div>
                         <div class="timeline-content">
                             <div class="flex items-start mb-3">
@@ -441,45 +408,51 @@
                                 </div>
                                 <div class="flex-1">
                                     <div class="flex items-center justify-between mb-2">
-                                        <h3 class="text-lg font-bold text-gray-800" id="stage-6-title">FA進行中</h3>
-                                        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-700" id="stage-6-badge">待處理</span>
+                                        <h3 class="text-lg font-bold text-gray-800" id="stage-7-title">FA進行中</h3>
+                                        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-700" id="stage-7-badge">待處理</span>
                                     </div>
-                                    <p class="text-xs text-gray-500 mb-3" id="stage-6-desc">廠商正在進行失效分析</p>
+                                    <p class="text-xs text-gray-500 mb-3" id="stage-7-desc">廠商正在進行失效分析</p>
                                 </div>
                             </div>
                             <div class="space-y-2">
-                                <button onclick="completeStage(6)" class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-all">
-                                    <i data-lucide="check" class="w-4 h-4 mr-2"></i><span id="btn-complete-6">完成此階段</span>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-600 mb-1" id="label-fa-status">FA 狀態/單號</label>
+                                    <input type="text" id="fa-status" placeholder="輸入 FA 追蹤單號" class="w-full rounded-lg border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                </div>
+                                <button onclick="completeStage(7)" class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-all">
+                                    <i data-lucide="check" class="w-4 h-4 mr-2"></i><span id="btn-complete-7">完成此階段</span>
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Stage 7: FA已完成 -->
-                    <div class="timeline-item pending hidden-stage" id="stage-7" data-stage="7">
-                        <div class="stage-number">Stage 7</div>
+                    <div class="timeline-item pending" id="stage-8" data-stage="8">
+                        <div class="stage-number">Stage 8</div>
                         <div class="timeline-dot"></div>
                         <div class="timeline-content">
                             <div class="flex items-start mb-3">
                                 <div class="stage-icon">
-                                    <i data-lucide="check-circle" class="w-5 h-5"></i>
+                                    <i data-lucide="file-text" class="w-5 h-5"></i>
                                 </div>
                                 <div class="flex-1">
                                     <div class="flex items-center justify-between mb-2">
-                                        <h3 class="text-lg font-bold text-gray-800" id="stage-7-title">FA已完成</h3>
-                                        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-700" id="stage-7-badge">待處理</span>
+                                        <h3 class="text-lg font-bold text-gray-800" id="stage-8-title">FA結果已提交</h3>
+                                        <span class="px-3 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-700" id="stage-8-badge">待處理</span>
                                     </div>
-                                    <p class="text-xs text-gray-500 mb-3" id="stage-7-desc">失效分析報告已完成</p>
+                                    <p class="text-xs text-gray-500 mb-3" id="stage-8-desc">最終 FA 分析報告已完成</p>
                                 </div>
                             </div>
                             <div class="space-y-2">
-                                <button onclick="completeStage(7)" class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-emerald-600 hover:bg-emerald-700 transition-all">
-                                    <i data-lucide="check-circle" class="w-4 h-4 mr-2"></i><span id="btn-complete-7">完成整個流程</span>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-600 mb-1" id="label-fa-result">FA 結果</label>
+                                    <textarea id="fa-result" rows="4" placeholder="請輸入 FA 分析結果摘要..." class="w-full rounded-lg border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
+                                </div>
+                                <button onclick="completeStage(8)" class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-emerald-600 hover:bg-emerald-700 transition-all">
+                                    <i data-lucide="check-circle" class="w-4 h-4 mr-2"></i><span id="btn-complete-8">完成整個流程</span>
                                 </button>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 

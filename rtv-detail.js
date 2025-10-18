@@ -8,32 +8,29 @@ const langDict = {
         'labelQPN': '料號 QPN',
         'labelSN': 'SN',
         'labelDept': '部門',
-        'labelRequester': '申請人員',
-        'labelResult': '測試結果',
-        'labelTime': '建立時間',
-        'stage1Title': '簽核中',
-        'stage1Desc': 'RTV 申請文件簽核審批中',
-        'stage2Title': '放行中',
-        'stage2Desc': '簽核完成，準備放行物料',
-        'stage3Title': '已交給FAE',
-        'stage3Desc': '物料已移交給 FAE 處理',
-        'stage4Title': '快遞單號生成中',
-        'stage4Desc': '系統正在生成快遞追蹤單號',
-        'stage5Title': '快遞單號',
-        'stage5Desc': '請輸入快遞追蹤單號',
-        'stage6Title': '已抵達廠商端',
-        'stage6Desc': '物料已送達廠商',
-        'stage7Title': 'FA進行中',
-        'stage7Desc': '廠商正在進行失效分析',
-        'stage8Title': 'FA結果已提交',
-        'stage8Desc': '最終 FA 分析報告已完成',
+        'stage1Title': 'Kick Off',
+        'stage1Desc': 'RTV 流程啟動',
+        'stage2Title': '已離廠',
+        'stage2Desc': '物料已離開工廠',
+        'stage3Title': '選擇運送方式',
+        'stage3Desc': '請選擇快遞或退運',
+        'stage4aTitle': '輸入快遞單號',
+        'stage4aDesc': '請輸入快遞追蹤單號',
+        'stage5aTitle': '已抵達廠商端',
+        'stage5aDesc': '物料已送達廠商 (快遞)',
+        'stage4bTitle': '已抵達廠商端',
+        'stage4bDesc': '物料已送達廠商 (退運)',
+        'stage6Title': 'FA進行中',
+        'stage6Desc': '廠商正在進行失效分析',
+        'stage7Title': 'FA已完成',
+        'stage7Desc': '失效分析報告已完成',
         'labelTracking': '快遞單號',
-        'labelFAStatus': 'FA 狀態/單號',
-        'labelFAResult': 'FA 結果',
         'trackingDisplay': '快遞單號',
+        'routeExpressLabel': '快遞',
+        'routeReturnLabel': '退運',
         'btnComplete': '完成此階段',
-        'btnComplete5': '確認單號並繼續',
-        'btnComplete8': '完成整個流程',
+        'btnComplete4a': '確認單號並繼續',
+        'btnComplete7': '完成整個流程',
         'btnReset': '重置流程',
         'btnCancel': '取消',
         'btnSave': '保存更改',
@@ -46,110 +43,104 @@ const langDict = {
         'statusDone': '已完成',
         'recordNotFound': '❌ 找不到記錄！',
         'pleaseEnterTracking': '⚠️ 請輸入快遞單號！',
-        'pleaseEnterFAResult': '⚠️ 請輸入 FA 結果！',
+        'pleaseSelectRoute': '⚠️ 請先選擇運送方式！',
         'confirmReset': '確定要重置整個流程嗎？這將清除所有進度。',
         'language': '語言'
     },
     'English': {
         'pageTitle': 'RTV Details',
-        'btnBack': 'Back to Main',
-        'sectionBasic': 'Basic Information',
-        'sectionTimeline': 'RTV Process Tracking',
+        'btnBack': 'Back',
+        'sectionBasic': 'Basic Info',
+        'sectionTimeline': 'RTV Process',
         'progressText': 'Progress',
         'labelQPN': 'QPN',
         'labelSN': 'SN',
-        'labelDept': 'Department',
-        'labelRequester': 'Requester',
-        'labelResult': 'Test Result',
-        'labelTime': 'Created Time',
-        'stage1Title': 'Approval in Progress',
-        'stage1Desc': 'RTV application under approval',
-        'stage2Title': 'Release in Progress',
-        'stage2Desc': 'Approval completed, preparing release',
-        'stage3Title': 'Handed over to FAE',
-        'stage3Desc': 'Material handed over to FAE',
-        'stage4Title': 'Generating Tracking Number',
-        'stage4Desc': 'System generating tracking number',
-        'stage5Title': 'Tracking Number',
-        'stage5Desc': 'Please enter tracking number',
-        'stage6Title': 'Arrived at Vendor',
-        'stage6Desc': 'Material arrived at vendor',
-        'stage7Title': 'FA in Progress',
-        'stage7Desc': 'Vendor conducting failure analysis',
-        'stage8Title': 'FA Result Submitted',
-        'stage8Desc': 'Final FA report completed',
-        'labelTracking': 'Tracking Number',
-        'labelFAStatus': 'FA Status/Tracking#',
-        'labelFAResult': 'FA Result',
-        'trackingDisplay': 'Tracking Number',
-        'btnComplete': 'Complete This Stage',
-        'btnComplete5': 'Confirm & Continue',
-        'btnComplete8': 'Complete Process',
-        'btnReset': 'Reset Process',
+        'labelDept': 'Dept',
+        'stage1Title': 'Kick Off',
+        'stage1Desc': 'RTV process initiated',
+        'stage2Title': 'Departed Factory',
+        'stage2Desc': 'Material left factory',
+        'stage3Title': 'Select Shipping Method',
+        'stage3Desc': 'Choose Express or Return',
+        'stage4aTitle': 'Enter Tracking Number',
+        'stage4aDesc': 'Please enter tracking number',
+        'stage5aTitle': 'Arrived at Vendor',
+        'stage5aDesc': 'Material arrived (Express)',
+        'stage4bTitle': 'Arrived at Vendor',
+        'stage4bDesc': 'Material arrived (Return)',
+        'stage6Title': 'FA in Progress',
+        'stage6Desc': 'Failure analysis ongoing',
+        'stage7Title': 'FA Completed',
+        'stage7Desc': 'FA report completed',
+        'labelTracking': 'Tracking #',
+        'trackingDisplay': 'Tracking #',
+        'routeExpressLabel': 'Express',
+        'routeReturnLabel': 'Return',
+        'btnComplete': 'Complete',
+        'btnComplete4a': 'Confirm & Continue',
+        'btnComplete7': 'Complete Process',
+        'btnReset': 'Reset',
         'btnCancel': 'Cancel',
-        'btnSave': 'Save Changes',
-        'btnPrint': 'Print Report',
+        'btnSave': 'Save',
+        'btnPrint': 'Print',
         'statusReady': 'Ready.',
-        'statusSaved': '✅ Changes saved!',
-        'statusCompleted': '🎉 Process completed!',
+        'statusSaved': '✅ Saved!',
+        'statusCompleted': '🎉 Completed!',
         'statusPending': 'Pending',
         'statusInProgress': 'In Progress',
-        'statusDone': 'Completed',
-        'recordNotFound': '❌ Record not found!',
-        'pleaseEnterTracking': '⚠️ Please enter tracking number!',
-        'pleaseEnterFAResult': '⚠️ Please enter FA result!',
-        'confirmReset': 'Reset the entire process? This will clear all progress.',
+        'statusDone': 'Done',
+        'recordNotFound': '❌ Not found!',
+        'pleaseEnterTracking': '⚠️ Enter tracking number!',
+        'pleaseSelectRoute': '⚠️ Select shipping method!',
+        'confirmReset': 'Reset process?',
         'language': 'Language'
     },
     'Tiếng Việt': {
         'pageTitle': 'Chi tiết RTV',
         'btnBack': 'Quay lại',
-        'sectionBasic': 'Thông tin cơ bản',
-        'sectionTimeline': 'Theo dõi quy trình',
+        'sectionBasic': 'Thông tin',
+        'sectionTimeline': 'Quy trình',
         'progressText': 'Tiến độ',
         'labelQPN': 'QPN',
         'labelSN': 'SN',
         'labelDept': 'Bộ phận',
-        'labelRequester': 'Người yêu cầu',
-        'labelResult': 'Kết quả',
-        'labelTime': 'Thời gian tạo',
-        'stage1Title': 'Đang phê duyệt',
-        'stage1Desc': 'Đơn RTV đang được phê duyệt',
-        'stage2Title': 'Đang phát hành',
-        'stage2Desc': 'Phê duyệt hoàn tất',
-        'stage3Title': 'Đã giao cho FAE',
-        'stage3Desc': 'Vật liệu đã chuyển giao',
-        'stage4Title': 'Đang tạo số theo dõi',
-        'stage4Desc': 'Hệ thống đang tạo số',
-        'stage5Title': 'Số theo dõi',
-        'stage5Desc': 'Nhập số theo dõi',
-        'stage6Title': 'Đã đến nhà cung cấp',
-        'stage6Desc': 'Vật liệu đã đến',
-        'stage7Title': 'FA đang tiến hành',
-        'stage7Desc': 'Đang phân tích lỗi',
-        'stage8Title': 'Kết quả FA đã gửi',
-        'stage8Desc': 'Báo cáo hoàn thành',
+        'stage1Title': 'Khởi động',
+        'stage1Desc': 'Bắt đầu quy trình',
+        'stage2Title': 'Đã rời xưởng',
+        'stage2Desc': 'Vật liệu đã rời xưởng',
+        'stage3Title': 'Chọn vận chuyển',
+        'stage3Desc': 'Chọn Express hoặc Return',
+        'stage4aTitle': 'Nhập số theo dõi',
+        'stage4aDesc': 'Nhập số theo dõi',
+        'stage5aTitle': 'Đã đến nhà cung cấp',
+        'stage5aDesc': 'Đã đến (Express)',
+        'stage4bTitle': 'Đã đến nhà cung cấp',
+        'stage4bDesc': 'Đã đến (Return)',
+        'stage6Title': 'FA đang tiến hành',
+        'stage6Desc': 'Đang phân tích',
+        'stage7Title': 'FA hoàn thành',
+        'stage7Desc': 'Báo cáo hoàn thành',
         'labelTracking': 'Số theo dõi',
-        'labelFAStatus': 'Trạng thái FA',
-        'labelFAResult': 'Kết quả FA',
         'trackingDisplay': 'Số theo dõi',
-        'btnComplete': 'Hoàn thành giai đoạn',
-        'btnComplete5': 'Xác nhận & Tiếp tục',
-        'btnComplete8': 'Hoàn thành quy trình',
+        'routeExpressLabel': 'Express',
+        'routeReturnLabel': 'Return',
+        'btnComplete': 'Hoàn thành',
+        'btnComplete4a': 'Xác nhận',
+        'btnComplete7': 'Hoàn thành',
         'btnReset': 'Đặt lại',
         'btnCancel': 'Hủy',
-        'btnSave': 'Lưu thay đổi',
-        'btnPrint': 'In báo cáo',
+        'btnSave': 'Lưu',
+        'btnPrint': 'In',
         'statusReady': 'Sẵn sàng.',
         'statusSaved': '✅ Đã lưu!',
         'statusCompleted': '🎉 Hoàn thành!',
-        'statusPending': 'Đang chờ',
-        'statusInProgress': 'Đang tiến hành',
-        'statusDone': 'Hoàn thành',
+        'statusPending': 'Chờ',
+        'statusInProgress': 'Đang',
+        'statusDone': 'Xong',
         'recordNotFound': '❌ Không tìm thấy!',
-        'pleaseEnterTracking': '⚠️ Nhập số theo dõi!',
-        'pleaseEnterFAResult': '⚠️ Nhập kết quả FA!',
-        'confirmReset': 'Đặt lại toàn bộ quy trình?',
+        'pleaseEnterTracking': '⚠️ Nhập số!',
+        'pleaseSelectRoute': '⚠️ Chọn vận chuyển!',
+        'confirmReset': 'Đặt lại?',
         'language': 'Ngôn ngữ'
     }
 };
@@ -158,6 +149,7 @@ let currentLang = '繁體中文';
 let currentRecord = null;
 let recordId = null;
 let currentStage = 0;
+let selectedRoute = null; // 'express' or 'return'
 
 const getEl = (id) => document.getElementById(id);
 
@@ -192,17 +184,14 @@ function loadRecord() {
     if (!currentRecord.rtv_data) {
         currentRecord.rtv_data = {
             current_stage: 0,
+            selected_route: null,
             tracking_number: '',
-            fa_status: '',
-            fa_result: '',
-            stage_completion: {
-                stage1: false, stage2: false, stage3: false, stage4: false,
-                stage5: false, stage6: false, stage7: false, stage8: false
-            },
+            stage_completion: {},
             completion_dates: {}
         };
     }
     currentStage = currentRecord.rtv_data.current_stage || 0;
+    selectedRoute = currentRecord.rtv_data.selected_route || null;
     displayRecordInfo();
     loadRTVData();
     updateAllStages();
@@ -212,9 +201,6 @@ function displayRecordInfo() {
     getEl('display-qpn').textContent = currentRecord.qpn || '-';
     getEl('display-sn').textContent = currentRecord.sn || '-';
     getEl('display-dept').textContent = currentRecord.dept || '-';
-    getEl('display-requester').textContent = currentRecord.requester || '-';
-    getEl('display-result').textContent = currentRecord.result || '-';
-    getEl('display-time').textContent = currentRecord.timestamp || '-';
 }
 
 function loadRTVData() {
@@ -223,15 +209,16 @@ function loadRTVData() {
         getEl('tracking-number').value = data.tracking_number;
         getEl('tracking-value').textContent = data.tracking_number;
     }
-    getEl('fa-status').value = data.fa_status || '';
-    getEl('fa-result').value = data.fa_result || '';
+    if (data.selected_route) {
+        selectedRoute = data.selected_route;
+        highlightSelectedRoute();
+    }
 }
 
 function saveRTVData() {
     const data = currentRecord.rtv_data;
     data.tracking_number = getEl('tracking-number').value;
-    data.fa_status = getEl('fa-status').value;
-    data.fa_result = getEl('fa-result').value;
+    data.selected_route = selectedRoute;
     const storedRecords = localStorage.getItem('iqcRecords');
     const records = JSON.parse(storedRecords);
     const index = records.findIndex(r => r.id === parseInt(recordId));
@@ -242,9 +229,46 @@ function saveRTVData() {
     }
 }
 
+function selectRoute(route) {
+    if (currentStage >= 3) return; // 已經選擇過了
+    
+    selectedRoute = route;
+    currentRecord.rtv_data.selected_route = route;
+    highlightSelectedRoute();
+    
+    // 自動完成 Stage 3
+    setTimeout(() => {
+        completeStage(3);
+    }, 500);
+}
+
+function highlightSelectedRoute() {
+    const expressBtn = getEl('route-express');
+    const returnBtn = getEl('route-return');
+    
+    expressBtn.classList.remove('selected');
+    returnBtn.classList.remove('selected');
+    
+    if (selectedRoute === 'express') {
+        expressBtn.classList.add('selected');
+    } else if (selectedRoute === 'return') {
+        returnBtn.classList.add('selected');
+    }
+}
+
 function completeStage(stage) {
     const lang = langDict[currentLang];
-    if (stage === 5) {
+    
+    // Stage 3: 必須選擇路線
+    if (stage === 3) {
+        if (!selectedRoute) {
+            alert(lang.pleaseSelectRoute);
+            return;
+        }
+    }
+    
+    // Stage 4a: 快遞路線，需要輸入單號
+    if (stage === '4a') {
         const trackingNumber = getEl('tracking-number').value.trim();
         if (!trackingNumber) {
             alert(lang.pleaseEnterTracking);
@@ -253,21 +277,28 @@ function completeStage(stage) {
         }
         getEl('tracking-value').textContent = trackingNumber;
     }
-    if (stage === 8) {
-        const faResult = getEl('fa-result').value.trim();
-        if (!faResult) {
-            alert(lang.pleaseEnterFAResult);
-            getEl('fa-result').focus();
-            return;
-        }
-    }
-    currentRecord.rtv_data.stage_completion['stage' + stage] = true;
-    currentRecord.rtv_data.completion_dates['stage' + stage] = new Date().toISOString();
-    currentRecord.rtv_data.current_stage = stage;
-    currentStage = stage;
+    
+    // 記錄完成狀態
+    const stageKey = 'stage' + stage;
+    currentRecord.rtv_data.stage_completion[stageKey] = true;
+    currentRecord.rtv_data.completion_dates[stageKey] = new Date().toISOString();
+    
+    // 更新當前階段
+    if (stage === 1) currentStage = 1;
+    else if (stage === 2) currentStage = 2;
+    else if (stage === 3) currentStage = 3;
+    else if (stage === '4a') currentStage = 4;
+    else if (stage === '5a') currentStage = 5;
+    else if (stage === '4b') currentStage = 4;
+    else if (stage === 6) currentStage = 6;
+    else if (stage === 7) currentStage = 7;
+    
+    currentRecord.rtv_data.current_stage = currentStage;
+    
     saveRTVData();
     updateAllStages();
-    if (stage === 8) {
+    
+    if (stage === 7) {
         updateStatus(lang.statusCompleted);
         confetti();
     }
@@ -276,21 +307,17 @@ function completeStage(stage) {
 function resetProcess() {
     const lang = langDict[currentLang];
     if (!confirm(lang.confirmReset)) return;
+    
     currentRecord.rtv_data = {
         current_stage: 0,
+        selected_route: null,
         tracking_number: '',
-        fa_status: '',
-        fa_result: '',
-        stage_completion: {
-            stage1: false, stage2: false, stage3: false, stage4: false,
-            stage5: false, stage6: false, stage7: false, stage8: false
-        },
+        stage_completion: {},
         completion_dates: {}
     };
     currentStage = 0;
+    selectedRoute = null;
     getEl('tracking-number').value = '';
-    getEl('fa-status').value = '';
-    getEl('fa-result').value = '';
     saveRTVData();
     updateAllStages();
     updateStatus(lang.statusReady);
@@ -299,29 +326,80 @@ function resetProcess() {
 function updateAllStages() {
     const completion = currentRecord.rtv_data.stage_completion;
     const lang = langDict[currentLang];
+    
+    // 計算總階段數
+    let totalStages = 7; // 基礎階段數
+    if (selectedRoute === 'express') totalStages = 7; // 1,2,3,4a,5a,6,7
+    else if (selectedRoute === 'return') totalStages = 6; // 1,2,3,4b,6,7
+    else totalStages = 3; // 只有前3個階段
+    
     const completedCount = Object.values(completion).filter(v => v).length;
-    const progressPercentage = Math.round((completedCount / 8) * 100);
+    const progressPercentage = totalStages > 0 ? Math.round((completedCount / totalStages) * 100) : 0;
     getEl('progress-percentage').textContent = progressPercentage + '%';
-    const progressBar = getEl('progress-bar');
-    const totalHeight = document.querySelector('.timeline').offsetHeight;
-    progressBar.style.height = (completedCount / 8) * totalHeight + 'px';
-    for (let i = 1; i <= 8; i++) {
-        const stageEl = getEl('stage-' + i);
-        const badgeEl = getEl('stage-' + i + '-badge');
-        stageEl.classList.remove('pending', 'active', 'completed');
-        if (completion['stage' + i]) {
-            stageEl.classList.add('completed');
-            badgeEl.textContent = lang.statusDone;
-            badgeEl.className = 'px-3 py-1 text-xs font-semibold rounded-full bg-blue-200 text-blue-700';
-        } else if (currentStage === i - 1) {
-            stageEl.classList.add('active');
-            badgeEl.textContent = lang.statusInProgress;
-            badgeEl.className = 'px-3 py-1 text-xs font-semibold rounded-full bg-green-200 text-green-700';
-        } else {
-            stageEl.classList.add('pending');
-            badgeEl.textContent = lang.statusPending;
-            badgeEl.className = 'px-3 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-700';
-        }
+    
+    // 隱藏/顯示相關階段
+    document.querySelectorAll('.timeline-item[data-route]').forEach(item => {
+        item.classList.add('hidden-stage');
+    });
+    
+    // 根據選擇的路線顯示對應階段
+    if (selectedRoute === 'express') {
+        getEl('stage-4a').classList.remove('hidden-stage');
+        getEl('stage-5a').classList.remove('hidden-stage');
+        getEl('stage-6').classList.remove('hidden-stage');
+        getEl('stage-7').classList.remove('hidden-stage');
+    } else if (selectedRoute === 'return') {
+        getEl('stage-4b').classList.remove('hidden-stage');
+        getEl('stage-6').classList.remove('hidden-stage');
+        getEl('stage-7').classList.remove('hidden-stage');
+    }
+    
+    // 更新每個階段的狀態
+    updateStageStatus('stage-1', 1, completion, lang);
+    updateStageStatus('stage-2', 2, completion, lang);
+    updateStageStatus('stage-3', 3, completion, lang);
+    
+    if (selectedRoute === 'express') {
+        updateStageStatus('stage-4a', 4, completion, lang);
+        updateStageStatus('stage-5a', 5, completion, lang);
+        updateStageStatus('stage-6', 6, completion, lang);
+        updateStageStatus('stage-7', 7, completion, lang);
+    } else if (selectedRoute === 'return') {
+        updateStageStatus('stage-4b', 4, completion, lang);
+        updateStageStatus('stage-6', 6, completion, lang);
+        updateStageStatus('stage-7', 7, completion, lang);
+    }
+    
+    // 禁用/啟用路線選擇
+    if (currentStage >= 3) {
+        document.querySelectorAll('.route-option').forEach(opt => {
+            opt.style.pointerEvents = 'none';
+            opt.style.opacity = '0.6';
+        });
+    }
+}
+
+function updateStageStatus(stageId, stageNum, completion, lang) {
+    const stageEl = getEl(stageId);
+    if (!stageEl) return;
+    
+    const badgeEl = getEl(stageId + '-badge');
+    const stageKey = 'stage' + (stageId.includes('a') || stageId.includes('b') ? stageId.split('-')[1] : stageNum);
+    
+    stageEl.classList.remove('pending', 'active', 'completed');
+    
+    if (completion[stageKey]) {
+        stageEl.classList.add('completed');
+        badgeEl.textContent = lang.statusDone;
+        badgeEl.className = 'px-3 py-1 text-xs font-semibold rounded-full bg-blue-200 text-blue-700';
+    } else if (currentStage === stageNum - 1 || (stageNum === 3 && currentStage === 2)) {
+        stageEl.classList.add('active');
+        badgeEl.textContent = lang.statusInProgress;
+        badgeEl.className = 'px-3 py-1 text-xs font-semibold rounded-full bg-green-200 text-green-700';
+    } else {
+        stageEl.classList.add('pending');
+        badgeEl.textContent = lang.statusPending;
+        badgeEl.className = 'px-3 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-700';
     }
 }
 
@@ -333,11 +411,9 @@ function setupEventListeners() {
     getEl('save-btn').addEventListener('click', saveRTVData);
     getEl('reset-btn').addEventListener('click', resetProcess);
     getEl('print-btn').addEventListener('click', () => window.print());
-    const fields = ['tracking-number', 'fa-status', 'fa-result'];
-    fields.forEach(fieldId => {
-        const el = getEl(fieldId);
-        if (el) el.addEventListener('blur', () => saveRTVData());
-    });
+    
+    const trackingField = getEl('tracking-number');
+    if (trackingField) trackingField.addEventListener('blur', () => saveRTVData());
 }
 
 function applyLanguage() {
@@ -347,28 +423,20 @@ function applyLanguage() {
     getEl('section-basic').textContent = lang.sectionBasic;
     getEl('section-timeline').textContent = lang.sectionTimeline;
     getEl('progress-text').innerHTML = lang.progressText + '：<span id="progress-percentage" class="font-bold text-indigo-600">' + getEl('progress-percentage').textContent + '</span>';
-    getEl('label-qpn-display').innerHTML = '<i data-lucide="package" class="w-3 h-3 mr-1"></i>' + lang.labelQPN;
-    getEl('label-sn-display').innerHTML = '<i data-lucide="hash" class="w-3 h-3 mr-1"></i>' + lang.labelSN;
-    getEl('label-dept-display').innerHTML = '<i data-lucide="building" class="w-3 h-3 mr-1"></i>' + lang.labelDept;
-    getEl('label-requester-display').innerHTML = '<i data-lucide="user" class="w-3 h-3 mr-1"></i>' + lang.labelRequester;
-    getEl('label-result-display').innerHTML = '<i data-lucide="check-circle" class="w-3 h-3 mr-1"></i>' + lang.labelResult;
-    getEl('label-time-display').innerHTML = '<i data-lucide="calendar" class="w-3 h-3 mr-1"></i>' + lang.labelTime;
-    for (let i = 1; i <= 8; i++) {
-        getEl('stage-' + i + '-title').textContent = lang['stage' + i + 'Title'];
-        getEl('stage-' + i + '-desc').textContent = lang['stage' + i + 'Desc'];
-    }
+    
+    // 更新所有階段標題
+    const stages = ['1', '2', '3', '4a', '5a', '4b', '6', '7'];
+    stages.forEach(s => {
+        const titleEl = getEl('stage-' + s + '-title');
+        const descEl = getEl('stage-' + s + '-desc');
+        if (titleEl) titleEl.textContent = lang['stage' + s + 'Title'];
+        if (descEl) descEl.textContent = lang['stage' + s + 'Desc'];
+    });
+    
+    getEl('route-express-label').textContent = lang.routeExpressLabel;
+    getEl('route-return-label').textContent = lang.routeReturnLabel;
     getEl('label-tracking').textContent = lang.labelTracking;
-    getEl('label-fa-status').textContent = lang.labelFAStatus;
-    getEl('label-fa-result').textContent = lang.labelFAResult;
-    getEl('tracking-display').innerHTML = '<i data-lucide="info" class="w-4 h-4 mr-2"></i>' + lang.trackingDisplay + '：<span class="font-mono font-semibold" id="tracking-value">' + getEl('tracking-value').textContent + '</span>';
-    for (let i = 1; i <= 4; i++) getEl('btn-complete-' + i).textContent = lang.btnComplete;
-    getEl('btn-complete-5').textContent = lang.btnComplete5;
-    for (let i = 6; i <= 7; i++) getEl('btn-complete-' + i).textContent = lang.btnComplete;
-    getEl('btn-complete-8').textContent = lang.btnComplete8;
-    getEl('btn-reset').textContent = lang.btnReset;
-    getEl('btn-cancel').textContent = lang.btnCancel;
-    getEl('btn-save').textContent = lang.btnSave;
-    getEl('btn-print').textContent = lang.btnPrint;
+    
     updateAllStages();
     lucide.createIcons();
 }
@@ -413,4 +481,5 @@ function confetti() {
 }
 
 window.completeStage = completeStage;
+window.selectRoute = selectRoute;
 window.resetProcess = resetProcess;
