@@ -45,8 +45,6 @@ const langDict = {
         'pleaseEnterTracking': '⚠️ 請輸入快遞單號！',
         'pleaseSelectRoute': '⚠️ 請先選擇運送方式！',
         'confirmReset': '確定要重置整個流程嗎？這將清除所有進度。',
-        'completedAt': '完成時間',
-        'notCompleted': '尚未完成',
         'language': '語言'
     },
     'English': {
@@ -95,8 +93,6 @@ const langDict = {
         'pleaseEnterTracking': '⚠️ Enter tracking number!',
         'pleaseSelectRoute': '⚠️ Select shipping method!',
         'confirmReset': 'Reset process?',
-        'completedAt': 'Completed at',
-        'notCompleted': 'Not completed',
         'language': 'Language'
     },
     'Tiếng Việt': {
@@ -145,8 +141,6 @@ const langDict = {
         'pleaseEnterTracking': '⚠️ Nhập số!',
         'pleaseSelectRoute': '⚠️ Chọn vận chuyển!',
         'confirmReset': 'Đặt lại?',
-        'completedAt': 'Hoàn thành lúc',
-        'notCompleted': 'Chưa hoàn thành',
         'language': 'Ngôn ngữ'
     }
 };
@@ -155,22 +149,9 @@ let currentLang = '繁體中文';
 let currentRecord = null;
 let recordId = null;
 let currentStage = 0;
-let selectedRoute = null;
+let selectedRoute = null; // 'express' or 'return'
 
 const getEl = (id) => document.getElementById(id);
-
-// 格式化日期時間
-function formatDateTime(isoString) {
-    if (!isoString) return '-';
-    const date = new Date(isoString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -249,12 +230,13 @@ function saveRTVData() {
 }
 
 function selectRoute(route) {
-    if (currentStage >= 3) return;
+    if (currentStage >= 3) return; // 已經選擇過了
     
     selectedRoute = route;
     currentRecord.rtv_data.selected_route = route;
     highlightSelectedRoute();
     
+    // 自動完成 Stage 3
     setTimeout(() => {
         completeStage(3);
     }, 500);
@@ -277,6 +259,7 @@ function highlightSelectedRoute() {
 function completeStage(stage) {
     const lang = langDict[currentLang];
     
+    // Stage 3: 必須選擇路線
     if (stage === 3) {
         if (!selectedRoute) {
             alert(lang.pleaseSelectRoute);
@@ -284,6 +267,7 @@ function completeStage(stage) {
         }
     }
     
+    // Stage 4a: 快遞路線，需要輸入單號
     if (stage === '4a') {
         const trackingNumber = getEl('tracking-number').value.trim();
         if (!trackingNumber) {
@@ -294,11 +278,10 @@ function completeStage(stage) {
         getEl('tracking-value').textContent = trackingNumber;
     }
     
-    // 記錄完成時間
-    const now = new Date().toISOString();
+    // 記錄完成狀態
     const stageKey = 'stage' + stage;
     currentRecord.rtv_data.stage_completion[stageKey] = true;
-    currentRecord.rtv_data.completion_dates[stageKey] = now;
+    currentRecord.rtv_data.completion_dates[stageKey] = new Date().toISOString();
     
     // 更新當前階段
     if (stage === 1) currentStage = 1;
@@ -342,22 +325,24 @@ function resetProcess() {
 
 function updateAllStages() {
     const completion = currentRecord.rtv_data.stage_completion;
-    const completionDates = currentRecord.rtv_data.completion_dates;
     const lang = langDict[currentLang];
     
-    let totalStages = 7;
-    if (selectedRoute === 'express') totalStages = 7;
-    else if (selectedRoute === 'return') totalStages = 6;
-    else totalStages = 3;
+    // 計算總階段數
+    let totalStages = 7; // 基礎階段數
+    if (selectedRoute === 'express') totalStages = 7; // 1,2,3,4a,5a,6,7
+    else if (selectedRoute === 'return') totalStages = 6; // 1,2,3,4b,6,7
+    else totalStages = 3; // 只有前3個階段
     
     const completedCount = Object.values(completion).filter(v => v).length;
     const progressPercentage = totalStages > 0 ? Math.round((completedCount / totalStages) * 100) : 0;
     getEl('progress-percentage').textContent = progressPercentage + '%';
     
+    // 隱藏/顯示相關階段
     document.querySelectorAll('.timeline-item[data-route]').forEach(item => {
         item.classList.add('hidden-stage');
     });
     
+    // 根據選擇的路線顯示對應階段
     if (selectedRoute === 'express') {
         getEl('stage-4a').classList.remove('hidden-stage');
         getEl('stage-5a').classList.remove('hidden-stage');
@@ -369,21 +354,23 @@ function updateAllStages() {
         getEl('stage-7').classList.remove('hidden-stage');
     }
     
-    updateStageStatus('stage-1', 1, completion, completionDates, lang);
-    updateStageStatus('stage-2', 2, completion, completionDates, lang);
-    updateStageStatus('stage-3', 3, completion, completionDates, lang);
+    // 更新每個階段的狀態
+    updateStageStatus('stage-1', 1, completion, lang);
+    updateStageStatus('stage-2', 2, completion, lang);
+    updateStageStatus('stage-3', 3, completion, lang);
     
     if (selectedRoute === 'express') {
-        updateStageStatus('stage-4a', 4, completion, completionDates, lang);
-        updateStageStatus('stage-5a', 5, completion, completionDates, lang);
-        updateStageStatus('stage-6', 6, completion, completionDates, lang);
-        updateStageStatus('stage-7', 7, completion, completionDates, lang);
+        updateStageStatus('stage-4a', 4, completion, lang);
+        updateStageStatus('stage-5a', 5, completion, lang);
+        updateStageStatus('stage-6', 6, completion, lang);
+        updateStageStatus('stage-7', 7, completion, lang);
     } else if (selectedRoute === 'return') {
-        updateStageStatus('stage-4b', 4, completion, completionDates, lang);
-        updateStageStatus('stage-6', 6, completion, completionDates, lang);
-        updateStageStatus('stage-7', 7, completion, completionDates, lang);
+        updateStageStatus('stage-4b', 4, completion, lang);
+        updateStageStatus('stage-6', 6, completion, lang);
+        updateStageStatus('stage-7', 7, completion, lang);
     }
     
+    // 禁用/啟用路線選擇
     if (currentStage >= 3) {
         document.querySelectorAll('.route-option').forEach(opt => {
             opt.style.pointerEvents = 'none';
@@ -392,7 +379,7 @@ function updateAllStages() {
     }
 }
 
-function updateStageStatus(stageId, stageNum, completion, completionDates, lang) {
+function updateStageStatus(stageId, stageNum, completion, lang) {
     const stageEl = getEl(stageId);
     if (!stageEl) return;
     
@@ -401,35 +388,10 @@ function updateStageStatus(stageId, stageNum, completion, completionDates, lang)
     
     stageEl.classList.remove('pending', 'active', 'completed');
     
-    // 移除舊的時間顯示
-    const existingTimeDisplay = stageEl.querySelector('.completion-time');
-    if (existingTimeDisplay) {
-        existingTimeDisplay.remove();
-    }
-    
     if (completion[stageKey]) {
         stageEl.classList.add('completed');
         badgeEl.textContent = lang.statusDone;
         badgeEl.className = 'px-3 py-1 text-xs font-semibold rounded-full bg-blue-200 text-blue-700';
-        
-        // 添加完成時間顯示
-        const completionTime = completionDates[stageKey];
-        if (completionTime) {
-            const timeDisplay = document.createElement('div');
-            timeDisplay.className = 'completion-time mt-3 p-2 bg-blue-50 rounded-lg border border-blue-200';
-            timeDisplay.innerHTML = `
-                <div class="flex items-center text-xs text-blue-800">
-                    <i data-lucide="clock" class="w-3 h-3 mr-1"></i>
-                    <span class="font-medium">${lang.completedAt}:</span>
-                    <span class="ml-2 font-mono">${formatDateTime(completionTime)}</span>
-                </div>
-            `;
-            const contentDiv = stageEl.querySelector('.timeline-content');
-            if (contentDiv) {
-                contentDiv.appendChild(timeDisplay);
-                lucide.createIcons();
-            }
-        }
     } else if (currentStage === stageNum - 1 || (stageNum === 3 && currentStage === 2)) {
         stageEl.classList.add('active');
         badgeEl.textContent = lang.statusInProgress;
@@ -462,6 +424,7 @@ function applyLanguage() {
     getEl('section-timeline').textContent = lang.sectionTimeline;
     getEl('progress-text').innerHTML = lang.progressText + '：<span id="progress-percentage" class="font-bold text-indigo-600">' + getEl('progress-percentage').textContent + '</span>';
     
+    // 更新所有階段標題
     const stages = ['1', '2', '3', '4a', '5a', '4b', '6', '7'];
     stages.forEach(s => {
         const titleEl = getEl('stage-' + s + '-title');
