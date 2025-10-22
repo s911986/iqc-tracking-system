@@ -1,197 +1,112 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>RTV 詳細信息 - IQC Tracking System</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    body { font-family: 'Inter', sans-serif; }
-    .timeline-wrapper { overflow-x: auto; padding: 2rem 1rem; }
-    .timeline { display: flex; gap: 2rem; align-items: flex-start; position: relative; padding: 2rem 1rem; min-width: 900px; }
-    .progress-line { position: absolute; left: 0; right: 0; top: 60%; height: 6px; background: #e6e7ee; border-radius: 999px; transform: translateY(-50%); z-index: 0; }
-    .progress-line-fill { position: absolute; left: 0; top: 60%; height: 6px; background: linear-gradient(90deg,#3b82f6,#10b981); border-radius: 999px; transform: translateY(-50%); z-index: 1; width: 0%; transition: width 400ms ease; }
-    .timeline-item { position: relative; z-index: 2; width: 260px; min-width: 220px; display: flex; flex-direction: column; align-items: center; }
-    .timeline-dot { width: 28px; height: 28px; border-radius: 50%; background: #d1d5db; border: 4px solid white; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
-    .timeline-item.completed .timeline-dot { background: linear-gradient(135deg,#3b82f6,#2563eb); box-shadow: 0 6px 18px rgba(59,130,246,0.15); }
-    .timeline-item.active .timeline-dot { background: linear-gradient(135deg,#10b981,#059669); box-shadow: 0 6px 18px rgba(16,185,129,0.15); }
-    .timeline-card { background: white; border-radius: 12px; box-shadow: 0 8px 20px rgba(13, 14, 35, 0.06); padding: 18px; width: 100%; display:flex; flex-direction: column; gap: 8px; }
-    .timeline-card .title { font-weight: 600; font-size: 1rem; color:#111827; display:flex; align-items:center; gap:0.5rem; }
-    .timeline-card .desc { color:#6b7280; font-size: 0.86rem; }
-    .timeline-card .badge { margin-left:auto; background:#f3f4f6; padding:0.25rem 0.5rem; border-radius:999px; font-size:0.75rem; color:#374151; }
-    .timeline-card .button { margin-top: 8px; background: linear-gradient(90deg,#5b4bf6,#4b6af6); color:white; padding: 10px 12px; border-radius:10px; cursor:pointer; text-align:center; font-weight:600; }
-    .timeline-card .button[disabled] { opacity:0.5; cursor:not-allowed; }
-    .completion-time { margin-top: 10px; padding:8px; border-radius:8px; background:#eff6ff; border:1px solid #dbeafe; font-size:0.82rem; color:#1e3a8a; display:flex; align-items:center; gap:8px; }
-    .route-selector { display:flex; gap:1rem; width:100%; }
-    .route-option { flex:1; padding:14px; border-radius:10px; border:1px solid #e6e7ee; text-align:center; cursor:pointer; background:white; }
-    .route-option.selected { border-color:#6366f1; background:#eef2ff; box-shadow:0 6px 18px rgba(99,102,241,0.08); }
-    .hidden-stage { display: none !important; }
-    @media (max-width: 900px) {
-      .timeline { min-width: 700px; }
-      .timeline-item { width: 200px; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTV 流程追蹤</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .progress-bar {
+            position: relative;
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 999px;
+            margin: 1.5rem 0;
+        }
+        .progress-fill {
+            position: absolute;
+            height: 100%;
+            background: #d1d5db;
+            border-radius: 999px;
+            transition: width 0.5s ease;
+        }
+        .progress-dot {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #10b981;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transition: left 0.5s ease;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+            50% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 8px rgba(99, 102, 241, 0.25);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(99, 102, 241, 0.35);
+        }
+    </style>
 </head>
-<body class="bg-gray-50 p-4">
-  <div class="max-w-6xl mx-auto">
-    <header class="flex items-center justify-between mb-6">
-      <div class="flex items-center gap-3">
-        <button onclick="window.location.href='index.html'" class="px-3 py-2 rounded bg-white shadow-sm">← 返回</button>
-        <h1 class="text-2xl font-semibold">RTV 流程追蹤</h1>
-      </div>
-      <div>
-        <select id="lang-selector" class="rounded px-3 py-2 border">
-          <option value="繁體中文">繁體中文</option>
-          <option value="English">English</option>
-          <option value="Tiếng Việt">Tiếng Việt</option>
-        </select>
-      </div>
-    </header>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto p-6">
+        
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-6 bg-gradient-to-r from-indigo-500 to-purple-600 p-6 rounded-xl shadow-lg text-white">
+            <button onclick="window.location.href='index.html'" class="flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                <span>返回</span>
+            </button>
+            <h1 class="text-2xl font-bold">RTV 流程追蹤</h1>
+            <div class="w-20"></div>
+        </header>
 
-    <section class="bg-white p-4 rounded-lg mb-4">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <div class="text-xs text-gray-500">料號 QPN</div>
-          <div id="display-qpn" class="font-semibold">-</div>
+        <!-- Basic Info -->
+        <div class="bg-white p-6 rounded-xl shadow-sm mb-6">
+            <div class="grid grid-cols-3 gap-4">
+                <div class="p-4 bg-blue-50 rounded-lg">
+                    <div class="text-sm text-gray-600 mb-1">料號 QPN</div>
+                    <div class="text-lg font-semibold" id="display-qpn">-</div>
+                </div>
+                <div class="p-4 bg-green-50 rounded-lg">
+                    <div class="text-sm text-gray-600 mb-1">SN</div>
+                    <div class="text-lg font-semibold" id="display-sn">-</div>
+                </div>
+                <div class="p-4 bg-purple-50 rounded-lg">
+                    <div class="text-sm text-gray-600 mb-1">部門</div>
+                    <div class="text-lg font-semibold" id="display-dept">-</div>
+                </div>
+            </div>
         </div>
-        <div>
-          <div class="text-xs text-gray-500">SN</div>
-          <div id="display-sn" class="font-semibold">-</div>
+
+        <!-- Progress Header -->
+        <div class="bg-white p-4 rounded-xl shadow-sm mb-6 flex justify-between items-center">
+            <div class="text-lg font-semibold text-gray-800">流程</div>
+            <div class="text-lg font-semibold">進度：<span id="progress-percentage" class="text-indigo-600">0%</span></div>
         </div>
-        <div>
-          <div class="text-xs text-gray-500">���門</div>
-          <div id="display-dept" class="font-semibold">-</div>
+
+        <!-- Current Stage Container -->
+        <div id="current-stage-container"></div>
+
+        <!-- Footer -->
+        <div class="flex justify-end gap-3 mt-6">
+            <button onclick="resetProcess()" class="px-6 py-3 text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 rounded-lg transition">
+                重置流程
+            </button>
+            <button onclick="saveRTVData()" class="px-6 py-3 text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition">
+                保存更改
+            </button>
         </div>
-      </div>
-    </section>
+    </div>
 
-    <section class="bg-white p-4 rounded-lg">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-semibold">流程</h2>
-        <div id="progress-text" class="text-sm text-gray-600">進度：<span id="progress-percentage" class="font-bold">0%</span></div>
-      </div>
-
-      <div class="timeline-wrapper">
-        <div class="timeline">
-          <div class="progress-line"></div>
-          <div class="progress-line-fill" id="progress-line-fill"></div>
-
-          <!-- Stage 1 -->
-          <div class="timeline-item" id="stage-1" data-stage="1">
-            <div class="timeline-dot"></div>
-            <div class="timeline-card">
-              <div style="display:flex;align-items:center;">
-                <div class="title"><i data-lucide="rocket" class="w-5 h-5 text-indigo-600"></i> <span id="stage-1-title">Kick Off</span><span class="badge" id="stage-1-badge">待處理</span></div>
-              </div>
-              <div class="desc" id="stage-1-desc">RTV 流程啟動</div>
-              <div class="button" id="btn-complete-1" onclick="completeStage(1)">完成此階段</div>
-            </div>
-          </div>
-
-          <!-- Stage 2 -->
-          <div class="timeline-item" id="stage-2" data-stage="2">
-            <div class="timeline-dot"></div>
-            <div class="timeline-card">
-              <div style="display:flex;align-items:center;">
-                <div class="title"><i data-lucide="package-open" class="w-5 h-5 text-indigo-600"></i> <span id="stage-2-title">已離廠</span><span class="badge" id="stage-2-badge">待處理</span></div>
-              </div>
-              <div class="desc" id="stage-2-desc">物料已離開工廠</div>
-              <div class="button" id="btn-complete-2" onclick="completeStage(2)">完成此階段</div>
-            </div>
-          </div>
-
-          <!-- Stage 3: select route -->
-          <div class="timeline-item" id="stage-3" data-stage="3">
-            <div class="timeline-dot"></div>
-            <div class="timeline-card">
-              <div style="display:flex;align-items:center;">
-                <div class="title"><i data-lucide="git-branch" class="w-5 h-5 text-indigo-600"></i> <span id="stage-3-title">選擇運送方式</span><span class="badge" id="stage-3-badge">待處理</span></div>
-              </div>
-              <div class="desc" id="stage-3-desc">請選擇快遞或退運</div>
-              <div class="route-selector">
-                <div class="route-option" id="route-express" onclick="selectRoute('express')"><i data-lucide="truck" class="w-6 h-6 text-indigo-600"></i><div id="route-express-label">快遞</div></div>
-                <div class="route-option" id="route-return" onclick="selectRoute('return')"><i data-lucide="package-x" class="w-6 h-6 text-orange-600"></i><div id="route-return-label">退運</div></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Stage 4A: enter tracking (express) -->
-          <div class="timeline-item hidden-stage" id="stage-4a" data-stage="4a" data-route="express">
-            <div class="timeline-dot"></div>
-            <div class="timeline-card">
-              <div style="display:flex;align-items:center;">
-                <div class="title"><i data-lucide="truck" class="w-5 h-5 text-indigo-600"></i> <span id="stage-4a-title">輸入快遞單號</span><span class="badge" id="stage-4a-badge">待處理</span></div>
-              </div>
-              <div class="desc" id="stage-4a-desc">請輸入快遞追蹤單號</div>
-              <input id="tracking-number" class="mt-2 p-2 border rounded" placeholder="輸入單號" />
-              <div class="button" id="btn-complete-4a" onclick="completeStage('4a')">確認單號並繼續</div>
-              <div id="tracking-display" class="mt-2 text-sm text-blue-800">快遞單號：<span id="tracking-value">-</span></div>
-            </div>
-          </div>
-
-          <!-- Stage 5A: arrived vendor (express) -->
-          <div class="timeline-item hidden-stage" id="stage-5a" data-stage="5a" data-route="express">
-            <div class="timeline-dot"></div>
-            <div class="timeline-card">
-              <div style="display:flex;align-items:center;">
-                <div class="title"><i data-lucide="map-pin" class="w-5 h-5 text-indigo-600"></i> <span id="stage-5a-title">已抵達廠商端</span><span class="badge" id="stage-5a-badge">待處理</span></div>
-              </div>
-              <div class="desc" id="stage-5a-desc">物料已送達廠商 (快遞)</div>
-              <div class="button" id="btn-complete-5a" onclick="completeStage('5a')">完成此階段</div>
-            </div>
-          </div>
-
-          <!-- Stage 4B: arrived vendor (return) -->
-          <div class="timeline-item hidden-stage" id="stage-4b" data-stage="4b" data-route="return">
-            <div class="timeline-dot"></div>
-            <div class="timeline-card">
-              <div style="display:flex;align-items:center;">
-                <div class="title"><i data-lucide="map-pin" class="w-5 h-5 text-indigo-600"></i> <span id="stage-4b-title">已抵達廠商端</span><span class="badge" id="stage-4b-badge">待處理</span></div>
-              </div>
-              <div class="desc" id="stage-4b-desc">物料已送達廠商 (退運)</div>
-              <div class="button" id="btn-complete-4b" onclick="completeStage('4b')">完成此階段</div>
-            </div>
-          </div>
-
-          <!-- Stage 6: FA in progress -->
-          <div class="timeline-item hidden-stage" id="stage-6" data-stage="6">
-            <div class="timeline-dot"></div>
-            <div class="timeline-card">
-              <div style="display:flex;align-items:center;">
-                <div class="title"><i data-lucide="microscope" class="w-5 h-5 text-indigo-600"></i> <span id="stage-6-title">FA進行中</span><span class="badge" id="stage-6-badge">待處理</span></div>
-              </div>
-              <div class="desc" id="stage-6-desc">廠商正在進行失效分析</div>
-              <div class="button" id="btn-complete-6" onclick="completeStage(6)">完成此階段</div>
-            </div>
-          </div>
-
-          <!-- Stage 7: FA done -->
-          <div class="timeline-item hidden-stage" id="stage-7" data-stage="7">
-            <div class="timeline-dot"></div>
-            <div class="timeline-card">
-              <div style="display:flex;align-items:center;">
-                <div class="title"><i data-lucide="check-circle" class="w-5 h-5 text-emerald-600"></i> <span id="stage-7-title">FA已完成</span><span class="badge" id="stage-7-badge">待處理</span></div>
-              </div>
-              <div class="desc" id="stage-7-desc">失效分析報告已完成</div>
-              <div class="button" id="btn-complete-7" onclick="completeStage(7)">完成整個流程</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="mt-4 flex justify-end gap-3">
-        <button id="reset-btn" class="px-4 py-2 bg-gray-100 rounded" onclick="resetProcess()">重置流程</button>
-        <button id="save-btn" class="px-4 py-2 bg-emerald-600 text-white rounded" onclick="saveRTVData()">保存更改</button>
-      </div>
-    </section>
-
-    <footer class="mt-6 text-sm text-gray-500">狀態：<span id="status-bar">準備就緒。</span></footer>
-  </div>
-
-  <script src="rtv-detail.js"></script>
+    <script src="rtv-ultra-minimal.js"></script>
 </body>
 </html>
