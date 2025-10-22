@@ -26,56 +26,98 @@ function formatDateTime(isoString) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 頁面載入完成');
+    
     const urlParams = new URLSearchParams(window.location.search);
     recordId = urlParams.get('id');
+    
+    console.log('📋 記錄 ID:', recordId);
+    
     if (!recordId) {
+        console.error('❌ 未找到記錄 ID！');
         alert('錯誤：未指定記錄 ID！');
         window.location.href = 'index.html';
         return;
     }
+    
     loadRecord();
     render();
     lucide.createIcons();
 });
 
 function loadRecord() {
+    console.log('📂 載入記錄...');
+    
     const storedRecords = localStorage.getItem('iqcRecords');
+    console.log('💾 localStorage 數據:', storedRecords);
+    
     if (!storedRecords) {
+        console.error('❌ localStorage 中沒有記錄！');
+        alert('找不到任何記錄，返回主頁');
         window.location.href = 'index.html';
         return;
     }
+    
     const records = JSON.parse(storedRecords);
+    console.log('📊 所有記錄:', records);
+    
     currentRecord = records.find(r => r.id === parseInt(recordId));
-    if (!currentRecord || !currentRecord.rtv_data) {
-        if (currentRecord) {
-            currentRecord.rtv_data = {
-                current_stage: 0,
-                selected_route: null,
-                tracking_number: '',
-                stage_completion: {},
-                completion_dates: {}
-            };
-        }
+    console.log('🎯 當前記錄:', currentRecord);
+    
+    if (!currentRecord) {
+        console.error('❌ 找不到 ID 為', recordId, '的記錄');
+        alert('找不到此記錄，返回主頁');
+        window.location.href = 'index.html';
+        return;
     }
+    
+    // 初始化 RTV 數據
+    if (!currentRecord.rtv_data) {
+        console.log('🆕 初始化 RTV 數據');
+        currentRecord.rtv_data = {
+            current_stage: 0,
+            selected_route: null,
+            tracking_number: '',
+            stage_completion: {},
+            completion_dates: {}
+        };
+    }
+    
     currentStage = currentRecord.rtv_data.current_stage || 0;
     selectedRoute = currentRecord.rtv_data.selected_route || null;
     
+    console.log('✅ 當前階段:', currentStage);
+    console.log('✅ 選擇的路線:', selectedRoute);
+    
+    // 顯示基本信息
     document.getElementById('display-qpn').textContent = currentRecord.qpn || '-';
     document.getElementById('display-sn').textContent = currentRecord.sn || '-';
     document.getElementById('display-dept').textContent = currentRecord.dept || '-';
 }
 
 function render() {
+    console.log('🎨 渲染頁面...');
+    
     const container = document.getElementById('current-stage-container');
+    
+    if (!container) {
+        console.error('❌ 找不到容器元素 #current-stage-container');
+        return;
+    }
+    
     const activeStageId = getActiveStage();
+    console.log('🎯 活動階段 ID:', activeStageId);
     
     if (!activeStageId) {
-        container.innerHTML = '<div class="bg-white p-8 rounded-xl shadow-sm text-center text-gray-500">所有階段已完成！🎉</div>';
+        console.log('🎉 所有階段已完成！');
+        container.innerHTML = '<div class="bg-white p-8 rounded-xl shadow-sm text-center text-gray-500 text-lg">所有階段已完成！🎉</div>';
         updateProgress();
         return;
     }
     
     const stage = stages[activeStageId];
+    console.log('📌 當前階段配置:', stage);
+    
     const stageKey = 'stage' + activeStageId;
     const completionDate = currentRecord.rtv_data.completion_dates[stageKey];
     
@@ -143,6 +185,8 @@ function render() {
     html += '</div>';
     
     container.innerHTML = html;
+    console.log('✅ HTML 已注入');
+    
     updateProgress();
     lucide.createIcons();
     
@@ -153,6 +197,7 @@ function render() {
         if (dot && fill) {
             dot.style.left = '100%';
             fill.style.width = '100%';
+            console.log('✅ 圓點動畫已啟動');
         }
     }, 100);
 }
@@ -165,12 +210,17 @@ function getActiveStage() {
         stageOrder.push('4b', 6, 7);
     }
     
+    console.log('🔍 階段順序:', stageOrder);
+    
     for (let stageId of stageOrder) {
         const stageKey = 'stage' + stageId;
         if (!currentRecord.rtv_data.stage_completion[stageKey]) {
+            console.log('✅ 找到活動階段:', stageId);
             return stageId;
         }
     }
+    
+    console.log('ℹ️ 沒有活動階段（全部完成）');
     return null;
 }
 
@@ -179,10 +229,15 @@ function updateProgress() {
     let total = selectedRoute === 'express' ? 7 : selectedRoute === 'return' ? 6 : 3;
     const completed = Object.values(completion).filter(v => v).length;
     const percent = Math.round((completed / total) * 100);
+    
+    console.log(`📊 進度: ${completed}/${total} = ${percent}%`);
+    
     document.getElementById('progress-percentage').textContent = percent + '%';
 }
 
 window.completeStage = function(stage) {
+    console.log('✅ 完成階段:', stage);
+    
     if (stage === 3 && !selectedRoute) {
         alert('⚠️ 請先選擇運送方式！');
         return;
@@ -219,6 +274,7 @@ window.completeStage = function(stage) {
 };
 
 window.selectRoute = function(route) {
+    console.log('🚚 選擇路線:', route);
     if (currentStage >= 3) return;
     selectedRoute = route;
     currentRecord.rtv_data.selected_route = route;
@@ -226,18 +282,21 @@ window.selectRoute = function(route) {
 };
 
 window.saveRTVData = function() {
+    console.log('💾 保存數據...');
     const storedRecords = localStorage.getItem('iqcRecords');
     const records = JSON.parse(storedRecords);
     const index = records.findIndex(r => r.id === parseInt(recordId));
     if (index > -1) {
         records[index] = currentRecord;
         localStorage.setItem('iqcRecords', JSON.stringify(records));
+        console.log('✅ 數據已保存');
         alert('✅ 更改已保存！');
     }
 };
 
 window.resetProcess = function() {
     if (!confirm('確定要重置整個流程嗎？')) return;
+    console.log('🔄 重置流程');
     currentRecord.rtv_data = {
         current_stage: 0,
         selected_route: null,
@@ -250,3 +309,6 @@ window.resetProcess = function() {
     saveRTVData();
     render();
 };
+
+// 暴露調試函數
+window.getActiveStage = getActiveStage;
