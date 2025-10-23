@@ -6,7 +6,7 @@ let selectedRoute = null;
 const stages = {
     1: { icon: 'rocket', title: 'Kick Off' },
     2: { icon: 'package-open', title: '已離廠' },
-    3: { icon: 'git-branch', title: '選擇運送方式', isRoute: true },
+    3: { icon: 'git-branch', title: '選擇運送方式', titleExpress: '快遞', titleReturn: '退運', isRoute: true },
     '4a': { icon: 'truck', title: '快遞單號', needsInput: true, route: 'express' },
     '5a': { icon: 'map-pin', title: '已抵達廠商端', route: 'express' },
     '4b': { icon: 'map-pin', title: '已抵達廠商端', route: 'return' },
@@ -73,17 +73,27 @@ function renderAllStages() {
     container.innerHTML = '';
     if (line) container.appendChild(line);
     
-    const visibleStages = [1, 2, 3];
+    // 一開始就顯示所有可能的階段（預留空間）
+    let allStages = [1, 2, 3];
     
     if (selectedRoute === 'express') {
-        visibleStages.push('4a', '5a', 6, 7);
+        allStages = [1, 2, 3, '4a', '5a', 6, 7];
     } else if (selectedRoute === 'return') {
-        visibleStages.push('4b', 6, 7);
+        allStages = [1, 2, 3, '4b', 6, 7];
     } else {
-        visibleStages.push(6, 7);
+        // 還沒選擇路線時，預留最多的階段空間（快遞路線）
+        allStages = [1, 2, 3, '4a', '5a', 6, 7];
     }
     
-    visibleStages.forEach(stageId => {
+    allStages.forEach(stageId => {
+        // 如果已選擇路線但不符合，跳過
+        if (selectedRoute) {
+            const stage = stages[stageId];
+            if (stage.route && stage.route !== selectedRoute) {
+                return;
+            }
+        }
+        
         const stageNode = createStageElement(stageId);
         container.appendChild(stageNode);
     });
@@ -99,15 +109,18 @@ function createStageElement(stageId) {
     const isActive = shouldBeActive(stageId);
     const completionDate = currentRecord.rtv_data.completion_dates[stageKey];
     
-    if (!selectedRoute && (stageId === 6 || stageId === 7)) {
+    // 如果還沒選擇路線，且是路線專屬階段，顯示為待處理
+    if (!selectedRoute && stage.route) {
         const div = document.createElement('div');
-        div.className = 'stage-node hidden-node';
-        return div;
-    }
-    
-    if (stage.route && stage.route !== selectedRoute && selectedRoute) {
-        const div = document.createElement('div');
-        div.className = 'stage-node hidden-node';
+        div.className = 'stage-node';
+        div.innerHTML = `
+            <div class="stage-header">
+                <i data-lucide="${stage.icon}" class="stage-icon"></i>
+                <span class="stage-title" style="color: #9ca3af;">${stage.title}</span>
+            </div>
+            <div class="stage-dot dot-pending"></div>
+            <span class="status-badge badge-pending">待處理</span>
+        `;
         return div;
     }
     
@@ -116,7 +129,7 @@ function createStageElement(stageId) {
     
     let html = '';
     
-    // 完成時間（最上方）
+    // 完成時間
     if (completionDate) {
         html += `
             <div class="completion-time">
@@ -127,28 +140,42 @@ function createStageElement(stageId) {
         `;
     }
     
-    // 階段標題（圓點上方）
+    // 階段標題（選擇運送方式後，顯示實際選擇的方式）
+    let displayTitle = stage.title;
+    if (stageId === 3 && selectedRoute) {
+        displayTitle = selectedRoute === 'express' ? stage.titleExpress : stage.titleReturn;
+    }
+    
     html += `
         <div class="stage-header">
             <i data-lucide="${stage.icon}" class="stage-icon"></i>
-            <span class="stage-title">${stage.title}</span>
+            <span class="stage-title">${displayTitle}</span>
         </div>
     `;
     
-    // 圓點（在連接線中心）
+    // 圓點
     html += `
         <div class="stage-dot ${isCompleted ? 'dot-completed' : isActive ? 'dot-active' : 'dot-pending'}"></div>
     `;
     
-    // 狀態標籤（圓點下方）
+    // 狀態標籤
     html += `
         <span class="status-badge ${isCompleted ? 'badge-completed' : isActive ? 'badge-active' : 'badge-pending'}">
             ${isCompleted ? '已完成' : isActive ? '進行中' : '待處理'}
         </span>
     `;
     
-    // 按鈕/選項區域（最下方）
+    // 動作區域
     html += '<div class="action-area">';
+    
+    // 顯示快遞單號（如果已完成且有單號）
+    if (stageId === '4a' && isCompleted && currentRecord.rtv_data.tracking_number) {
+        html += `
+            <div class="tracking-display">
+                快遞單號: ${currentRecord.rtv_data.tracking_number}
+            </div>
+        `;
+    }
     
     // 路線選擇
     if (stage.isRoute && !selectedRoute && isActive) {
@@ -167,7 +194,7 @@ function createStageElement(stageId) {
     }
     
     // 輸入框
-    if (stage.needsInput && isActive) {
+    if (stage.needsInput && isActive && !isCompleted) {
         html += `
             <input type="text" id="tracking-number" class="tracking-input" 
                    placeholder="輸入快遞單號" 
@@ -176,7 +203,7 @@ function createStageElement(stageId) {
     }
     
     // 完成按鈕
-    if (isActive && !stage.isRoute) {
+    if (isActive && !stage.isRoute && !isCompleted) {
         html += `
             <button class="complete-button" onclick="completeStage(${typeof stageId === 'string' ? "'" + stageId + "'" : stageId})">
                 完成此階段

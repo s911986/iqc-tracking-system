@@ -12,17 +12,17 @@
             min-height: 100vh;
         }
         
-        /* Timeline Container */
         .timeline-section {
             background: white;
             border-radius: 1rem;
-            padding: 3rem 2rem;
+            padding: 4rem 3rem;
             margin: 2rem 0;
+            min-height: 450px;
         }
         
         .timeline-wrapper {
             position: relative;
-            padding: 6rem 0 4rem;
+            padding: 8rem 0 4rem;
         }
         
         .timeline-container {
@@ -30,15 +30,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 100%;
+            gap: 4rem;
         }
         
-        /* Connecting Line - 連接線永遠在中間 */
+        /* 連接線 */
         .connecting-line {
             position: absolute;
             top: 50%;
-            left: 5%;
-            right: 5%;
+            left: 3%;
+            right: 3%;
             height: 5px;
             background: #e5e7eb;
             transform: translateY(-50%);
@@ -55,20 +55,21 @@
             border-radius: 999px;
         }
         
-        /* Stage Node - 階段節點 */
+        /* 階段節點 */
         .stage-node {
             position: relative;
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-width: 180px;
             z-index: 10;
         }
         
-        /* Completion Time - 完成時間在最上方 */
+        /* 完成時間 - 在最上方 */
         .completion-time {
             position: absolute;
-            top: -100px;
+            top: -110px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -78,10 +79,12 @@
             background: white;
             border: 1.5px solid #e5e7eb;
             border-radius: 0.625rem;
-            font-size: 0.813rem;
+            font-size: 0.75rem;
             color: #6b7280;
             white-space: nowrap;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            min-width: 200px;
+            justify-content: center;
         }
         
         .completion-time i {
@@ -89,16 +92,16 @@
             height: 14px;
         }
         
-        .completion-time .time-value {
+        .time-value {
             font-family: 'SF Mono', monospace;
             color: #1f2937;
             font-weight: 500;
         }
         
-        /* Stage Header - 階段標題在圓點上方 */
+        /* 階段標題 - 圓點上方 */
         .stage-header {
             position: absolute;
-            top: -60px;
+            top: -65px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -120,14 +123,13 @@
             color: #1f2937;
         }
         
-        /* Dot - 圓點永遠在連接線中心 */
+        /* 圓點 */
         .stage-dot {
             width: 56px;
             height: 56px;
             border-radius: 50%;
             border: 5px solid white;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-            position: relative;
             transition: all 0.3s ease;
         }
         
@@ -155,10 +157,10 @@
             }
         }
         
-        /* Status Badge - 狀態標籤在圓點下方 */
+        /* 狀態標籤 - 圓點下方 */
         .status-badge {
             position: absolute;
-            top: 70px;
+            top: 75px;
             left: 50%;
             transform: translateX(-50%);
             padding: 0.5rem 1.25rem;
@@ -183,12 +185,16 @@
             color: #6b7280;
         }
         
-        /* Action Button - 按鈕在最下方 */
+        /* 動作區域 */
         .action-area {
             position: absolute;
-            top: 120px;
+            top: 125px;
             left: 50%;
             transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
         }
         
         .complete-button {
@@ -210,7 +216,7 @@
             box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
         }
         
-        /* Route Selection */
+        /* 路線選擇 */
         .route-selection {
             display: flex;
             gap: 1rem;
@@ -240,13 +246,7 @@
             height: 32px;
         }
         
-        .route-option span {
-            font-size: 0.938rem;
-            font-weight: 500;
-            color: #1f2937;
-        }
-        
-        /* Tracking Input */
+        /* 輸入框 */
         .tracking-input {
             width: 220px;
             padding: 0.75rem 1rem;
@@ -261,13 +261,21 @@
             box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
         
-        .hidden-node {
-            display: none !important;
+        /* 快遞單號顯示 */
+        .tracking-display {
+            padding: 0.625rem 1rem;
+            background: #f0fdf4;
+            border: 1.5px solid #86efac;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            color: #166534;
+            font-family: 'SF Mono', monospace;
+            font-weight: 500;
         }
     </style>
 </head>
 <body>
-    <div class="max-w-[1600px] mx-auto p-8">
+    <div class="max-w-[1800px] mx-auto p-8">
         
         <!-- Header -->
         <header class="flex justify-between items-center mb-8 bg-gradient-to-r from-indigo-500 to-purple-600 p-8 rounded-2xl shadow-lg text-white">
@@ -310,7 +318,7 @@
                     <div class="connecting-line">
                         <div class="progress-line" id="progress-line" style="width: 0%"></div>
                     </div>
-                    <!-- Stages will be generated by JavaScript -->
+                    <!-- All stages will be rendered here -->
                 </div>
             </div>
         </div>
