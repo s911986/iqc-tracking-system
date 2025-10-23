@@ -68,8 +68,8 @@ function loadRecord() {
 }
 
 function renderAllStages() {
-    const container = document.getElementById('timeline-track');
-    const line = container.querySelector('.timeline-line');
+    const container = document.getElementById('timeline-container');
+    const line = container.querySelector('.connecting-line');
     container.innerHTML = '';
     if (line) container.appendChild(line);
     
@@ -101,35 +101,33 @@ function createStageElement(stageId) {
     
     if (!selectedRoute && (stageId === 6 || stageId === 7)) {
         const div = document.createElement('div');
-        div.className = 'stage-item hidden-stage';
+        div.className = 'stage-node hidden-node';
         return div;
     }
     
     if (stage.route && stage.route !== selectedRoute && selectedRoute) {
         const div = document.createElement('div');
-        div.className = 'stage-item hidden-stage';
+        div.className = 'stage-node hidden-node';
         return div;
     }
     
     const stageDiv = document.createElement('div');
-    stageDiv.className = 'stage-item';
+    stageDiv.className = 'stage-node';
     
     let html = '';
     
-    // 完成時間（圓點上方）
+    // 完成時間（最上方）
     if (completionDate) {
         html += `
-            <div class="time-display">
+            <div class="completion-time">
                 <i data-lucide="clock"></i>
                 <span>完成時間</span>
-                <span class="time">${formatDateTime(completionDate)}</span>
+                <span class="time-value">${formatDateTime(completionDate)}</span>
             </div>
         `;
-    } else {
-        html += '<div style="height: 48px;"></div>';
     }
     
-    // 階段標題
+    // 階段標題（圓點上方）
     html += `
         <div class="stage-header">
             <i data-lucide="${stage.icon}" class="stage-icon"></i>
@@ -137,27 +135,30 @@ function createStageElement(stageId) {
         </div>
     `;
     
-    // 圓點（在線上）
+    // 圓點（在連接線中心）
     html += `
         <div class="stage-dot ${isCompleted ? 'dot-completed' : isActive ? 'dot-active' : 'dot-pending'}"></div>
     `;
     
     // 狀態標籤（圓點下方）
     html += `
-        <span class="status-badge ${isCompleted ? 'status-completed' : isActive ? 'status-active' : 'status-pending'}">
+        <span class="status-badge ${isCompleted ? 'badge-completed' : isActive ? 'badge-active' : 'badge-pending'}">
             ${isCompleted ? '已完成' : isActive ? '進行中' : '待處理'}
         </span>
     `;
     
+    // 按鈕/選項區域（最下方）
+    html += '<div class="action-area">';
+    
     // 路線選擇
     if (stage.isRoute && !selectedRoute && isActive) {
         html += `
-            <div class="route-buttons">
-                <button class="route-btn" onclick="selectRoute('express')">
+            <div class="route-selection">
+                <button class="route-option" onclick="selectRoute('express')">
                     <i data-lucide="truck" style="color: #6366f1;"></i>
                     <span>快遞</span>
                 </button>
-                <button class="route-btn" onclick="selectRoute('return')">
+                <button class="route-option" onclick="selectRoute('return')">
                     <i data-lucide="package-x" style="color: #f97316;"></i>
                     <span>退運</span>
                 </button>
@@ -174,14 +175,16 @@ function createStageElement(stageId) {
         `;
     }
     
-    // 按鈕
+    // 完成按鈕
     if (isActive && !stage.isRoute) {
         html += `
-            <button class="stage-button" onclick="completeStage(${typeof stageId === 'string' ? "'" + stageId + "'" : stageId})">
+            <button class="complete-button" onclick="completeStage(${typeof stageId === 'string' ? "'" + stageId + "'" : stageId})">
                 完成此階段
             </button>
         `;
     }
+    
+    html += '</div>';
     
     stageDiv.innerHTML = html;
     return stageDiv;
