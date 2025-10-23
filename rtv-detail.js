@@ -73,7 +73,6 @@ function renderAllStages() {
     container.innerHTML = '';
     if (line) container.appendChild(line);
     
-    // 一開始就顯示所有可能的階段（預留空間）
     let allStages = [1, 2, 3];
     
     if (selectedRoute === 'express') {
@@ -81,12 +80,10 @@ function renderAllStages() {
     } else if (selectedRoute === 'return') {
         allStages = [1, 2, 3, '4b', 6, 7];
     } else {
-        // 還沒選擇路線時，預留最多的階段空間（快遞路線）
         allStages = [1, 2, 3, '4a', '5a', 6, 7];
     }
     
     allStages.forEach(stageId => {
-        // 如果已選擇路線但不符合，跳過
         if (selectedRoute) {
             const stage = stages[stageId];
             if (stage.route && stage.route !== selectedRoute) {
@@ -109,14 +106,21 @@ function createStageElement(stageId) {
     const isActive = shouldBeActive(stageId);
     const completionDate = currentRecord.rtv_data.completion_dates[stageKey];
     
-    // 如果還沒選擇路線，且是路線專屬階段，顯示為待處理
+    // 判斷狀態類別
+    let statusClass = 'pending';
+    if (isCompleted) {
+        statusClass = 'completed';
+    } else if (isActive) {
+        statusClass = 'active';
+    }
+    
     if (!selectedRoute && stage.route) {
         const div = document.createElement('div');
-        div.className = 'stage-node';
+        div.className = 'stage-node pending';
         div.innerHTML = `
             <div class="stage-header">
                 <i data-lucide="${stage.icon}" class="stage-icon"></i>
-                <span class="stage-title" style="color: #9ca3af;">${stage.title}</span>
+                <span class="stage-title">${stage.title}</span>
             </div>
             <div class="stage-dot dot-pending"></div>
             <span class="status-badge badge-pending">待處理</span>
@@ -125,7 +129,7 @@ function createStageElement(stageId) {
     }
     
     const stageDiv = document.createElement('div');
-    stageDiv.className = 'stage-node';
+    stageDiv.className = `stage-node ${statusClass}`;
     
     let html = '';
     
