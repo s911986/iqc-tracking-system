@@ -69,13 +69,10 @@ function loadRecord() {
 
 function renderAllStages() {
     const container = document.getElementById('timeline-track');
-    
-    // 清空但保留背景線
     const line = container.querySelector('.timeline-line');
     container.innerHTML = '';
     if (line) container.appendChild(line);
     
-    // 確定要顯示的階段
     const visibleStages = [1, 2, 3];
     
     if (selectedRoute === 'express') {
@@ -83,7 +80,6 @@ function renderAllStages() {
     } else if (selectedRoute === 'return') {
         visibleStages.push('4b', 6, 7);
     } else {
-        // 如果還沒選擇路線，顯示佔位符
         visibleStages.push(6, 7);
     }
     
@@ -103,14 +99,12 @@ function createStageElement(stageId) {
     const isActive = shouldBeActive(stageId);
     const completionDate = currentRecord.rtv_data.completion_dates[stageKey];
     
-    // 隱藏未選擇路線時的後續階段
     if (!selectedRoute && (stageId === 6 || stageId === 7)) {
         const div = document.createElement('div');
         div.className = 'stage-item hidden-stage';
         return div;
     }
     
-    // 隱藏不符合選擇路線的階段
     if (stage.route && stage.route !== selectedRoute && selectedRoute) {
         const div = document.createElement('div');
         div.className = 'stage-item hidden-stage';
@@ -122,33 +116,37 @@ function createStageElement(stageId) {
     
     let html = '';
     
-    // 完成時間
+    // 完成時間（圓點上方）
     if (completionDate) {
         html += `
-            <div class="time-badge">
+            <div class="time-display">
                 <i data-lucide="clock"></i>
                 <span>完成時間</span>
-                <span style="font-family: monospace; color: #1f2937;">${formatDateTime(completionDate)}</span>
+                <span class="time">${formatDateTime(completionDate)}</span>
             </div>
         `;
     } else {
-        html += '<div style="height: 32px;"></div>';
+        html += '<div style="height: 48px;"></div>';
     }
     
-    // 階段標題 + 狀態
+    // 階段標題
     html += `
-        <div class="stage-header-inline">
+        <div class="stage-header">
             <i data-lucide="${stage.icon}" class="stage-icon"></i>
-            <span class="stage-name">${stage.title}</span>
+            <span class="stage-title">${stage.title}</span>
         </div>
+    `;
+    
+    // 圓點（在線上）
+    html += `
+        <div class="stage-dot ${isCompleted ? 'dot-completed' : isActive ? 'dot-active' : 'dot-pending'}"></div>
+    `;
+    
+    // 狀態標籤（圓點下方）
+    html += `
         <span class="status-badge ${isCompleted ? 'status-completed' : isActive ? 'status-active' : 'status-pending'}">
             ${isCompleted ? '已完成' : isActive ? '進行中' : '待處理'}
         </span>
-    `;
-    
-    // 圓點
-    html += `
-        <div class="stage-dot ${isCompleted ? 'dot-completed' : isActive ? 'dot-active' : 'dot-pending'}"></div>
     `;
     
     // 路線選擇
@@ -157,11 +155,11 @@ function createStageElement(stageId) {
             <div class="route-buttons">
                 <button class="route-btn" onclick="selectRoute('express')">
                     <i data-lucide="truck" style="color: #6366f1;"></i>
-                    <span style="font-size: 0.875rem;">快遞</span>
+                    <span>快遞</span>
                 </button>
                 <button class="route-btn" onclick="selectRoute('return')">
                     <i data-lucide="package-x" style="color: #f97316;"></i>
-                    <span style="font-size: 0.875rem;">退運</span>
+                    <span>退運</span>
                 </button>
             </div>
         `;
@@ -179,11 +177,9 @@ function createStageElement(stageId) {
     // 按鈕
     if (isActive && !stage.isRoute) {
         html += `
-            <div class="stage-action">
-                <button class="btn-complete" onclick="completeStage(${typeof stageId === 'string' ? "'" + stageId + "'" : stageId})">
-                    完成此階段
-                </button>
-            </div>
+            <button class="stage-button" onclick="completeStage(${typeof stageId === 'string' ? "'" + stageId + "'" : stageId})">
+                完成此階段
+            </button>
         `;
     }
     
@@ -214,7 +210,9 @@ function updateProgress() {
     let total = selectedRoute === 'express' ? 7 : selectedRoute === 'return' ? 6 : 3;
     const completed = Object.values(completion).filter(v => v).length;
     const percent = Math.round((completed / total) * 100);
+    
     document.getElementById('progress-percentage').textContent = percent + '%';
+    document.getElementById('progress-line').style.width = percent + '%';
 }
 
 window.completeStage = function(stage) {
