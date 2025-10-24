@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Language Debug</title>
+</head>
+<body>
+    <h1>Language Setting Debug</h1>
+    <p>Current language in localStorage: <strong id="lang"></strong></p>
+    <script>
+        const lang = localStorage.getItem('language');
+        document.getElementById('lang').textContent = lang || 'not set';
+        console.log('Language:', lang);
+    </script>
+</body>
+</html>
