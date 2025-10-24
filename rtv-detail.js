@@ -295,6 +295,7 @@ function renderAllStages() {
     });
     
     updateProgress();
+    if (typeof lucide !== "undefined") lucide.createIcons();
     lucide.createIcons();
 }
 

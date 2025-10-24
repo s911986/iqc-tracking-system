@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RTV Flow Tracking</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide 必須最先載入 -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <link rel="stylesheet" href="rtv-detail-style.css">
 </head>
 <body>
@@ -52,14 +54,19 @@
         </div>
     </div>
     
-    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+    <!-- 主 JS 文件 -->
+    <script src="rtv-detail.js"></script>
+    
+    <!-- 初始化 Lucide Icons -->
     <script>
-        if (typeof lucide !== 'undefined') {
-            console.log('Lucide loaded');
-            var script = document.createElement('script');
-            script.src = 'rtv-detail.js';
-            document.body.appendChild(script);
-        }
+        window.addEventListener('load', function() {
+            if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                lucide.createIcons();
+                console.log('✓ Lucide icons initialized');
+            } else {
+                console.error('✗ Lucide not available');
+            }
+        });
     </script>
 </body>
 </html>
