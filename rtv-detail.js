@@ -7,13 +7,20 @@ let currentLanguage = 'zh';
 // 完整的多語言翻譯
 const translations = {
     zh: {
+        // Header
         backButton: '返回',
         pageTitle: 'RTV 流程追蹤',
+        
+        // Basic Info
         qpnLabel: '料號 QPN',
         snLabel: 'SN',
         deptLabel: '需求部門',
+        
+        // Progress
         processLabel: '流程',
         progressLabel: '進度',
+        
+        // Stages
         kickOff: 'Kick Off',
         departed: '已離廠',
         selectRoute: '選擇運送方式',
@@ -23,16 +30,24 @@ const translations = {
         arrivedVendor: '已抵達廠商端',
         faInProgress: 'FA進行中',
         faCompleted: 'FA已完成',
+        
+        // Status
         completed: '已完成',
         inProgress: '進行中',
         pending: '待處理',
+        
+        // Actions
         completeStage: '完成此階段',
         resetProcess: '重置流程',
         saveChanges: '保存更改',
+        
+        // Labels
         completionTime: '完成時間',
         trackingNumberLabel: '快遞單號',
         enterTrackingNumber: '輸入快遞單號',
         trackingNumberDisplay: '快遞單號',
+        
+        // Alerts
         noRecordId: '錯誤：未指定記錄 ID！',
         selectRouteFirst: '⚠️ 請先選擇運送方式！',
         noTimeInput: '⚠️ 找不到完成時間輸入框！',
@@ -40,19 +55,23 @@ const translations = {
         enterTracking: '⚠️ 請輸入快遞單號！',
         changesSaved: '✅ 更改已保存！',
         processComplete: '🎉 流程已完成！',
-        confirmReset: '確定要重置整個流程嗎？',
-        timeOrderError: '⚠️ 時間不能早於前一個階段！',
-        previousStageTime: '前一階段時間',
-        currentStageTime: '當前選擇時間'
+        confirmReset: '確定要重置整個流程嗎？'
     },
     en: {
+        // Header
         backButton: 'Back',
         pageTitle: 'RTV Process Tracking',
+        
+        // Basic Info
         qpnLabel: 'QPN',
         snLabel: 'SN',
         deptLabel: 'Requesting Department',
+        
+        // Progress
         processLabel: 'Process',
         progressLabel: 'Progress',
+        
+        // Stages
         kickOff: 'Kick Off',
         departed: 'Departed',
         selectRoute: 'Select Shipping Method',
@@ -62,16 +81,24 @@ const translations = {
         arrivedVendor: 'Arrived at Vendor',
         faInProgress: 'FA In Progress',
         faCompleted: 'FA Completed',
+        
+        // Status
         completed: 'Completed',
         inProgress: 'In Progress',
         pending: 'Pending',
+        
+        // Actions
         completeStage: 'Complete This Stage',
         resetProcess: 'Reset Process',
         saveChanges: 'Save Changes',
+        
+        // Labels
         completionTime: 'Completion Time',
         trackingNumberLabel: 'Tracking Number',
         enterTrackingNumber: 'Enter Tracking Number',
         trackingNumberDisplay: 'Tracking No.',
+        
+        // Alerts
         noRecordId: 'Error: No record ID specified!',
         selectRouteFirst: '⚠️ Please select shipping method first!',
         noTimeInput: '⚠️ Completion time input not found!',
@@ -79,19 +106,23 @@ const translations = {
         enterTracking: '⚠️ Please enter tracking number!',
         changesSaved: '✅ Changes saved!',
         processComplete: '🎉 Process completed!',
-        confirmReset: 'Are you sure you want to reset the entire process?',
-        timeOrderError: '⚠️ Time cannot be earlier than previous stage!',
-        previousStageTime: 'Previous stage time',
-        currentStageTime: 'Current selected time'
+        confirmReset: 'Are you sure you want to reset the entire process?'
     },
     vi: {
+        // Header
         backButton: 'Quay lại',
         pageTitle: 'Theo dõi quy trình RTV',
+        
+        // Basic Info
         qpnLabel: 'Mã QPN',
         snLabel: 'SN',
         deptLabel: 'Phòng ban yêu cầu',
+        
+        // Progress
         processLabel: 'Quy trình',
         progressLabel: 'Tiến độ',
+        
+        // Stages
         kickOff: 'Bắt đầu',
         departed: 'Đã xuất xưởng',
         selectRoute: 'Chọn phương thức vận chuyển',
@@ -101,16 +132,24 @@ const translations = {
         arrivedVendor: 'Đã đến nhà cung cấp',
         faInProgress: 'FA đang tiến hành',
         faCompleted: 'FA hoàn thành',
+        
+        // Status
         completed: 'Hoàn thành',
         inProgress: 'Đang xử lý',
         pending: 'Chờ xử lý',
+        
+        // Actions
         completeStage: 'Hoàn thành giai đoạn này',
         resetProcess: 'Đặt lại quy trình',
         saveChanges: 'Lưu thay đổi',
+        
+        // Labels
         completionTime: 'Thời gian hoàn thành',
         trackingNumberLabel: 'Mã vận đơn',
         enterTrackingNumber: 'Nhập mã vận đơn',
         trackingNumberDisplay: 'Mã vận đơn',
+        
+        // Alerts
         noRecordId: 'Lỗi: Không có ID bản ghi!',
         selectRouteFirst: '⚠️ Vui lòng chọn phương thức vận chuyển trước!',
         noTimeInput: '⚠️ Không tìm thấy ô nhập thời gian hoàn thành!',
@@ -118,10 +157,7 @@ const translations = {
         enterTracking: '⚠️ Vui lòng nhập mã vận đơn!',
         changesSaved: '✅ Đã lưu thay đổi!',
         processComplete: '🎉 Quy trình đã hoàn thành!',
-        confirmReset: 'Bạn có chắc chắn muốn đặt lại toàn bộ quy trình không?',
-        timeOrderError: '⚠️ Thời gian không được sớm hơn giai đoạn trước!',
-        previousStageTime: 'Thời gian giai đoạn trước',
-        currentStageTime: 'Thời gian đã chọn'
+        confirmReset: 'Bạn có chắc chắn muốn đặt lại toàn bộ quy trình không?'
     }
 };
 
@@ -135,40 +171,6 @@ const stages = {
     6: { icon: 'microscope', titleKey: 'faInProgress' },
     7: { icon: 'check-circle', titleKey: 'faCompleted' }
 };
-
-// 獲取階段順序
-function getStageOrder() {
-    if (selectedRoute === 'express') {
-        return [1, 2, 3, '4a', '5a', 6, 7];
-    } else if (selectedRoute === 'return') {
-        return [1, 2, 3, '4b', 6, 7];
-    }
-    return [1, 2, 3];
-}
-
-// 獲取前一個已完成階段的時間
-function getPreviousStageTime(currentStageId) {
-    const stageOrder = getStageOrder();
-    const currentIndex = stageOrder.indexOf(currentStageId);
-    
-    if (currentIndex <= 0) return null;
-    
-    // 從當前階段往前找最近的已完成階段
-    for (let i = currentIndex - 1; i >= 0; i--) {
-        const prevStageId = stageOrder[i];
-        const prevStageKey = 'stage' + prevStageId;
-        const prevTime = currentRecord.rtv_data.completion_dates[prevStageKey];
-        
-        if (prevTime) {
-            return {
-                stageId: prevStageId,
-                time: new Date(prevTime)
-            };
-        }
-    }
-    
-    return null;
-}
 
 function t(key) {
     return translations[currentLanguage][key] || key;
@@ -270,7 +272,15 @@ function renderAllStages() {
     container.innerHTML = '';
     if (line) container.appendChild(line);
     
-    const allStages = getStageOrder();
+    let allStages = [1, 2, 3];
+    
+    if (selectedRoute === 'express') {
+        allStages = [1, 2, 3, '4a', '5a', 6, 7];
+    } else if (selectedRoute === 'return') {
+        allStages = [1, 2, 3, '4b', 6, 7];
+    } else {
+        allStages = [1, 2, 3, '4a', '5a', 6, 7];
+    }
     
     allStages.forEach(stageId => {
         if (selectedRoute) {
@@ -285,7 +295,6 @@ function renderAllStages() {
     });
     
     updateProgress();
-    setTimeout(() => lucide.createIcons(), 100);
     lucide.createIcons();
 }
 
@@ -467,22 +476,7 @@ window.completeStage = function(stage) {
         return;
     }
     
-    const completionDate = new Date(completionTimeValue);
-    
-    // 驗證時間順序
-    const previousStage = getPreviousStageTime(stage);
-    if (previousStage) {
-        if (completionDate < previousStage.time) {
-            const prevTimeStr = formatDateTime(previousStage.time.toISOString());
-            const currTimeStr = formatDateTime(completionDate.toISOString());
-            alert(
-                `${t('timeOrderError')}\n\n` +
-                `${t('previousStageTime')}: ${prevTimeStr}\n` +
-                `${t('currentStageTime')}: ${currTimeStr}`
-            );
-            return;
-        }
-    }
+    const completionDate = new Date(completionTimeValue).toISOString();
     
     if (stage === '4a') {
         const trackingNumber = document.getElementById('tracking-number').value.trim();
@@ -495,7 +489,7 @@ window.completeStage = function(stage) {
     
     const stageKey = 'stage' + stage;
     currentRecord.rtv_data.stage_completion[stageKey] = true;
-    currentRecord.rtv_data.completion_dates[stageKey] = completionDate.toISOString();
+    currentRecord.rtv_data.completion_dates[stageKey] = completionDate;
     
     if (stage === 1) currentStage = 1;
     else if (stage === 2) currentStage = 2;
@@ -555,3 +549,10 @@ window.resetProcess = function() {
     saveRTVData();
     renderAllStages();
 };
+
+// 確保 Lucide 正確初始化
+if (typeof lucide !== 'undefined') {
+    console.log('✓ Lucide loaded successfully');
+} else {
+    console.error('✗ Lucide not loaded!');
+}
