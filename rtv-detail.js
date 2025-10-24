@@ -285,6 +285,7 @@ function renderAllStages() {
     });
     
     updateProgress();
+    setTimeout(() => lucide.createIcons(), 100);
     lucide.createIcons();
 }
 
