@@ -2,17 +2,179 @@ let currentRecord = null;
 let recordId = null;
 let currentStage = 0;
 let selectedRoute = null;
+let currentLanguage = 'zh'; // 默認中文
+
+// 多語言翻譯
+const translations = {
+    zh: {
+        // Header
+        backButton: '返回',
+        pageTitle: 'RTV 流程追蹤',
+        
+        // Basic Info
+        qpnLabel: '料號 QPN',
+        snLabel: 'SN',
+        deptLabel: '部門',
+        
+        // Progress
+        processLabel: '流程',
+        progressLabel: '進度',
+        
+        // Stages
+        kickOff: 'Kick Off',
+        departed: '已離廠',
+        selectRoute: '選擇運送方式',
+        express: '快遞',
+        returnShip: '退運',
+        trackingNumber: '快遞單號',
+        arrivedVendor: '已抵達廠商端',
+        faInProgress: 'FA進行中',
+        faCompleted: 'FA已完成',
+        
+        // Status
+        completed: '已完成',
+        inProgress: '進行中',
+        pending: '待處理',
+        
+        // Actions
+        completeStage: '完成此階段',
+        resetProcess: '重置流程',
+        saveChanges: '保存更改',
+        
+        // Labels
+        completionTime: '完成時間',
+        trackingNumberLabel: '快遞單號',
+        enterTrackingNumber: '輸入快遞單號',
+        trackingNumberDisplay: '快遞單號',
+        
+        // Alerts
+        noRecordId: '錯誤：未指定記錄 ID！',
+        selectRouteFirst: '⚠️ 請先選擇運送方式！',
+        noTimeInput: '⚠️ 找不到完成時間輸入框！',
+        selectTime: '⚠️ 請選擇完成時間！',
+        enterTracking: '⚠️ 請輸入快遞單號！',
+        changesSaved: '✅ 更改已保存！',
+        processComplete: '🎉 流程已完成！',
+        confirmReset: '確定要重置整個流程嗎？'
+    },
+    en: {
+        // Header
+        backButton: 'Back',
+        pageTitle: 'RTV Process Tracking',
+        
+        // Basic Info
+        qpnLabel: 'QPN',
+        snLabel: 'SN',
+        deptLabel: 'Department',
+        
+        // Progress
+        processLabel: 'Process',
+        progressLabel: 'Progress',
+        
+        // Stages
+        kickOff: 'Kick Off',
+        departed: 'Departed',
+        selectRoute: 'Select Shipping Method',
+        express: 'Express',
+        returnShip: 'Return',
+        trackingNumber: 'Tracking Number',
+        arrivedVendor: 'Arrived at Vendor',
+        faInProgress: 'FA In Progress',
+        faCompleted: 'FA Completed',
+        
+        // Status
+        completed: 'Completed',
+        inProgress: 'In Progress',
+        pending: 'Pending',
+        
+        // Actions
+        completeStage: 'Complete This Stage',
+        resetProcess: 'Reset Process',
+        saveChanges: 'Save Changes',
+        
+        // Labels
+        completionTime: 'Completion Time',
+        trackingNumberLabel: 'Tracking Number',
+        enterTrackingNumber: 'Enter Tracking Number',
+        trackingNumberDisplay: 'Tracking No.',
+        
+        // Alerts
+        noRecordId: 'Error: No record ID specified!',
+        selectRouteFirst: '⚠️ Please select shipping method first!',
+        noTimeInput: '⚠️ Completion time input not found!',
+        selectTime: '⚠️ Please select completion time!',
+        enterTracking: '⚠️ Please enter tracking number!',
+        changesSaved: '✅ Changes saved!',
+        processComplete: '🎉 Process completed!',
+        confirmReset: 'Are you sure you want to reset the entire process?'
+    },
+    vi: {
+        // Header
+        backButton: 'Quay lại',
+        pageTitle: 'Theo dõi quy trình RTV',
+        
+        // Basic Info
+        qpnLabel: 'Mã QPN',
+        snLabel: 'SN',
+        deptLabel: 'Phòng ban',
+        
+        // Progress
+        processLabel: 'Quy trình',
+        progressLabel: 'Tiến độ',
+        
+        // Stages
+        kickOff: 'Bắt đầu',
+        departed: 'Đã xuất xưởng',
+        selectRoute: 'Chọn phương thức vận chuyển',
+        express: 'Chuyển phát nhanh',
+        returnShip: 'Trả hàng',
+        trackingNumber: 'Mã vận đơn',
+        arrivedVendor: 'Đã đến nhà cung cấp',
+        faInProgress: 'FA đang tiến hành',
+        faCompleted: 'FA hoàn thành',
+        
+        // Status
+        completed: 'Hoàn thành',
+        inProgress: 'Đang xử lý',
+        pending: 'Chờ xử lý',
+        
+        // Actions
+        completeStage: 'Hoàn thành giai đoạn này',
+        resetProcess: 'Đặt lại quy trình',
+        saveChanges: 'Lưu thay đổi',
+        
+        // Labels
+        completionTime: 'Thời gian hoàn thành',
+        trackingNumberLabel: 'Mã vận đơn',
+        enterTrackingNumber: 'Nhập mã vận đơn',
+        trackingNumberDisplay: 'Mã vận đơn',
+        
+        // Alerts
+        noRecordId: 'Lỗi: Không có ID bản ghi!',
+        selectRouteFirst: '⚠️ Vui lòng chọn phương thức vận chuyển trước!',
+        noTimeInput: '⚠️ Không tìm thấy ô nhập thời gian hoàn thành!',
+        selectTime: '⚠️ Vui lòng chọn thời gian hoàn thành!',
+        enterTracking: '⚠️ Vui lòng nhập mã vận đơn!',
+        changesSaved: '✅ Đã lưu thay đổi!',
+        processComplete: '🎉 Quy trình đã hoàn thành!',
+        confirmReset: 'Bạn có chắc chắn muốn đặt lại toàn bộ quy trình không?'
+    }
+};
 
 const stages = {
-    1: { icon: 'rocket', title: 'Kick Off' },
-    2: { icon: 'package-open', title: '已離廠' },
-    3: { icon: 'git-branch', title: '選擇運送方式', titleExpress: '快遞', titleReturn: '退運', isRoute: true },
-    '4a': { icon: 'truck', title: '快遞單號', needsInput: true, route: 'express' },
-    '5a': { icon: 'map-pin', title: '已抵達廠商端', route: 'express' },
-    '4b': { icon: 'map-pin', title: '已抵達廠商端', route: 'return' },
-    6: { icon: 'microscope', title: 'FA進行中' },
-    7: { icon: 'check-circle', title: 'FA已完成' }
+    1: { icon: 'rocket', titleKey: 'kickOff' },
+    2: { icon: 'package-open', titleKey: 'departed' },
+    3: { icon: 'git-branch', titleKey: 'selectRoute', titleExpressKey: 'express', titleReturnKey: 'returnShip', isRoute: true },
+    '4a': { icon: 'truck', titleKey: 'trackingNumber', needsInput: true, route: 'express' },
+    '5a': { icon: 'map-pin', titleKey: 'arrivedVendor', route: 'express' },
+    '4b': { icon: 'map-pin', titleKey: 'arrivedVendor', route: 'return' },
+    6: { icon: 'microscope', titleKey: 'faInProgress' },
+    7: { icon: 'check-circle', titleKey: 'faCompleted' }
 };
+
+function t(key) {
+    return translations[currentLanguage][key] || key;
+}
 
 function formatDateTime(isoString) {
     const date = new Date(isoString);
@@ -39,15 +201,46 @@ function getCurrentDateTime() {
     return formatDateTimeForInput(new Date().toISOString());
 }
 
+function initLanguage() {
+    // 從 localStorage 獲取語言設置
+    const savedLanguage = localStorage.getItem('language');
+    if (savedLanguage && translations[savedLanguage]) {
+        currentLanguage = savedLanguage;
+    }
+}
+
+function updateUILanguage() {
+    // 更新頁面標題
+    document.getElementById('page-title').textContent = t('pageTitle');
+    document.getElementById('back-button-text').textContent = t('backButton');
+    
+    // 更新基本信息標籤
+    document.getElementById('qpn-label').textContent = t('qpnLabel');
+    document.getElementById('sn-label').textContent = t('snLabel');
+    document.getElementById('dept-label').textContent = t('deptLabel');
+    
+    // 更新進度標籤
+    document.getElementById('process-label').textContent = t('processLabel');
+    document.getElementById('progress-label').textContent = t('progressLabel');
+    
+    // 更新底部按鈕
+    document.getElementById('reset-button').textContent = t('resetProcess');
+    document.getElementById('save-button').textContent = t('saveChanges');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    initLanguage();
+    
     const urlParams = new URLSearchParams(window.location.search);
     recordId = urlParams.get('id');
     if (!recordId) {
-        alert('錯誤：未指定記錄 ID！');
+        alert(t('noRecordId'));
         window.location.href = 'index.html';
         return;
     }
+    
     loadRecord();
+    updateUILanguage();
     renderAllStages();
     lucide.createIcons();
 });
@@ -133,10 +326,10 @@ function createStageElement(stageId) {
         div.innerHTML = `
             <div class="stage-header">
                 <i data-lucide="${stage.icon}" class="stage-icon"></i>
-                <span class="stage-title">${stage.title}</span>
+                <span class="stage-title">${t(stage.titleKey)}</span>
             </div>
             <div class="stage-dot dot-pending"></div>
-            <span class="status-badge badge-pending">待處理</span>
+            <span class="status-badge badge-pending">${t('pending')}</span>
         `;
         return div;
     }
@@ -147,20 +340,20 @@ function createStageElement(stageId) {
     let html = '';
     
     // 完成時間
-    if (completionDate) {
+    if (completionDate && !stage.isRoute) {
         html += `
             <div class="completion-time">
                 <i data-lucide="clock"></i>
-                <span>完成時間</span>
+                <span>${t('completionTime')}</span>
                 <span class="time-value">${formatDateTime(completionDate)}</span>
             </div>
         `;
     }
     
     // 階段標題
-    let displayTitle = stage.title;
+    let displayTitle = t(stage.titleKey);
     if (stageId === 3 && selectedRoute) {
-        displayTitle = selectedRoute === 'express' ? stage.titleExpress : stage.titleReturn;
+        displayTitle = selectedRoute === 'express' ? t(stage.titleExpressKey) : t(stage.titleReturnKey);
     }
     
     html += `
@@ -176,9 +369,10 @@ function createStageElement(stageId) {
     `;
     
     // 狀態標籤
+    const statusText = isCompleted ? t('completed') : isActive ? t('inProgress') : t('pending');
     html += `
         <span class="status-badge ${isCompleted ? 'badge-completed' : isActive ? 'badge-active' : 'badge-pending'}">
-            ${isCompleted ? '已完成' : isActive ? '進行中' : '待處理'}
+            ${statusText}
         </span>
     `;
     
@@ -189,22 +383,22 @@ function createStageElement(stageId) {
     if (stageId === '4a' && isCompleted && currentRecord.rtv_data.tracking_number) {
         html += `
             <div class="tracking-display">
-                快遞單號: ${currentRecord.rtv_data.tracking_number}
+                ${t('trackingNumberDisplay')}: ${currentRecord.rtv_data.tracking_number}
             </div>
         `;
     }
     
-    // 路線選擇（特殊處理，不需要完成時間）
+    // 路線選擇
     if (stage.isRoute && !selectedRoute && isActive) {
         html += `
             <div class="route-selection">
                 <button class="route-option" onclick="selectRoute('express')">
                     <i data-lucide="truck" style="color: #6366f1;"></i>
-                    <span>快遞</span>
+                    <span>${t('express')}</span>
                 </button>
                 <button class="route-option" onclick="selectRoute('return')">
                     <i data-lucide="package-x" style="color: #f97316;"></i>
-                    <span>退運</span>
+                    <span>${t('returnShip')}</span>
                 </button>
             </div>
         `;
@@ -216,7 +410,7 @@ function createStageElement(stageId) {
         html += `
             <div style="margin-bottom: 0.75rem;">
                 <label style="display: block; font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem; font-weight: 500;">
-                    完成時間
+                    ${t('completionTime')}
                 </label>
                 <input type="datetime-local" id="completion-time-${stageId}" class="tracking-input" 
                        value="${getCurrentDateTime()}" 
@@ -229,10 +423,10 @@ function createStageElement(stageId) {
             html += `
                 <div style="margin-bottom: 0.75rem;">
                     <label style="display: block; font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem; font-weight: 500;">
-                        快遞單號
+                        ${t('trackingNumberLabel')}
                     </label>
                     <input type="text" id="tracking-number" class="tracking-input" 
-                           placeholder="輸入快遞單號" 
+                           placeholder="${t('enterTrackingNumber')}" 
                            value="${currentRecord.rtv_data.tracking_number || ''}"
                            style="width: 260px;">
                 </div>
@@ -242,7 +436,7 @@ function createStageElement(stageId) {
         // 完成按鈕
         html += `
             <button class="complete-button" onclick="completeStage(${typeof stageId === 'string' ? "'" + stageId + "'" : stageId})">
-                完成此階段
+                ${t('completeStage')}
             </button>
         `;
     }
@@ -284,33 +478,29 @@ function updateProgress() {
 window.completeStage = function(stage) {
     const stageInfo = stages[stage];
     
-    // 路線選擇階段不應該被直接調用（應該通過 selectRoute）
     if (stageInfo.isRoute && !selectedRoute) {
-        alert('⚠️ 請先選擇運送方式！');
+        alert(t('selectRouteFirst'));
         return;
     }
     
-    // 獲取用戶輸入的完成時間
     const completionTimeInput = document.getElementById('completion-time-' + stage);
     if (!completionTimeInput) {
-        alert('⚠️ 找不到完成時間輸入框！');
+        alert(t('noTimeInput'));
         return;
     }
     
     const completionTimeValue = completionTimeInput.value;
     if (!completionTimeValue) {
-        alert('⚠️ 請選擇完成時間！');
+        alert(t('selectTime'));
         return;
     }
     
-    // 轉換為 ISO 格式
     const completionDate = new Date(completionTimeValue).toISOString();
     
-    // 快遞單號檢查
     if (stage === '4a') {
         const trackingNumber = document.getElementById('tracking-number').value.trim();
         if (!trackingNumber) {
-            alert('⚠️ 請輸入快遞單號！');
+            alert(t('enterTracking'));
             return;
         }
         currentRecord.rtv_data.tracking_number = trackingNumber;
@@ -333,20 +523,19 @@ window.completeStage = function(stage) {
     renderAllStages();
     
     if (stage === 7) {
-        setTimeout(() => alert('🎉 流程已完成！'), 500);
+        setTimeout(() => alert(t('processComplete')), 500);
     }
 };
 
 window.selectRoute = function(route) {
     if (currentStage >= 3) return;
     
-    // 路線選擇階段自動記錄當前時間
     selectedRoute = route;
     currentRecord.rtv_data.selected_route = route;
     
     const stageKey = 'stage3';
     currentRecord.rtv_data.stage_completion[stageKey] = true;
-    currentRecord.rtv_data.completion_dates[stageKey] = new Date().toISOString();
+    
     currentStage = 3;
     currentRecord.rtv_data.current_stage = currentStage;
     
@@ -361,12 +550,12 @@ window.saveRTVData = function() {
     if (index > -1) {
         records[index] = currentRecord;
         localStorage.setItem('iqcRecords', JSON.stringify(records));
-        alert('✅ 更改已保存！');
+        alert(t('changesSaved'));
     }
 };
 
 window.resetProcess = function() {
-    if (!confirm('確定要重置整個流程嗎？')) return;
+    if (!confirm(t('confirmReset'))) return;
     currentRecord.rtv_data = {
         current_stage: 0,
         selected_route: null,
