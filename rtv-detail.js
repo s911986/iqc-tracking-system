@@ -25,6 +25,20 @@ function formatDateTime(isoString) {
     return `${y}-${m}-${d} ${h}:${min}:${s}`;
 }
 
+function formatDateTimeForInput(isoString) {
+    const date = new Date(isoString);
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    const h = String(date.getHours()).padStart(2, '0');
+    const min = String(date.getMinutes()).padStart(2, '0');
+    return `${y}-${m}-${d}T${h}:${min}`;
+}
+
+function getCurrentDateTime() {
+    return formatDateTimeForInput(new Date().toISOString());
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     recordId = urlParams.get('id');
@@ -106,7 +120,6 @@ function createStageElement(stageId) {
     const isActive = shouldBeActive(stageId);
     const completionDate = currentRecord.rtv_data.completion_dates[stageKey];
     
-    // 判斷狀態類別
     let statusClass = 'pending';
     if (isCompleted) {
         statusClass = 'completed';
@@ -144,7 +157,7 @@ function createStageElement(stageId) {
         `;
     }
     
-    // 階段標題（選擇運送方式後，顯示實際選擇的方式）
+    // 階段標題
     let displayTitle = stage.title;
     if (stageId === 3 && selectedRoute) {
         displayTitle = selectedRoute === 'express' ? stage.titleExpress : stage.titleReturn;
@@ -172,7 +185,7 @@ function createStageElement(stageId) {
     // 動作區域
     html += '<div class="action-area">';
     
-    // 顯示快遞單號（如果已完成且有單號）
+    // 顯示快遞單號
     if (stageId === '4a' && isCompleted && currentRecord.rtv_data.tracking_number) {
         html += `
             <div class="tracking-display">
@@ -197,17 +210,36 @@ function createStageElement(stageId) {
         `;
     }
     
-    // 輸入框
-    if (stage.needsInput && isActive && !isCompleted) {
-        html += `
-            <input type="text" id="tracking-number" class="tracking-input" 
-                   placeholder="輸入快遞單號" 
-                   value="${currentRecord.rtv_data.tracking_number || ''}">
-        `;
-    }
-    
-    // 完成按鈕
+    // 活動階段：顯示完成時間輸入框和其他輸入
     if (isActive && !stage.isRoute && !isCompleted) {
+        // 完成時間輸入框
+        html += `
+            <div style="margin-bottom: 0.75rem;">
+                <label style="display: block; font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem; font-weight: 500;">
+                    完成時間
+                </label>
+                <input type="datetime-local" id="completion-time-${stageId}" class="tracking-input" 
+                       value="${getCurrentDateTime()}" 
+                       style="width: 260px;">
+            </div>
+        `;
+        
+        // 快遞單號輸入框
+        if (stage.needsInput) {
+            html += `
+                <div style="margin-bottom: 0.75rem;">
+                    <label style="display: block; font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem; font-weight: 500;">
+                        快遞單號
+                    </label>
+                    <input type="text" id="tracking-number" class="tracking-input" 
+                           placeholder="輸入快遞單號" 
+                           value="${currentRecord.rtv_data.tracking_number || ''}"
+                           style="width: 260px;">
+                </div>
+            `;
+        }
+        
+        // 完成按鈕
         html += `
             <button class="complete-button" onclick="completeStage(${typeof stageId === 'string' ? "'" + stageId + "'" : stageId})">
                 完成此階段
@@ -255,6 +287,23 @@ window.completeStage = function(stage) {
         return;
     }
     
+    // 獲取用戶輸入的完成時間
+    const completionTimeInput = document.getElementById('completion-time-' + stage);
+    if (!completionTimeInput) {
+        alert('⚠️ 找不到完成時間輸入框！');
+        return;
+    }
+    
+    const completionTimeValue = completionTimeInput.value;
+    if (!completionTimeValue) {
+        alert('⚠️ 請選擇完成時間！');
+        return;
+    }
+    
+    // 轉換為 ISO 格式
+    const completionDate = new Date(completionTimeValue).toISOString();
+    
+    // 快遞單號檢查
     if (stage === '4a') {
         const trackingNumber = document.getElementById('tracking-number').value.trim();
         if (!trackingNumber) {
@@ -266,7 +315,7 @@ window.completeStage = function(stage) {
     
     const stageKey = 'stage' + stage;
     currentRecord.rtv_data.stage_completion[stageKey] = true;
-    currentRecord.rtv_data.completion_dates[stageKey] = new Date().toISOString();
+    currentRecord.rtv_data.completion_dates[stageKey] = completionDate;
     
     if (stage === 1) currentStage = 1;
     else if (stage === 2) currentStage = 2;
