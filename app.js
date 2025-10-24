@@ -196,7 +196,21 @@ function applyLanguage() {
 }
 
 function setupEventListeners() {
-    getEl('lang-selector').addEventListener('change', (e) => { currentLang = e.target.value; applyLanguage(); });
+    getEl('lang-selector').addEventListener('change', (e) => { 
+    currentLang = e.target.value; 
+    
+    // 轉換為標準語言代碼並保存到 localStorage
+    const langMap = {
+        '繁體中文': 'zh',
+        'English': 'en',
+        'Tiếng Việt': 'vi'
+    };
+    const langCode = langMap[currentLang] || 'zh';
+    localStorage.setItem('language', langCode);
+    console.log('Language saved:', langCode);
+    
+    applyLanguage(); 
+});
     getEl('save-btn').addEventListener('click', saveRecord);
     getEl('delete-btn').addEventListener('click', deleteSelectedRecords);
     getEl('export-btn').addEventListener('click', exportCSV);
