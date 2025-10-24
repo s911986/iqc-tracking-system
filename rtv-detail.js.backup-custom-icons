@@ -549,3 +549,10 @@ window.resetProcess = function() {
     saveRTVData();
     renderAllStages();
 };
+
+// 確保 Lucide 正確初始化
+if (typeof lucide !== 'undefined') {
+    console.log('✓ Lucide loaded successfully');
+} else {
+    console.error('✗ Lucide not loaded!');
+}

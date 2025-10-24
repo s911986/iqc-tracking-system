@@ -1,0 +1,5 @@
+// 在 renderAllStages 函數結束前確保調用
+lucide.createIcons();
+
+// 在 createStageElement 返回元素後也調用一次
+setTimeout(() => lucide.createIcons(), 100);

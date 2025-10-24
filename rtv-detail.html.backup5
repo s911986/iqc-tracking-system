@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTV Flow Tracking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="rtv-detail-style.css">
+</head>
+<body>
+    <div class="max-w-[2000px] mx-auto p-8">
+        <header class="flex justify-between items-center mb-8 bg-gradient-to-r from-indigo-500 to-purple-600 p-8 rounded-2xl shadow-lg text-white">
+            <button onclick="window.location.href='index.html'" class="flex items-center gap-3 px-6 py-3 bg-white/20 hover:bg-white/30 rounded-xl transition text-lg">
+                <i data-lucide="arrow-left" class="w-6 h-6"></i>
+                <span id="back-button-text">返回</span>
+            </button>
+            <h1 id="page-title" class="text-3xl font-bold">RTV 流程追蹤</h1>
+            <div class="w-32"></div>
+        </header>
+        <div class="bg-white p-8 rounded-2xl shadow-sm mb-8">
+            <div class="grid grid-cols-3 gap-6">
+                <div class="p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl">
+                    <div id="qpn-label" class="text-sm text-gray-600 mb-2 font-medium">料號 QPN</div>
+                    <div class="text-xl font-bold text-gray-900" id="display-qpn">-</div>
+                </div>
+                <div class="p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-xl">
+                    <div id="sn-label" class="text-sm text-gray-600 mb-2 font-medium">SN</div>
+                    <div class="text-xl font-bold text-gray-900" id="display-sn">-</div>
+                </div>
+                <div class="p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl">
+                    <div id="dept-label" class="text-sm text-gray-600 mb-2 font-medium">需求部門</div>
+                    <div class="text-xl font-bold text-gray-900" id="display-dept">-</div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm mb-8 flex justify-between items-center">
+            <div id="process-label" class="text-2xl font-bold text-gray-900">流程</div>
+            <div class="text-2xl font-bold text-gray-700"><span id="progress-label">進度</span>: <span id="progress-percentage" class="text-indigo-600">0%</span></div>
+        </div>
+        <div class="timeline-section shadow-sm">
+            <div class="timeline-wrapper">
+                <div class="timeline-container" id="timeline-container">
+                    <div class="connecting-line">
+                        <div class="progress-line" id="progress-line" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-end gap-4 mt-8">
+            <button id="reset-button" onclick="resetProcess()" class="px-8 py-4 text-lg font-medium text-gray-700 bg-white border-2 border-gray-300 hover:bg-gray-50 rounded-xl transition shadow-sm">重置流程</button>
+            <button id="save-button" onclick="saveRTVData()" class="px-8 py-4 text-lg font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition shadow-md">保存更改</button>
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+    <script>
+        if (typeof lucide !== 'undefined') {
+            console.log('Lucide loaded');
+            var script = document.createElement('script');
+            script.src = 'rtv-detail.js';
+            document.body.appendChild(script);
+        }
+    </script>
+</body>
+</html>
