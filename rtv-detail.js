@@ -162,14 +162,14 @@ const translations = {
 };
 
 const stages = {
-    1: { icon: 'rocket', titleKey: 'kickOff' },
-    2: { icon: 'package-open', titleKey: 'departed' },
+    1: { icon: 'package-check', titleKey: 'kickOff' },
+    2: { icon: 'warehouse', titleKey: 'departed' },
     3: { icon: 'git-branch', titleKey: 'selectRoute', titleExpressKey: 'express', titleReturnKey: 'returnShip', isRoute: true },
-    '4a': { icon: 'truck', titleKey: 'trackingNumber', needsInput: true, route: 'express' },
-    '5a': { icon: 'map-pin', titleKey: 'arrivedVendor', route: 'express' },
-    '4b': { icon: 'map-pin', titleKey: 'arrivedVendor', route: 'return' },
+    '4a': { icon: 'scroll-text', titleKey: 'trackingNumber', needsInput: true, route: 'express' },
+    '5a': { icon: 'house', titleKey: 'arrivedVendor', route: 'express' },
+    '4b': { icon: 'house', titleKey: 'arrivedVendor', route: 'return' },
     6: { icon: 'microscope', titleKey: 'faInProgress' },
-    7: { icon: 'check-circle', titleKey: 'faCompleted' }
+    7: { icon: 'folder-check', titleKey: 'faCompleted' }
 };
 
 function t(key) {
