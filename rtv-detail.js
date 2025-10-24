@@ -2,9 +2,9 @@ let currentRecord = null;
 let recordId = null;
 let currentStage = 0;
 let selectedRoute = null;
-let currentLanguage = 'zh'; // 默認中文
+let currentLanguage = 'zh';
 
-// 多語言翻譯
+// 完整的多語言翻譯
 const translations = {
     zh: {
         // Header
@@ -14,7 +14,7 @@ const translations = {
         // Basic Info
         qpnLabel: '料號 QPN',
         snLabel: 'SN',
-        deptLabel: '部門',
+        deptLabel: '需求部門',
         
         // Progress
         processLabel: '流程',
@@ -65,7 +65,7 @@ const translations = {
         // Basic Info
         qpnLabel: 'QPN',
         snLabel: 'SN',
-        deptLabel: 'Department',
+        deptLabel: 'Requesting Department',
         
         // Progress
         processLabel: 'Process',
@@ -116,7 +116,7 @@ const translations = {
         // Basic Info
         qpnLabel: 'Mã QPN',
         snLabel: 'SN',
-        deptLabel: 'Phòng ban',
+        deptLabel: 'Phòng ban yêu cầu',
         
         // Progress
         processLabel: 'Quy trình',
@@ -202,7 +202,6 @@ function getCurrentDateTime() {
 }
 
 function initLanguage() {
-    // 從 localStorage 獲取語言設置
     const savedLanguage = localStorage.getItem('language');
     if (savedLanguage && translations[savedLanguage]) {
         currentLanguage = savedLanguage;
@@ -210,20 +209,13 @@ function initLanguage() {
 }
 
 function updateUILanguage() {
-    // 更新頁面標題
     document.getElementById('page-title').textContent = t('pageTitle');
     document.getElementById('back-button-text').textContent = t('backButton');
-    
-    // 更新基本信息標籤
     document.getElementById('qpn-label').textContent = t('qpnLabel');
     document.getElementById('sn-label').textContent = t('snLabel');
     document.getElementById('dept-label').textContent = t('deptLabel');
-    
-    // 更新進度標籤
     document.getElementById('process-label').textContent = t('processLabel');
     document.getElementById('progress-label').textContent = t('progressLabel');
-    
-    // 更新底部按鈕
     document.getElementById('reset-button').textContent = t('resetProcess');
     document.getElementById('save-button').textContent = t('saveChanges');
 }
@@ -339,7 +331,6 @@ function createStageElement(stageId) {
     
     let html = '';
     
-    // 完成時間
     if (completionDate && !stage.isRoute) {
         html += `
             <div class="completion-time">
@@ -350,7 +341,6 @@ function createStageElement(stageId) {
         `;
     }
     
-    // 階段標題
     let displayTitle = t(stage.titleKey);
     if (stageId === 3 && selectedRoute) {
         displayTitle = selectedRoute === 'express' ? t(stage.titleExpressKey) : t(stage.titleReturnKey);
@@ -363,12 +353,10 @@ function createStageElement(stageId) {
         </div>
     `;
     
-    // 圓點
     html += `
         <div class="stage-dot ${isCompleted ? 'dot-completed' : isActive ? 'dot-active' : 'dot-pending'}"></div>
     `;
     
-    // 狀態標籤
     const statusText = isCompleted ? t('completed') : isActive ? t('inProgress') : t('pending');
     html += `
         <span class="status-badge ${isCompleted ? 'badge-completed' : isActive ? 'badge-active' : 'badge-pending'}">
@@ -376,10 +364,8 @@ function createStageElement(stageId) {
         </span>
     `;
     
-    // 動作區域
     html += '<div class="action-area">';
     
-    // 顯示快遞單號
     if (stageId === '4a' && isCompleted && currentRecord.rtv_data.tracking_number) {
         html += `
             <div class="tracking-display">
@@ -388,7 +374,6 @@ function createStageElement(stageId) {
         `;
     }
     
-    // 路線選擇
     if (stage.isRoute && !selectedRoute && isActive) {
         html += `
             <div class="route-selection">
@@ -404,9 +389,7 @@ function createStageElement(stageId) {
         `;
     }
     
-    // 普通階段：顯示完成時間輸入框和其他輸入
     if (isActive && !stage.isRoute && !isCompleted) {
-        // 完成時間輸入框
         html += `
             <div style="margin-bottom: 0.75rem;">
                 <label style="display: block; font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem; font-weight: 500;">
@@ -418,7 +401,6 @@ function createStageElement(stageId) {
             </div>
         `;
         
-        // 快遞單號輸入框
         if (stage.needsInput) {
             html += `
                 <div style="margin-bottom: 0.75rem;">
@@ -433,7 +415,6 @@ function createStageElement(stageId) {
             `;
         }
         
-        // 完成按鈕
         html += `
             <button class="complete-button" onclick="completeStage(${typeof stageId === 'string' ? "'" + stageId + "'" : stageId})">
                 ${t('completeStage')}
