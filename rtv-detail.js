@@ -194,7 +194,7 @@ function createStageElement(stageId) {
         `;
     }
     
-    // 路線選擇
+    // 路線選擇（特殊處理，不需要完成時間）
     if (stage.isRoute && !selectedRoute && isActive) {
         html += `
             <div class="route-selection">
@@ -210,7 +210,7 @@ function createStageElement(stageId) {
         `;
     }
     
-    // 活動階段：顯示完成時間輸入框和其他輸入
+    // 普通階段：顯示完成時間輸入框和其他輸入
     if (isActive && !stage.isRoute && !isCompleted) {
         // 完成時間輸入框
         html += `
@@ -282,7 +282,10 @@ function updateProgress() {
 }
 
 window.completeStage = function(stage) {
-    if (stage === 3 && !selectedRoute) {
+    const stageInfo = stages[stage];
+    
+    // 路線選擇階段不應該被直接調用（應該通過 selectRoute）
+    if (stageInfo.isRoute && !selectedRoute) {
         alert('⚠️ 請先選擇運送方式！');
         return;
     }
@@ -336,9 +339,19 @@ window.completeStage = function(stage) {
 
 window.selectRoute = function(route) {
     if (currentStage >= 3) return;
+    
+    // 路線選擇階段自動記錄當前時間
     selectedRoute = route;
     currentRecord.rtv_data.selected_route = route;
-    setTimeout(() => completeStage(3), 300);
+    
+    const stageKey = 'stage3';
+    currentRecord.rtv_data.stage_completion[stageKey] = true;
+    currentRecord.rtv_data.completion_dates[stageKey] = new Date().toISOString();
+    currentStage = 3;
+    currentRecord.rtv_data.current_stage = currentStage;
+    
+    saveRTVData();
+    renderAllStages();
 };
 
 window.saveRTVData = function() {
