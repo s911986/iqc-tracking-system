@@ -325,6 +325,39 @@ function renderTableBody() {
         tbody.innerHTML = '<tr><td colspan="' + (tableHeaders.length + 1) + '" class="text-center p-8 text-gray-400"><i data-lucide="inbox" class="w-12 h-12 mx-auto mb-2 opacity-50"></i><p>沒有記錄。請新增您的第一筆資料！</p></td></tr>';
         lucide.createIcons();
         return;
+    
+    // 更新 RTV 統計
+    setTimeout(function() {
+        const total = filteredRecords.length;
+        const rtved = filteredRecords.filter(function(r) { return r.is_rtv === 'Yes'; }).length;
+        console.log('📊 統計更新:', '總筆數=' + total, 'RTVed=' + rtved);
+        
+        const statusEl = document.querySelector('.status-ready');
+        if (statusEl && statusEl.parentElement) {
+            const parent = statusEl.parentElement;
+            
+            // 移除舊統計
+            const oldStats = parent.querySelectorAll('.rtv-stat');
+            for (var j = 0; j < oldStats.length; j++) {
+                oldStats[j].remove();
+            }
+            
+            // 總筆數
+            var span1 = document.createElement('span');
+            span1.className = 'rtv-stat';
+            span1.style.cssText = 'margin-left: 2rem;';
+            span1.innerHTML = '📊 筆數統計: <strong style="color: #6366f1;">' + total + '</strong>';
+            
+            // RTVed
+            var span2 = document.createElement('span');
+            span2.className = 'rtv-stat';
+            span2.style.cssText = 'margin-left: 1.5rem;';
+            span2.innerHTML = '📦 RTVed: <strong style="color: #8b5cf6;">' + rtved + '</strong>';
+            
+            parent.appendChild(span1);
+            parent.appendChild(span2);
+        }
+    }, 100);
     }
     recordsToRender.sort((a, b) => b.id - a.id);
     recordsToRender.forEach(record => {
