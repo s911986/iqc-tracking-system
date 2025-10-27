@@ -336,6 +336,18 @@ function renderTableBody() {
     };
     updateRecordCount();
 
+
+    // 更新統計顯示
+    const updateRecordCount = function() {
+        const total = filteredRecords.length;
+        const rtved = filteredRecords.filter(function(r) { return r.is_rtv === 'Yes'; }).length;
+        const el = document.getElementById('record-count');
+        if (el) {
+            el.innerHTML = '筆數統計: ' + total + ' | <span style="color: #8b5cf6;">RTVed: ' + rtved + '</span>';
+        }
+    };
+    updateRecordCount();
+
         return;
     
     // 更新 RTV 統計
