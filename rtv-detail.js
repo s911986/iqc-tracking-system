@@ -457,6 +457,34 @@ function updateProgress() {
     document.getElementById('progress-line').style.width = percent + '%';
 }
 
+
+// 獲取前一個階段的完成時間
+function getPreviousStageTime(currentStage) {
+    if (!currentRecord || !currentRecord.rtv_data) return null;
+    
+    const completionDates = currentRecord.rtv_data.completion_dates || {};
+    
+    // 定義階段順序
+    const stageOrder = ['stage1', 'stage2', 'stage3', 'stage4a', 'stage4b', 'stage5a', 'stage5b', 'stage6'];
+    const currentStageKey = 'stage' + currentStage;
+    const currentIndex = stageOrder.indexOf(currentStageKey);
+    
+    if (currentIndex <= 0) return null;
+    
+    // 從當前階段往前查找最近完成的階段
+    for (let i = currentIndex - 1; i >= 0; i--) {
+        const prevStageKey = stageOrder[i];
+        if (completionDates[prevStageKey]) {
+            return {
+                stageId: prevStageKey.replace('stage', ''),
+                time: new Date(completionDates[prevStageKey])
+            };
+        }
+    }
+    
+    return null;
+}
+
 window.completeStage = function(stage) {
     const stageInfo = stages[stage];
     
