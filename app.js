@@ -166,38 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadAutocompleteSuggestions();
     lucide.createIcons();
     formFields.requester.value = 's911986';
-
-// 更新統計資訊
-function updateStatistics() {
-    const totalCount = filteredRecords.length;
-    const rtvCount = filteredRecords.filter(record => record.is_rtv === 'Yes').length;
-    
-    console.log('📊 統計更新:', {
-        總筆數: totalCount,
-        RTV筆數: rtvCount
-    });
-    
-    const statusElement = document.querySelector('.status-ready');
-    if (statusElement) {
-        const container = statusElement.parentElement;
-        const oldStats = container.querySelectorAll('.record-stats');
-        oldStats.forEach(el => el.remove());
-        
-        const statsSpan1 = document.createElement('span');
-        statsSpan1.className = 'record-stats';
-        statsSpan1.style.cssText = 'margin-left: 2rem; font-size: 1rem;';
-        statsSpan1.innerHTML = `📊 筆數統計: <strong style="color: #6366f1;">${totalCount}</strong>`;
-        
-        const statsSpan2 = document.createElement('span');
-        statsSpan2.className = 'record-stats';
-        statsSpan2.style.cssText = 'margin-left: 1.5rem; font-size: 1rem;';
-        statsSpan2.innerHTML = `📦 RTVed: <strong style="color: #8b5cf6;">${rtvCount}</strong>`;
-        
-        container.appendChild(statsSpan1);
-        container.appendChild(statsSpan2);
-    }
-}
-
 });
 
 function applyLanguage() {
@@ -242,38 +210,6 @@ function setupEventListeners() {
     console.log('Language saved:', langCode);
     
     applyLanguage(); 
-
-// 更新統計資訊
-function updateStatistics() {
-    const totalCount = filteredRecords.length;
-    const rtvCount = filteredRecords.filter(record => record.is_rtv === 'Yes').length;
-    
-    console.log('📊 統計更新:', {
-        總筆數: totalCount,
-        RTV筆數: rtvCount
-    });
-    
-    const statusElement = document.querySelector('.status-ready');
-    if (statusElement) {
-        const container = statusElement.parentElement;
-        const oldStats = container.querySelectorAll('.record-stats');
-        oldStats.forEach(el => el.remove());
-        
-        const statsSpan1 = document.createElement('span');
-        statsSpan1.className = 'record-stats';
-        statsSpan1.style.cssText = 'margin-left: 2rem; font-size: 1rem;';
-        statsSpan1.innerHTML = `📊 筆數統計: <strong style="color: #6366f1;">${totalCount}</strong>`;
-        
-        const statsSpan2 = document.createElement('span');
-        statsSpan2.className = 'record-stats';
-        statsSpan2.style.cssText = 'margin-left: 1.5rem; font-size: 1rem;';
-        statsSpan2.innerHTML = `📦 RTVed: <strong style="color: #8b5cf6;">${rtvCount}</strong>`;
-        
-        container.appendChild(statsSpan1);
-        container.appendChild(statsSpan2);
-    }
-}
-
 });
     getEl('save-btn').addEventListener('click', saveRecord);
     getEl('delete-btn').addEventListener('click', deleteSelectedRecords);
@@ -284,39 +220,7 @@ function updateStatistics() {
     getEl('search-btn').addEventListener('click', searchSN);
     getEl('select-all-checkbox').addEventListener('change', (e) => {
         document.querySelectorAll('#records-table-body input[type="checkbox"]').forEach(cb => cb.checked = e.target.checked);
-    
-// 更新統計資訊
-function updateStatistics() {
-    const totalCount = filteredRecords.length;
-    const rtvCount = filteredRecords.filter(record => record.is_rtv === 'Yes').length;
-    
-    console.log('📊 統計更新:', {
-        總筆數: totalCount,
-        RTV筆數: rtvCount
     });
-    
-    const statusElement = document.querySelector('.status-ready');
-    if (statusElement) {
-        const container = statusElement.parentElement;
-        const oldStats = container.querySelectorAll('.record-stats');
-        oldStats.forEach(el => el.remove());
-        
-        const statsSpan1 = document.createElement('span');
-        statsSpan1.className = 'record-stats';
-        statsSpan1.style.cssText = 'margin-left: 2rem; font-size: 1rem;';
-        statsSpan1.innerHTML = `📊 筆數統計: <strong style="color: #6366f1;">${totalCount}</strong>`;
-        
-        const statsSpan2 = document.createElement('span');
-        statsSpan2.className = 'record-stats';
-        statsSpan2.style.cssText = 'margin-left: 1.5rem; font-size: 1rem;';
-        statsSpan2.innerHTML = `📦 RTVed: <strong style="color: #8b5cf6;">${rtvCount}</strong>`;
-        
-        container.appendChild(statsSpan1);
-        container.appendChild(statsSpan2);
-    }
-}
-
-});
 }
 
 function loadRecords() {
@@ -349,39 +253,7 @@ function updateDatalist(id, suggestions) {
         const option = document.createElement('option');
         option.value = item;
         datalist.appendChild(option);
-    
-// 更新統計資訊
-function updateStatistics() {
-    const totalCount = filteredRecords.length;
-    const rtvCount = filteredRecords.filter(record => record.is_rtv === 'Yes').length;
-    
-    console.log('📊 統計更新:', {
-        總筆數: totalCount,
-        RTV筆數: rtvCount
     });
-    
-    const statusElement = document.querySelector('.status-ready');
-    if (statusElement) {
-        const container = statusElement.parentElement;
-        const oldStats = container.querySelectorAll('.record-stats');
-        oldStats.forEach(el => el.remove());
-        
-        const statsSpan1 = document.createElement('span');
-        statsSpan1.className = 'record-stats';
-        statsSpan1.style.cssText = 'margin-left: 2rem; font-size: 1rem;';
-        statsSpan1.innerHTML = `📊 筆數統計: <strong style="color: #6366f1;">${totalCount}</strong>`;
-        
-        const statsSpan2 = document.createElement('span');
-        statsSpan2.className = 'record-stats';
-        statsSpan2.style.cssText = 'margin-left: 1.5rem; font-size: 1rem;';
-        statsSpan2.innerHTML = `📦 RTVed: <strong style="color: #8b5cf6;">${rtvCount}</strong>`;
-        
-        container.appendChild(statsSpan1);
-        container.appendChild(statsSpan2);
-    }
-}
-
-});
 }
 
 async function saveRecord() {
@@ -439,74 +311,10 @@ function renderTableHeader() {
         th.className = 'p-3 text-left text-xs font-medium text-white uppercase tracking-wider';
         th.textContent = lang[key] || key;
         thead.appendChild(th);
-    
-// 更新統計資訊
-function updateStatistics() {
-    const totalCount = filteredRecords.length;
-    const rtvCount = filteredRecords.filter(record => record.is_rtv === 'Yes').length;
-    
-    console.log('📊 統計更新:', {
-        總筆數: totalCount,
-        RTV筆數: rtvCount
     });
-    
-    const statusElement = document.querySelector('.status-ready');
-    if (statusElement) {
-        const container = statusElement.parentElement;
-        const oldStats = container.querySelectorAll('.record-stats');
-        oldStats.forEach(el => el.remove());
-        
-        const statsSpan1 = document.createElement('span');
-        statsSpan1.className = 'record-stats';
-        statsSpan1.style.cssText = 'margin-left: 2rem; font-size: 1rem;';
-        statsSpan1.innerHTML = `📊 筆數統計: <strong style="color: #6366f1;">${totalCount}</strong>`;
-        
-        const statsSpan2 = document.createElement('span');
-        statsSpan2.className = 'record-stats';
-        statsSpan2.style.cssText = 'margin-left: 1.5rem; font-size: 1rem;';
-        statsSpan2.innerHTML = `📦 RTVed: <strong style="color: #8b5cf6;">${rtvCount}</strong>`;
-        
-        container.appendChild(statsSpan1);
-        container.appendChild(statsSpan2);
-    }
-}
-
-});
     getEl('select-all-checkbox').addEventListener('change', (e) => {
         document.querySelectorAll('#records-table-body input[type="checkbox"]').forEach(cb => cb.checked = e.target.checked);
-    
-// 更新統計資訊
-function updateStatistics() {
-    const totalCount = filteredRecords.length;
-    const rtvCount = filteredRecords.filter(record => record.is_rtv === 'Yes').length;
-    
-    console.log('📊 統計更新:', {
-        總筆數: totalCount,
-        RTV筆數: rtvCount
     });
-    
-    const statusElement = document.querySelector('.status-ready');
-    if (statusElement) {
-        const container = statusElement.parentElement;
-        const oldStats = container.querySelectorAll('.record-stats');
-        oldStats.forEach(el => el.remove());
-        
-        const statsSpan1 = document.createElement('span');
-        statsSpan1.className = 'record-stats';
-        statsSpan1.style.cssText = 'margin-left: 2rem; font-size: 1rem;';
-        statsSpan1.innerHTML = `📊 筆數統計: <strong style="color: #6366f1;">${totalCount}</strong>`;
-        
-        const statsSpan2 = document.createElement('span');
-        statsSpan2.className = 'record-stats';
-        statsSpan2.style.cssText = 'margin-left: 1.5rem; font-size: 1rem;';
-        statsSpan2.innerHTML = `📦 RTVed: <strong style="color: #8b5cf6;">${rtvCount}</strong>`;
-        
-        container.appendChild(statsSpan1);
-        container.appendChild(statsSpan2);
-    }
-}
-
-});
 }
 
 function renderTableBody() {
@@ -517,8 +325,7 @@ function renderTableBody() {
         tbody.innerHTML = '<tr><td colspan="' + (tableHeaders.length + 1) + '" class="text-center p-8 text-gray-400"><i data-lucide="inbox" class="w-12 h-12 mx-auto mb-2 opacity-50"></i><p>沒有記錄。請新增您的第一筆資料！</p></td></tr>';
         lucide.createIcons();
         return;
-        updateStatistics();
-}
+    }
     recordsToRender.sort((a, b) => b.id - a.id);
     recordsToRender.forEach(record => {
         const tr = document.createElement('tr');
@@ -554,39 +361,7 @@ function renderTableBody() {
                         persistRecords();
                         renderTableBody();
                     }
-                
-// 更新統計資訊
-function updateStatistics() {
-    const totalCount = filteredRecords.length;
-    const rtvCount = filteredRecords.filter(record => record.is_rtv === 'Yes').length;
-    
-    console.log('📊 統計更新:', {
-        總筆數: totalCount,
-        RTV筆數: rtvCount
-    });
-    
-    const statusElement = document.querySelector('.status-ready');
-    if (statusElement) {
-        const container = statusElement.parentElement;
-        const oldStats = container.querySelectorAll('.record-stats');
-        oldStats.forEach(el => el.remove());
-        
-        const statsSpan1 = document.createElement('span');
-        statsSpan1.className = 'record-stats';
-        statsSpan1.style.cssText = 'margin-left: 2rem; font-size: 1rem;';
-        statsSpan1.innerHTML = `📊 筆數統計: <strong style="color: #6366f1;">${totalCount}</strong>`;
-        
-        const statsSpan2 = document.createElement('span');
-        statsSpan2.className = 'record-stats';
-        statsSpan2.style.cssText = 'margin-left: 1.5rem; font-size: 1rem;';
-        statsSpan2.innerHTML = `📦 RTVed: <strong style="color: #8b5cf6;">${rtvCount}</strong>`;
-        
-        container.appendChild(statsSpan1);
-        container.appendChild(statsSpan2);
-    }
-}
-
-});
+                });
                 td.appendChild(select);
             } else if (headerKey === 'Actions') {
                 const isRTV = record.is_rtv === 'Yes';
@@ -605,73 +380,9 @@ function updateStatistics() {
                 td.textContent = record.timestamp || '';
             }
             tr.appendChild(td);
-        
-// 更新統計資訊
-function updateStatistics() {
-    const totalCount = filteredRecords.length;
-    const rtvCount = filteredRecords.filter(record => record.is_rtv === 'Yes').length;
-    
-    console.log('📊 統計更新:', {
-        總筆數: totalCount,
-        RTV筆數: rtvCount
-    });
-    
-    const statusElement = document.querySelector('.status-ready');
-    if (statusElement) {
-        const container = statusElement.parentElement;
-        const oldStats = container.querySelectorAll('.record-stats');
-        oldStats.forEach(el => el.remove());
-        
-        const statsSpan1 = document.createElement('span');
-        statsSpan1.className = 'record-stats';
-        statsSpan1.style.cssText = 'margin-left: 2rem; font-size: 1rem;';
-        statsSpan1.innerHTML = `📊 筆數統計: <strong style="color: #6366f1;">${totalCount}</strong>`;
-        
-        const statsSpan2 = document.createElement('span');
-        statsSpan2.className = 'record-stats';
-        statsSpan2.style.cssText = 'margin-left: 1.5rem; font-size: 1rem;';
-        statsSpan2.innerHTML = `📦 RTVed: <strong style="color: #8b5cf6;">${rtvCount}</strong>`;
-        
-        container.appendChild(statsSpan1);
-        container.appendChild(statsSpan2);
-    }
-}
-
-});
+        });
         tbody.appendChild(tr);
-    
-// 更新統計資訊
-function updateStatistics() {
-    const totalCount = filteredRecords.length;
-    const rtvCount = filteredRecords.filter(record => record.is_rtv === 'Yes').length;
-    
-    console.log('📊 統計更新:', {
-        總筆數: totalCount,
-        RTV筆數: rtvCount
     });
-    
-    const statusElement = document.querySelector('.status-ready');
-    if (statusElement) {
-        const container = statusElement.parentElement;
-        const oldStats = container.querySelectorAll('.record-stats');
-        oldStats.forEach(el => el.remove());
-        
-        const statsSpan1 = document.createElement('span');
-        statsSpan1.className = 'record-stats';
-        statsSpan1.style.cssText = 'margin-left: 2rem; font-size: 1rem;';
-        statsSpan1.innerHTML = `📊 筆數統計: <strong style="color: #6366f1;">${totalCount}</strong>`;
-        
-        const statsSpan2 = document.createElement('span');
-        statsSpan2.className = 'record-stats';
-        statsSpan2.style.cssText = 'margin-left: 1.5rem; font-size: 1rem;';
-        statsSpan2.innerHTML = `📦 RTVed: <strong style="color: #8b5cf6;">${rtvCount}</strong>`;
-        
-        container.appendChild(statsSpan1);
-        container.appendChild(statsSpan2);
-    }
-}
-
-});
     lucide.createIcons();
 }
 
@@ -709,72 +420,8 @@ function makeEditable(cell, recordId, field) {
                 input.removeEventListener('blur', saveEdit);
                 cell.textContent = originalValue;
             }
-        
-// 更新統計資訊
-function updateStatistics() {
-    const totalCount = filteredRecords.length;
-    const rtvCount = filteredRecords.filter(record => record.is_rtv === 'Yes').length;
-    
-    console.log('📊 統計更新:', {
-        總筆數: totalCount,
-        RTV筆數: rtvCount
+        });
     });
-    
-    const statusElement = document.querySelector('.status-ready');
-    if (statusElement) {
-        const container = statusElement.parentElement;
-        const oldStats = container.querySelectorAll('.record-stats');
-        oldStats.forEach(el => el.remove());
-        
-        const statsSpan1 = document.createElement('span');
-        statsSpan1.className = 'record-stats';
-        statsSpan1.style.cssText = 'margin-left: 2rem; font-size: 1rem;';
-        statsSpan1.innerHTML = `📊 筆數統計: <strong style="color: #6366f1;">${totalCount}</strong>`;
-        
-        const statsSpan2 = document.createElement('span');
-        statsSpan2.className = 'record-stats';
-        statsSpan2.style.cssText = 'margin-left: 1.5rem; font-size: 1rem;';
-        statsSpan2.innerHTML = `📦 RTVed: <strong style="color: #8b5cf6;">${rtvCount}</strong>`;
-        
-        container.appendChild(statsSpan1);
-        container.appendChild(statsSpan2);
-    }
-}
-
-});
-    
-// 更新統計資訊
-function updateStatistics() {
-    const totalCount = filteredRecords.length;
-    const rtvCount = filteredRecords.filter(record => record.is_rtv === 'Yes').length;
-    
-    console.log('📊 統計更新:', {
-        總筆數: totalCount,
-        RTV筆數: rtvCount
-    });
-    
-    const statusElement = document.querySelector('.status-ready');
-    if (statusElement) {
-        const container = statusElement.parentElement;
-        const oldStats = container.querySelectorAll('.record-stats');
-        oldStats.forEach(el => el.remove());
-        
-        const statsSpan1 = document.createElement('span');
-        statsSpan1.className = 'record-stats';
-        statsSpan1.style.cssText = 'margin-left: 2rem; font-size: 1rem;';
-        statsSpan1.innerHTML = `📊 筆數統計: <strong style="color: #6366f1;">${totalCount}</strong>`;
-        
-        const statsSpan2 = document.createElement('span');
-        statsSpan2.className = 'record-stats';
-        statsSpan2.style.cssText = 'margin-left: 1.5rem; font-size: 1rem;';
-        statsSpan2.innerHTML = `📦 RTVed: <strong style="color: #8b5cf6;">${rtvCount}</strong>`;
-        
-        container.appendChild(statsSpan1);
-        container.appendChild(statsSpan2);
-    }
-}
-
-});
 }
 
 function clearForm() {
@@ -814,39 +461,7 @@ function applyDateFilter() {
         if (startDate && recordDate < startDate) return false;
         if (endDate && recordDate > endDate) return false;
         return true;
-    
-// 更新統計資訊
-function updateStatistics() {
-    const totalCount = filteredRecords.length;
-    const rtvCount = filteredRecords.filter(record => record.is_rtv === 'Yes').length;
-    
-    console.log('📊 統計更新:', {
-        總筆數: totalCount,
-        RTV筆數: rtvCount
     });
-    
-    const statusElement = document.querySelector('.status-ready');
-    if (statusElement) {
-        const container = statusElement.parentElement;
-        const oldStats = container.querySelectorAll('.record-stats');
-        oldStats.forEach(el => el.remove());
-        
-        const statsSpan1 = document.createElement('span');
-        statsSpan1.className = 'record-stats';
-        statsSpan1.style.cssText = 'margin-left: 2rem; font-size: 1rem;';
-        statsSpan1.innerHTML = `📊 筆數統計: <strong style="color: #6366f1;">${totalCount}</strong>`;
-        
-        const statsSpan2 = document.createElement('span');
-        statsSpan2.className = 'record-stats';
-        statsSpan2.style.cssText = 'margin-left: 1.5rem; font-size: 1rem;';
-        statsSpan2.innerHTML = `📦 RTVed: <strong style="color: #8b5cf6;">${rtvCount}</strong>`;
-        
-        container.appendChild(statsSpan1);
-        container.appendChild(statsSpan2);
-    }
-}
-
-});
     renderTableBody();
     updateRecordCount();
     updateStatus(langDict[currentLang].FilterApplied);
@@ -890,74 +505,10 @@ async function searchSN() {
         const foundRow = Array.from(document.querySelectorAll('#records-table-body tr')).find(row => {
             const cells = row.querySelectorAll('td');
             return cells[2] && cells[2].textContent.toLowerCase() === targetSn;
-        
-// 更新統計資訊
-function updateStatistics() {
-    const totalCount = filteredRecords.length;
-    const rtvCount = filteredRecords.filter(record => record.is_rtv === 'Yes').length;
-    
-    console.log('📊 統計更新:', {
-        總筆數: totalCount,
-        RTV筆數: rtvCount
-    });
-    
-    const statusElement = document.querySelector('.status-ready');
-    if (statusElement) {
-        const container = statusElement.parentElement;
-        const oldStats = container.querySelectorAll('.record-stats');
-        oldStats.forEach(el => el.remove());
-        
-        const statsSpan1 = document.createElement('span');
-        statsSpan1.className = 'record-stats';
-        statsSpan1.style.cssText = 'margin-left: 2rem; font-size: 1rem;';
-        statsSpan1.innerHTML = `📊 筆數統計: <strong style="color: #6366f1;">${totalCount}</strong>`;
-        
-        const statsSpan2 = document.createElement('span');
-        statsSpan2.className = 'record-stats';
-        statsSpan2.style.cssText = 'margin-left: 1.5rem; font-size: 1rem;';
-        statsSpan2.innerHTML = `📦 RTVed: <strong style="color: #8b5cf6;">${rtvCount}</strong>`;
-        
-        container.appendChild(statsSpan1);
-        container.appendChild(statsSpan2);
-    }
-}
-
-});
+        });
         if (foundRow) {
             foundRow.classList.add('highlight-row');
-            foundRow.scrollIntoView({ behavior: 'smooth', block: 'center' 
-// 更新統計資訊
-function updateStatistics() {
-    const totalCount = filteredRecords.length;
-    const rtvCount = filteredRecords.filter(record => record.is_rtv === 'Yes').length;
-    
-    console.log('📊 統計更新:', {
-        總筆數: totalCount,
-        RTV筆數: rtvCount
-    });
-    
-    const statusElement = document.querySelector('.status-ready');
-    if (statusElement) {
-        const container = statusElement.parentElement;
-        const oldStats = container.querySelectorAll('.record-stats');
-        oldStats.forEach(el => el.remove());
-        
-        const statsSpan1 = document.createElement('span');
-        statsSpan1.className = 'record-stats';
-        statsSpan1.style.cssText = 'margin-left: 2rem; font-size: 1rem;';
-        statsSpan1.innerHTML = `📊 筆數統計: <strong style="color: #6366f1;">${totalCount}</strong>`;
-        
-        const statsSpan2 = document.createElement('span');
-        statsSpan2.className = 'record-stats';
-        statsSpan2.style.cssText = 'margin-left: 1.5rem; font-size: 1rem;';
-        statsSpan2.innerHTML = `📦 RTVed: <strong style="color: #8b5cf6;">${rtvCount}</strong>`;
-        
-        container.appendChild(statsSpan1);
-        container.appendChild(statsSpan2);
-    }
-}
-
-});
+            foundRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
             updateStatus(lang.SearchCompleted);
         } else {
             updateStatus(lang.NotFound);
@@ -976,39 +527,7 @@ async function exportCSV() {
     const rows = recordsToExport.map(record => {
         return [record.qpn || '', record.sn || '', record.dept || '', record.requester || '', record.verifier || '', record.result || '', record.timestamp || '', record.is_rtv || '']
             .map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',');
-    
-// 更新統計資訊
-function updateStatistics() {
-    const totalCount = filteredRecords.length;
-    const rtvCount = filteredRecords.filter(record => record.is_rtv === 'Yes').length;
-    
-    console.log('📊 統計更新:', {
-        總筆數: totalCount,
-        RTV筆數: rtvCount
     });
-    
-    const statusElement = document.querySelector('.status-ready');
-    if (statusElement) {
-        const container = statusElement.parentElement;
-        const oldStats = container.querySelectorAll('.record-stats');
-        oldStats.forEach(el => el.remove());
-        
-        const statsSpan1 = document.createElement('span');
-        statsSpan1.className = 'record-stats';
-        statsSpan1.style.cssText = 'margin-left: 2rem; font-size: 1rem;';
-        statsSpan1.innerHTML = `📊 筆數統計: <strong style="color: #6366f1;">${totalCount}</strong>`;
-        
-        const statsSpan2 = document.createElement('span');
-        statsSpan2.className = 'record-stats';
-        statsSpan2.style.cssText = 'margin-left: 1.5rem; font-size: 1rem;';
-        statsSpan2.innerHTML = `📦 RTVed: <strong style="color: #8b5cf6;">${rtvCount}</strong>`;
-        
-        container.appendChild(statsSpan1);
-        container.appendChild(statsSpan2);
-    }
-}
-
-});
     const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + [headers, ...rows].join('\n');
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
@@ -1053,39 +572,7 @@ function showModal(title, bodyHtml, buttons = [{text: 'OK', class: 'bg-indigo-60
                 }
             };
             modalFooter.appendChild(button);
-        
-// 更新統計資訊
-function updateStatistics() {
-    const totalCount = filteredRecords.length;
-    const rtvCount = filteredRecords.filter(record => record.is_rtv === 'Yes').length;
-    
-    console.log('📊 統計更新:', {
-        總筆數: totalCount,
-        RTV筆數: rtvCount
-    });
-    
-    const statusElement = document.querySelector('.status-ready');
-    if (statusElement) {
-        const container = statusElement.parentElement;
-        const oldStats = container.querySelectorAll('.record-stats');
-        oldStats.forEach(el => el.remove());
-        
-        const statsSpan1 = document.createElement('span');
-        statsSpan1.className = 'record-stats';
-        statsSpan1.style.cssText = 'margin-left: 2rem; font-size: 1rem;';
-        statsSpan1.innerHTML = `📊 筆數統計: <strong style="color: #6366f1;">${totalCount}</strong>`;
-        
-        const statsSpan2 = document.createElement('span');
-        statsSpan2.className = 'record-stats';
-        statsSpan2.style.cssText = 'margin-left: 1.5rem; font-size: 1rem;';
-        statsSpan2.innerHTML = `📦 RTVed: <strong style="color: #8b5cf6;">${rtvCount}</strong>`;
-        
-        container.appendChild(statsSpan1);
-        container.appendChild(statsSpan2);
-    }
-}
-
-});
+        });
         const escListener = (e) => {
             if (e.key === 'Escape') onResolve(null);
         };
@@ -1102,16 +589,13 @@ function updateStatistics() {
                 if(firstInput) firstInput.focus();
             }
         }, 10);
-    
+
 // 更新統計資訊
 function updateStatistics() {
     const totalCount = filteredRecords.length;
     const rtvCount = filteredRecords.filter(record => record.is_rtv === 'Yes').length;
     
-    console.log('📊 統計更新:', {
-        總筆數: totalCount,
-        RTV筆數: rtvCount
-    });
+    console.log('📊 統計:', { 總筆數: totalCount, RTV筆數: rtvCount });
     
     const statusElement = document.querySelector('.status-ready');
     if (statusElement) {
@@ -1119,43 +603,21 @@ function updateStatistics() {
         const oldStats = container.querySelectorAll('.record-stats');
         oldStats.forEach(el => el.remove());
         
-        const statsSpan1 = document.createElement('span');
-        statsSpan1.className = 'record-stats';
-        statsSpan1.style.cssText = 'margin-left: 2rem; font-size: 1rem;';
-        statsSpan1.innerHTML = `📊 筆數統計: <strong style="color: #6366f1;">${totalCount}</strong>`;
-        
-        const statsSpan2 = document.createElement('span');
-        statsSpan2.className = 'record-stats';
-        statsSpan2.style.cssText = 'margin-left: 1.5rem; font-size: 1rem;';
-        statsSpan2.innerHTML = `📦 RTVed: <strong style="color: #8b5cf6;">${rtvCount}</strong>`;
-        
-        container.appendChild(statsSpan1);
-        container.appendChild(statsSpan2);
-    }
-}
-
-
-function updateStatistics() {
-    const totalCount = filteredRecords.length;
-    const rtvCount = filteredRecords.filter(record => record.is_rtv === 'Yes').length;
-    console.log('統計:', totalCount, 'RTVed:', rtvCount);
-    const statusElement = document.querySelector('.status-ready');
-    if (statusElement) {
-        const container = statusElement.parentElement;
-        const oldStats = container.querySelectorAll('.record-stats');
-        oldStats.forEach(el => el.remove());
         const s1 = document.createElement('span');
         s1.className = 'record-stats';
         s1.style.cssText = 'margin-left: 2rem;';
-        s1.innerHTML = '筆數統計: <strong>' + totalCount + '</strong>';
+        s1.innerHTML = '📊 筆數統計: <strong style="color: #6366f1;">' + totalCount + '</strong>';
+        
         const s2 = document.createElement('span');
         s2.className = 'record-stats';
         s2.style.cssText = 'margin-left: 1.5rem;';
-        s2.innerHTML = 'RTVed: <strong style="color: #8b5cf6;">' + rtvCount + '</strong>';
+        s2.innerHTML = '📦 RTVed: <strong style="color: #8b5cf6;">' + rtvCount + '</strong>';
+        
         container.appendChild(s1);
         container.appendChild(s2);
     }
 }
 
-});
+
+    });
 }
