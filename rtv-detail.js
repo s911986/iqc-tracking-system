@@ -477,7 +477,28 @@ window.completeStage = function(stage) {
         return;
     }
     
-    const completionDate = new Date(completionTimeValue).toISOString();
+    const completionDate = new Date(completionTimeValue);
+    
+    const previousStage = getPreviousStageTime(stage);
+    if (previousStage) {
+        console.log('Checking time order:', {
+            current: completionDate,
+            previous: previousStage.time,
+            currentStage: stage,
+            previousStage: previousStage.stageId
+        });
+        
+        if (completionDate < previousStage.time) {
+            const prevTimeStr = formatDateTime(previousStage.time.toISOString());
+            const currTimeStr = formatDateTime(completionDate.toISOString());
+            alert(
+                `${t('timeOrderError')}\n\n` +
+                `${t('previousStageTime')}: ${prevTimeStr}\n` +
+                `${t('currentStageTime')}: ${currTimeStr}`
+            );
+            return;
+        }
+    }
     
     if (stage === '4a') {
         const trackingNumber = document.getElementById('tracking-number').value.trim();
@@ -490,7 +511,7 @@ window.completeStage = function(stage) {
     
     const stageKey = 'stage' + stage;
     currentRecord.rtv_data.stage_completion[stageKey] = true;
-    currentRecord.rtv_data.completion_dates[stageKey] = completionDate;
+    currentRecord.rtv_data.completion_dates[stageKey] = completionDate.toISOString();
     
     if (stage === 1) currentStage = 1;
     else if (stage === 2) currentStage = 2;
