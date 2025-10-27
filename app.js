@@ -324,29 +324,20 @@ function renderTableBody() {
     if (!recordsToRender || recordsToRender.length === 0) {
         tbody.innerHTML = '<tr><td colspan="' + (tableHeaders.length + 1) + '" class="text-center p-8 text-gray-400"><i data-lucide="inbox" class="w-12 h-12 mx-auto mb-2 opacity-50"></i><p>沒有記錄。請新增您的第一筆資料！</p></td></tr>';
         lucide.createIcons();
-
-    // 更新統計顯示
-    const updateRecordCount = function() {
-        const total = filteredRecords.length;
-        const rtved = filteredRecords.filter(function(r) { return r.is_rtv === 'Yes'; }).length;
-        const el = document.getElementById('record-count');
+    // 更新統計
+    setTimeout(function() {
+        var total = filteredRecords.length;
+        var rtved = filteredRecords.filter(function(r) { return r.is_rtv === "Yes"; }).length;
+        var el = document.getElementById("record-count");
         if (el) {
-            el.innerHTML = '筆數統計: ' + total + ' | <span style="color: #8b5cf6;">RTVed: ' + rtved + '</span>';
+            el.innerHTML = "筆數統計: " + total + " | <span style=\"color: #8b5cf6;\">RTVed: " + rtved + "</span>";
         }
-    };
-    updateRecordCount();
+    }, 200);
+
+    
 
 
-    // 更新統計顯示
-    const updateRecordCount = function() {
-        const total = filteredRecords.length;
-        const rtved = filteredRecords.filter(function(r) { return r.is_rtv === 'Yes'; }).length;
-        const el = document.getElementById('record-count');
-        if (el) {
-            el.innerHTML = '筆數統計: ' + total + ' | <span style="color: #8b5cf6;">RTVed: ' + rtved + '</span>';
-        }
-    };
-    updateRecordCount();
+    
 
         return;
     
