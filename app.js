@@ -332,30 +332,11 @@ function renderTableBody() {
         const rtved = filteredRecords.filter(function(r) { return r.is_rtv === 'Yes'; }).length;
         console.log('📊 統計更新:', '總筆數=' + total, 'RTVed=' + rtved);
         
-        const statusEl = document.querySelector('.status-ready');
-        if (statusEl && statusEl.parentElement) {
-            const parent = statusEl.parentElement;
-            
-            // 移除舊統計
-            const oldStats = parent.querySelectorAll('.rtv-stat');
-            for (var j = 0; j < oldStats.length; j++) {
-                oldStats[j].remove();
-            }
-            
-            // 總筆數
-            var span1 = document.createElement('span');
-            span1.className = 'rtv-stat';
-            span1.style.cssText = 'margin-left: 2rem;';
-            span1.innerHTML = '📊 筆數統計: <strong style="color: #6366f1;">' + total + '</strong>';
-            
-            // RTVed
-            var span2 = document.createElement('span');
-            span2.className = 'rtv-stat';
-            span2.style.cssText = 'margin-left: 1.5rem;';
-            span2.innerHTML = '📦 RTVed: <strong style="color: #8b5cf6;">' + rtved + '</strong>';
-            
-            parent.appendChild(span1);
-            parent.appendChild(span2);
+        // 更新筆數統計和 RTV 統計
+        const recordCountEl = document.getElementById('record-count');
+        if (recordCountEl) {
+            recordCountEl.innerHTML = '筆數統計: ' + total + ' | <span style="color: #8b5cf6;">RTVed: ' + rtved + '</span>';
+        }
         }
     }, 100);
     }
