@@ -337,7 +337,6 @@ function renderTableBody() {
         if (recordCountEl) {
             recordCountEl.innerHTML = '筆數統計: ' + total + ' | <span style="color: #8b5cf6;">RTVed: ' + rtved + '</span>';
         }
-        }
     }, 100);
     }
     recordsToRender.sort((a, b) => b.id - a.id);
