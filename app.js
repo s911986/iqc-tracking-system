@@ -589,35 +589,5 @@ function showModal(title, bodyHtml, buttons = [{text: 'OK', class: 'bg-indigo-60
                 if(firstInput) firstInput.focus();
             }
         }, 10);
-
-// 更新統計資訊
-function updateStatistics() {
-    const totalCount = filteredRecords.length;
-    const rtvCount = filteredRecords.filter(record => record.is_rtv === 'Yes').length;
-    
-    console.log('📊 統計:', { 總筆數: totalCount, RTV筆數: rtvCount });
-    
-    const statusElement = document.querySelector('.status-ready');
-    if (statusElement) {
-        const container = statusElement.parentElement;
-        const oldStats = container.querySelectorAll('.record-stats');
-        oldStats.forEach(el => el.remove());
-        
-        const s1 = document.createElement('span');
-        s1.className = 'record-stats';
-        s1.style.cssText = 'margin-left: 2rem;';
-        s1.innerHTML = '📊 筆數統計: <strong style="color: #6366f1;">' + totalCount + '</strong>';
-        
-        const s2 = document.createElement('span');
-        s2.className = 'record-stats';
-        s2.style.cssText = 'margin-left: 1.5rem;';
-        s2.innerHTML = '📦 RTVed: <strong style="color: #8b5cf6;">' + rtvCount + '</strong>';
-        
-        container.appendChild(s1);
-        container.appendChild(s2);
-    }
-}
-
-
     });
 }
