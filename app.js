@@ -9,6 +9,8 @@ const langDict = {
         'Requester': '需求人員', 
         'Verifier': '復叛人員', 
         'Result': '結果',
+        'Parts': 'Parts',
+        'FailureDescription': 'Failure Description',
         'Save': '儲存', 
         'Export': '匯出', 
         'Delete': '刪除選中', 
@@ -56,6 +58,8 @@ const langDict = {
         'Requester': 'Requester', 
         'Verifier': 'Verifier', 
         'Result': 'Result',
+        'Parts': 'Parts',
+        'FailureDescription': 'Failure Description',
         'Save': 'Save', 
         'Export': 'Export', 
         'Delete': 'Delete Selected', 
@@ -103,6 +107,8 @@ const langDict = {
         'Requester': 'Người yêu cầu', 
         'Verifier': 'Người xác minh', 
         'Result': 'Kết quả',
+        'Parts': 'Parts',
+        'FailureDescription': 'Mô tả lỗi',
         'Save': 'Lưu', 
         'Export': 'Xuất', 
         'Delete': 'Xóa mục đã chọn', 
@@ -157,6 +163,8 @@ const formFields = {
     requester: getEl('requester'), 
     verifier: getEl('verifier'),
     result: getEl('result'),
+    parts: getEl('parts'),
+    failure_description: getEl('failure_description')
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -179,6 +187,8 @@ function applyLanguage() {
     getEl('label-requester').innerHTML = '<span class="flex items-center"><i data-lucide="user" class="w-4 h-4 mr-1"></i>' + lang.Requester + ' <span class="text-red-500 ml-1">*</span></span>';
     getEl('label-verifier').innerHTML = '<span class="flex items-center"><i data-lucide="user-check" class="w-4 h-4 mr-1"></i>' + lang.Verifier + ' <span class="text-red-500 ml-1">*</span></span>';
     getEl('label-result').innerHTML = '<span class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-1"></i>' + lang.Result + ' <span class="text-red-500 ml-1">*</span></span>';
+    if (getEl('label-parts')) getEl('label-parts').innerHTML = '<span class="flex items-center"><i data-lucide="package-open" class="w-4 h-4 mr-1"></i>' + lang.Parts + '</span>';
+    if (getEl('label-failure_description')) getEl('label-failure_description').innerHTML = '<span class="flex items-center"><i data-lucide="alert-circle" class="w-4 h-4 mr-1"></i>' + lang.FailureDescription + '</span>';
     getEl('label-start_date').innerHTML = '<i data-lucide="calendar" class="w-4 h-4 inline mr-1"></i>' + lang.StartDate;
     getEl('label-end_date').innerHTML = '<i data-lucide="calendar" class="w-4 h-4 inline mr-1"></i>' + lang.EndDate;
     getEl('btn-save').textContent = lang.Save;
@@ -240,9 +250,13 @@ function loadAutocompleteSuggestions() {
     const qpns = new Set(records.map(r => r.qpn));
     const requesters = new Set(records.map(r => r.requester));
     const verifiers = new Set(records.map(r => r.verifier));
+    const parts = new Set(records.map(r => r.parts).filter(p => p));
+    const failures = new Set(records.map(r => r.failure_description).filter(f => f));
     updateDatalist('qpn-suggestions', Array.from(qpns));
     updateDatalist('requester-suggestions', Array.from(requesters));
     updateDatalist('verifier-suggestions', Array.from(verifiers));
+    updateDatalist('parts-suggestions', Array.from(parts));
+    updateDatalist('failure-suggestions', Array.from(failures));
 }
 
 function updateDatalist(id, suggestions) {
@@ -442,6 +456,8 @@ function clearForm() {
     formFields.dept.value = '';
     formFields.verifier.value = '';
     formFields.result.value = '';
+    if (formFields.parts) formFields.parts.value = '';
+    if (formFields.failure_description) formFields.failure_description.value = '';
     formFields.qpn.focus();
 }
 

@@ -106,6 +106,20 @@
                             <option>Not Test</option>
                         </select>
                     </div>
+                    <div>
+                        <label for="parts" class="block text-sm font-medium text-gray-700 mb-1" id="label-parts">
+                            <span class="flex items-center"><i data-lucide="package-open" class="w-4 h-4 mr-1"></i>Parts</span>
+                        </label>
+                        <input type="text" id="parts" list="parts-suggestions" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="例如: IC, Resistor">
+                        <datalist id="parts-suggestions"></datalist>
+                    </div>
+                    <div>
+                        <label for="failure_description" class="block text-sm font-medium text-gray-700 mb-1" id="label-failure_description">
+                            <span class="flex items-center"><i data-lucide="alert-circle" class="w-4 h-4 mr-1"></i>Failure Description</span>
+                        </label>
+                        <input type="text" id="failure_description" list="failure-suggestions" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="描述失效現象">
+                        <datalist id="failure-suggestions"></datalist>
+                    </div>
                 </div>
             </div>
 
