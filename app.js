@@ -1,605 +1,318 @@
-// --- LANGUAGE DICTIONARY ---
-const langDict = {
-    '繁體中文': {
-        'title': '🌟 IQC Retest 與 FA 追蹤系統 🌟',
-        'form-title': '新增 Retest 紀錄', 
-        'QPN': '料號QPN', 
-        'SN': 'SN', 
-        'Dept': '需求部門', 
-        'Requester': '需求人員', 
-        'Verifier': '復叛人員', 
-        'Result': '結果',
-        'Save': '儲存', 
-        'Export': '匯出', 
-        'Delete': '刪除選中', 
-        'Search': '搜尋 SN',
-        'Admin': '管理員模式', 
-        'ExitAdmin': '退出管理員', 
-        'Filter': '篩選', 
-        'ClearFilter': '清除篩選',
-        'Count': '筆數統計', 
-        'StartDate': '開始日期', 
-        'EndDate': '結束日期',
-        'IsRTV': '是否 RTV', 
-        'RTVInfo': 'RTV 信息',
-        'Time': '時間',
-        'Actions': '操作',
-        'Ready': '準備就緒。', 
-        'RecordSaved': '✅ 紀錄已儲存！', 
-        'RecordDeleted': '🗑️ 紀錄已刪除！',
-        'FilterApplied': '🔍 篩選已套用！', 
-        'FilterCleared': '🔄 篩選已清除！', 
-        'InputRequired': '⚠️ 請輸入所有必填欄位！',
-        'ConfirmDelete': '確定要刪除選定的 {count} 筆紀錄嗎？',
-        'NoDataToExport': '沒有可匯出的資料！', 
-        'CSVExported': '📊 CSV 已匯出！',
-        'AdminModeActivated': '🔓 管理員模式已啟用。', 
-        'AdminModeDeactivated': '🔒 管理員模式已停用。',
-        'Password': '密碼', 
-        'EnterAdminPassword': '請輸入管理員密碼：', 
-        'IncorrectPassword': '❌ 密碼錯誤！',
-        'SearchPrompt': '請輸入要搜尋的 SN:', 
-        'NotFound': '找不到符合的 SN 紀錄。', 
-        'SearchCompleted': '✅ 搜尋完成。',
-        'Duplication': '⚠️ 此 SN 已存在！', 
-        'DuplicateDetail': '資料庫中已有 {count} 筆記錄。是否仍要新增？',
-        'Required': '必填',
-        'Language': '語言',
-        'ViewRTVInfo': '查看 RTV 信息'
-    },
-    'English': {
-        'title': '🌟 IQC Retest & FA Tracking System 🌟',
-        'form-title': 'Add Retest Record', 
-        'QPN': 'QPN', 
-        'SN': 'SN', 
-        'Dept': 'Dept', 
-        'Requester': 'Requester', 
-        'Verifier': 'Verifier', 
-        'Result': 'Result',
-        'Save': 'Save', 
-        'Export': 'Export', 
-        'Delete': 'Delete Selected', 
-        'Search': 'Search SN',
-        'Admin': 'Admin Mode', 
-        'ExitAdmin': 'Exit Admin', 
-        'Filter': 'Filter', 
-        'ClearFilter': 'Clear Filter',
-        'Count': 'Record Count', 
-        'StartDate': 'Start Date', 
-        'EndDate': 'End Date',
-        'IsRTV': 'RTV?', 
-        'RTVInfo': 'RTV Info',
-        'Time': 'Time',
-        'Actions': 'Actions',
-        'Ready': 'Ready.', 
-        'RecordSaved': '✅ Record saved!', 
-        'RecordDeleted': '🗑️ Record deleted!',
-        'FilterApplied': '🔍 Filter applied!', 
-        'FilterCleared': '🔄 Filter cleared!', 
-        'InputRequired': '⚠️ Please fill all required fields!',
-        'ConfirmDelete': 'Are you sure you want to delete the {count} selected records?',
-        'NoDataToExport': 'No data to export!', 
-        'CSVExported': '📊 CSV Exported!',
-        'AdminModeActivated': '🔓 Admin mode activated.', 
-        'AdminModeDeactivated': '🔒 Admin mode deactivated.',
-        'Password': 'Password', 
-        'EnterAdminPassword': 'Enter admin password:', 
-        'IncorrectPassword': '❌ Incorrect password!',
-        'SearchPrompt': 'Please enter the SN to search for:', 
-        'NotFound': 'No matching SN record found.', 
-        'SearchCompleted': '✅ Search completed.',
-        'Duplication': '⚠️ This SN already exists!', 
-        'DuplicateDetail': 'There are {count} duplicates in the database. Do you still want to add?',
-        'Required': 'Required',
-        'Language': 'Language',
-        'ViewRTVInfo': 'View RTV Info'
-    },
-    'Tiếng Việt': {
-        'title': '🌟 Hệ thống theo dõi IQC Retest & FA 🌟',
-        'form-title': 'Thêm bản ghi Retest', 
-        'QPN': 'Số QPN', 
-        'SN': 'Số SN', 
-        'Dept': 'Bộ phận', 
-        'Requester': 'Người yêu cầu', 
-        'Verifier': 'Người xác minh', 
-        'Result': 'Kết quả',
-        'Save': 'Lưu', 
-        'Export': 'Xuất', 
-        'Delete': 'Xóa mục đã chọn', 
-        'Search': 'Tìm kiếm SN',
-        'Admin': 'Chế độ Quản lý', 
-        'ExitAdmin': 'Thoát Quản lý', 
-        'Filter': 'Lọc', 
-        'ClearFilter': 'Xóa Bộ Lọc',
-        'Count': 'Tổng số bản ghi', 
-        'StartDate': 'Ngày bắt đầu', 
-        'EndDate': 'Ngày kết thúc',
-        'IsRTV': 'Có RTV?', 
-        'RTVInfo': 'Thông tin RTV',
-        'Time': 'Thời gian',
-        'Actions': 'Hành động',
-        'Ready': 'Sẵn sàng.', 
-        'RecordSaved': '✅ Đã lưu bản ghi!', 
-        'RecordDeleted': '🗑️ Đã xóa bản ghi!',
-        'FilterApplied': '🔍 Đã áp dụng bộ lọc!', 
-        'FilterCleared': '🔄 Đã xóa bộ lọc!', 
-        'InputRequired': '⚠️ Vui lòng điền tất cả các trường bắt buộc!',
-        'ConfirmDelete': 'Bạn có chắc muốn xóa {count} bản ghi đã chọn không?',
-        'NoDataToExport': 'Không có dữ liệu để xuất!', 
-        'CSVExported': '📊 Đã xuất CSV!',
-        'AdminModeActivated': '🔓 Chế độ quản lý đã kích hoạt.', 
-        'AdminModeDeactivated': '🔒 Chế độ quản lý đã tắt.',
-        'Password': 'Mật khẩu', 
-        'EnterAdminPassword': 'Nhập mật khẩu quản trị viên:', 
-        'IncorrectPassword': '❌ Sai mật khẩu!',
-        'SearchPrompt': 'Vui lòng nhập SN để tìm kiếm:', 
-        'NotFound': 'Không tìm thấy bản ghi SN phù hợp.', 
-        'SearchCompleted': '✅ Tìm kiếm hoàn tất.',
-        'Duplication': '⚠️ SN đã tồn tại!', 
-        'DuplicateDetail': 'Có {count} bản ghi trùng lặp. Bạn có muốn thêm tiếp không?',
-        'Required': 'Bắt buộc',
-        'Language': 'Ngôn ngữ',
-        'ViewRTVInfo': 'Xem thông tin RTV'
+// app.js (modified) - adds UI validation improvements and CSS-friendly structure
+// NOTE: This file is intended to replace/patch your existing app.js where the earlier localStorage logic existed.
+
+(function() {
+  window.allRecords = window.allRecords || [];
+  window.filteredRecords = window.filteredRecords || [];
+  let editingId = null;
+
+  // ---------- Storage helpers ----------
+  function loadRecordsFromStorage() {
+    const raw = localStorage.getItem('iqc_records');
+    try {
+      window.allRecords = raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      console.error('Failed parsing iqc_records', e);
+      window.allRecords = [];
     }
-};
-
-let currentLang = '繁體中文';
-let adminMode = false;
-let records = [];
-let filteredRecords = [];
-const tableHeaders = ["QPN", "SN", "Dept", "Requester", "Verifier", "Result", "Time", "IsRTV", "Actions"];
-
-const getEl = (id) => document.getElementById(id);
-const formFields = {
-    qpn: getEl('qpn'), 
-    sn: getEl('sn'), 
-    dept: getEl('dept'), 
-    requester: getEl('requester'), 
-    verifier: getEl('verifier'),
-    result: getEl('result'),
-};
-
-document.addEventListener('DOMContentLoaded', () => {
-    setupEventListeners();
-    loadRecords();
-    applyLanguage();
-    loadAutocompleteSuggestions();
-    lucide.createIcons();
-    formFields.requester.value = 's911986';
-});
-
-function applyLanguage() {
-    const lang = langDict[currentLang];
-    getEl('app-title').textContent = lang.title;
-    getEl('form-title').textContent = lang['form-title'];
-    getEl('lang-label').textContent = lang.Language + ':';
-    getEl('label-qpn').innerHTML = '<span class="flex items-center"><i data-lucide="package" class="w-4 h-4 mr-1"></i>' + lang.QPN + ' <span class="text-red-500 ml-1">*</span></span>';
-    getEl('label-sn').innerHTML = '<span class="flex items-center"><i data-lucide="hash" class="w-4 h-4 mr-1"></i>' + lang.SN + ' <span class="text-red-500 ml-1">*</span></span>';
-    getEl('label-dept').innerHTML = '<span class="flex items-center"><i data-lucide="building" class="w-4 h-4 mr-1"></i>' + lang.Dept + ' <span class="text-red-500 ml-1">*</span></span>';
-    getEl('label-requester').innerHTML = '<span class="flex items-center"><i data-lucide="user" class="w-4 h-4 mr-1"></i>' + lang.Requester + ' <span class="text-red-500 ml-1">*</span></span>';
-    getEl('label-verifier').innerHTML = '<span class="flex items-center"><i data-lucide="user-check" class="w-4 h-4 mr-1"></i>' + lang.Verifier + ' <span class="text-red-500 ml-1">*</span></span>';
-    getEl('label-result').innerHTML = '<span class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-1"></i>' + lang.Result + ' <span class="text-red-500 ml-1">*</span></span>';
-    getEl('label-start_date').innerHTML = '<i data-lucide="calendar" class="w-4 h-4 inline mr-1"></i>' + lang.StartDate;
-    getEl('label-end_date').innerHTML = '<i data-lucide="calendar" class="w-4 h-4 inline mr-1"></i>' + lang.EndDate;
-    getEl('btn-save').textContent = lang.Save;
-    getEl('btn-export').textContent = lang.Export;
-    getEl('btn-delete').textContent = lang.Delete;
-    getEl('btn-search').textContent = lang.Search;
-    getEl('btn-filter').textContent = lang.Filter;
-    getEl('btn-clear_filter').textContent = lang.ClearFilter;
-    getEl('btn-admin').textContent = adminMode ? lang.ExitAdmin : lang.Admin;
-    updateStatus(lang.Ready, 0);
-    updateRecordCount();
-    renderTableHeader();
+    window.filteredRecords = [...window.allRecords];
     renderTableBody();
-    lucide.createIcons();
-}
+  }
+  function saveRecordsToStorage() {
+    localStorage.setItem('iqc_records', JSON.stringify(window.allRecords || []));
+  }
 
-function setupEventListeners() {
-    getEl('lang-selector').addEventListener('change', (e) => { 
-    currentLang = e.target.value; 
-    
-    // 轉換為標準語言代碼並保存到 localStorage
-    const langMap = {
-        '繁體中文': 'zh',
-        'English': 'en',
-        'Tiếng Việt': 'vi'
-    };
-    const langCode = langMap[currentLang] || 'zh';
-    localStorage.setItem('language', langCode);
-    console.log('Language saved:', langCode);
-    
-    applyLanguage(); 
-});
-    getEl('save-btn').addEventListener('click', saveRecord);
-    getEl('delete-btn').addEventListener('click', deleteSelectedRecords);
-    getEl('export-btn').addEventListener('click', exportCSV);
-    getEl('admin-btn').addEventListener('click', toggleAdminMode);
-    getEl('filter-btn').addEventListener('click', applyDateFilter);
-    getEl('clear-filter-btn').addEventListener('click', clearDateFilter);
-    getEl('search-btn').addEventListener('click', searchSN);
-    getEl('select-all-checkbox').addEventListener('change', (e) => {
-        document.querySelectorAll('#records-table-body input[type="checkbox"]').forEach(cb => cb.checked = e.target.checked);
+  // RTV groups helpers
+  function getRTVGroups() {
+    const raw = localStorage.getItem('rtv_groups');
+    try { return raw ? JSON.parse(raw) : []; } catch(e){ return []; }
+  }
+  function saveRTVGroups(groups) { localStorage.setItem('rtv_groups', JSON.stringify(groups || [])); }
+  function createRTVGroup(name, snList, trackingNumber) {
+    const groups = getRTVGroups();
+    const id = 'rtvgroup-' + Date.now();
+    const group = { id, name: name || id, sn_list: snList || [], tracking_number: trackingNumber || '', created_by: (window.currentUser || 'unknown'), created_at: new Date().toISOString() };
+    groups.push(group);
+    saveRTVGroups(groups);
+    return group;
+  }
+
+  // ---------- Parts UI ----------
+  function addPartRow(part = {}) {
+    const container = document.getElementById('parts-list');
+    const row = document.createElement('div');
+    row.className = 'part-row';
+    row.innerHTML = `
+      <input placeholder="Part No" class="part-no input" style="width:40%;" value="${escapeHtml(part.part_no || '')}" />
+      <input type="number" min="1" value="${part.qty || 1}" class="part-qty input" style="width:20%;" />
+      <input placeholder="備註" class="part-remark input" style="width:35%;" value="${escapeHtml(part.remark || '')}" />
+      <button type="button" class="remove-part btn" style="width:6%;">✕</button>
+      <div class="part-error" style="color:var(--danger); font-size:12px; margin-left:8px; display:none;"></div>
+    `;
+    container.appendChild(row);
+    const removeBtn = row.querySelector('.remove-part');
+    removeBtn.addEventListener('click', () => row.remove());
+    // live validation: remove invalid on input
+    row.querySelectorAll('.input').forEach(inp => inp.addEventListener('input', () => {
+      inp.classList.remove('invalid');
+      const err = row.querySelector('.part-error'); if (err) err.style.display = 'none';
+    }));
+    return row;
+  }
+
+  function readPartsFromForm() {
+    const parts = [];
+    document.querySelectorAll('#parts-list .part-row').forEach(row => {
+      const part_no = row.querySelector('.part-no').value.trim();
+      const qty = parseInt(row.querySelector('.part-qty').value, 10) || 0;
+      const remark = row.querySelector('.part-remark').value.trim();
+      if (part_no) parts.push({ part_no, qty, remark });
     });
-}
+    return parts;
+  }
 
-function loadRecords() {
-    const storedRecords = localStorage.getItem('iqcRecords');
-    records = storedRecords ? JSON.parse(storedRecords) : [];
-    filteredRecords = [...records];
-    renderTableBody();
-    updateRecordCount();
-}
+  function renderPartsToForm(parts = []) {
+    const container = document.getElementById('parts-list');
+    container.innerHTML = '';
+    (parts || []).forEach(p => addPartRow(p));
+  }
 
-function persistRecords() {
-    localStorage.setItem('iqcRecords', JSON.stringify(records));
-    loadAutocompleteSuggestions();
-}
+  // ---------- Fail note UI toggle ----------
+  function initFailNoteToggle() {
+    const resultSelect = document.getElementById('result-select');
+    const failSection = document.getElementById('fail-info-section');
+    if (!resultSelect || !failSection) return;
+    function update() { failSection.style.display = (resultSelect.value === 'Fail') ? 'block' : 'none'; }
+    resultSelect.addEventListener('change', update);
+    update();
+  }
 
-function loadAutocompleteSuggestions() {
-    const qpns = new Set(records.map(r => r.qpn));
-    const requesters = new Set(records.map(r => r.requester));
-    const verifiers = new Set(records.map(r => r.verifier));
-    updateDatalist('qpn-suggestions', Array.from(qpns));
-    updateDatalist('requester-suggestions', Array.from(requesters));
-    updateDatalist('verifier-suggestions', Array.from(verifiers));
-}
+  // ---------- Validation ----------
+  function showFieldError(fieldEl, message) {
+    if (!fieldEl) return;
+    fieldEl.classList.add('invalid');
+    const errEl = document.getElementById('error-' + fieldEl.id);
+    if (errEl) { errEl.textContent = message; errEl.classList.add('show'); }
+  }
+  function clearFieldError(fieldEl) {
+    if (!fieldEl) return;
+    fieldEl.classList.remove('invalid');
+    const errEl = document.getElementById('error-' + fieldEl.id);
+    if (errEl) { errEl.textContent = ''; errEl.classList.remove('show'); }
+  }
 
-function updateDatalist(id, suggestions) {
-    const datalist = getEl(id);
-    if (!datalist) return;
-    datalist.innerHTML = '';
-    suggestions.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item;
-        datalist.appendChild(option);
+  function validateForm() {
+    // clear previous
+    ['qpn','sn','dept','fail-note','requester','verifier'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) clearFieldError(el);
     });
-}
+    document.getElementById('error-parts').textContent = '';
 
-async function saveRecord() {
-    const lang = langDict[currentLang];
-    const requiredFields = ['qpn', 'sn', 'dept', 'requester', 'verifier', 'result'];
-    for (const field of requiredFields) {
-        if (!formFields[field].value.trim()) {
-            showModal(lang.InputRequired, '<p class="text-gray-600">' + lang.InputRequired + '</p>');
-            formFields[field].focus();
-            return;
-        }
+    const qpnEl = document.getElementById('qpn');
+    const snEl = document.getElementById('sn');
+    const deptEl = document.getElementById('dept');
+
+    let valid = true;
+    if (!qpnEl || !qpnEl.value.trim()) { showFieldError(qpnEl, 'QPN 為必填'); valid = false; }
+    if (!snEl || !snEl.value.trim()) { showFieldError(snEl, 'SN 為必填'); valid = false; }
+    if (!deptEl || !deptEl.value) { showFieldError(deptEl, '請選擇部門'); valid = false; }
+
+    // Parts validation: if there are part rows, require part_no (non-empty) and qty >=1
+    const partRows = document.querySelectorAll('#parts-list .part-row');
+    for (let i = 0; i < partRows.length; i++) {
+      const row = partRows[i];
+      const partNoEl = row.querySelector('.part-no');
+      const qtyEl = row.querySelector('.part-qty');
+      const errEl = row.querySelector('.part-error');
+      if (partNoEl && partNoEl.value.trim() === '') {
+        partNoEl.classList.add('invalid');
+        if (errEl) { errEl.style.display = 'block'; errEl.textContent = 'Part No 必填或刪除此列'; }
+        document.getElementById('error-parts').textContent = '請修正 Parts 的內容或刪除空白列';
+        valid = false;
+      }
+      const qty = parseInt(qtyEl.value, 10) || 0;
+      if (qty <= 0) {
+        qtyEl.classList.add('invalid');
+        if (errEl) { errEl.style.display = 'block'; errEl.textContent = 'Qty 必須 >= 1'; }
+        document.getElementById('error-parts').textContent = '請修正 Parts 的數量';
+        valid = false;
+      }
     }
-    const newSN = formFields.sn.value.trim();
-    const duplicates = records.filter(r => r.sn === newSN);
-    if (duplicates.length > 0) {
-        const proceed = await showModal(lang.Duplication, '<p class="text-gray-600">' + lang.DuplicateDetail.replace('{count}', duplicates.length) + '</p>', 
-            [{text: 'Yes', class: 'bg-emerald-600 hover:bg-emerald-700', value: true}, {text: 'No', class: 'bg-red-600 hover:bg-red-700', value: false}]);
-        if (!proceed) return;
+
+    return valid;
+  }
+
+  // ---------- Save / Update record ----------
+  async function handleSaveRecord() {
+    if (!validateForm()) {
+      // focus first invalid element
+      const firstInvalid = document.querySelector('.invalid');
+      if (firstInvalid) firstInvalid.focus();
+      return;
     }
-    const newRecord = {
-        id: Date.now(),
-        timestamp: new Date().toLocaleString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })
-    };
-    for (const key in formFields) newRecord[key] = formFields[key].value.trim();
-    newRecord.is_rtv = '';
-    newRecord.rtv_data = { current_stage: 0, tracking_number: '', fa_status: '', fa_result: '', stage_completion: {}, completion_dates: {} };
-    records.push(newRecord);
-    persistRecords();
-    loadRecords();
-    updateStatus(lang.RecordSaved);
-    clearForm();
-}
 
-async function deleteSelectedRecords() {
-    const lang = langDict[currentLang];
-    const selectedIds = Array.from(document.querySelectorAll('#records-table-body input[type="checkbox"]:checked')).map(cb => cb.dataset.id);
-    if (selectedIds.length === 0) return;
-    const confirmed = await showModal('Confirm Deletion', '<p class="text-gray-600">' + lang.ConfirmDelete.replace('{count}', selectedIds.length) + '</p>', 
-        [{text: 'Yes', class: 'bg-red-600 hover:bg-red-700', value: true}, {text: 'No', class: 'bg-gray-500 hover:bg-gray-600', value: false}]);
-    if (confirmed) {
-        records = records.filter(r => !selectedIds.includes(String(r.id)));
-        persistRecords();
-        loadRecords();
-        updateStatus(lang.RecordDeleted);
-    }
-}
+    const qpn = document.getElementById('qpn').value.trim();
+    const sn = document.getElementById('sn').value.trim();
+    const dept = document.getElementById('dept').value;
+    const requester = document.getElementById('requester').value.trim();
+    const verifier = document.getElementById('verifier').value.trim();
+    const result = document.getElementById('result-select').value;
+    const fail_note = document.getElementById('fail-note').value.trim();
+    const parts = readPartsFromForm();
 
-function renderTableHeader() {
-    const thead = document.querySelector('thead tr');
-    thead.innerHTML = '<th scope="col" class="p-3 text-left text-xs font-medium text-white uppercase tracking-wider"><input type="checkbox" id="select-all-checkbox" class="rounded border-white/30"></th>';
-    const lang = langDict[currentLang];
-    tableHeaders.forEach(key => {
-        const th = document.createElement('th');
-        th.scope = 'col';
-        th.className = 'p-3 text-left text-xs font-medium text-white uppercase tracking-wider';
-        th.textContent = lang[key] || key;
-        thead.appendChild(th);
-    });
-    getEl('select-all-checkbox').addEventListener('change', (e) => {
-        document.querySelectorAll('#records-table-body input[type="checkbox"]').forEach(cb => cb.checked = e.target.checked);
-    });
-}
+    const now = new Date().toISOString();
 
-function renderTableBody() {
-    const tbody = getEl('records-table-body');
-    tbody.innerHTML = '';
-    const recordsToRender = filteredRecords;
-    if (!recordsToRender || recordsToRender.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="' + (tableHeaders.length + 1) + '" class="text-center p-8 text-gray-400"><i data-lucide="inbox" class="w-12 h-12 mx-auto mb-2 opacity-50"></i><p>沒有記錄。請新增您的第一筆資料！</p></td></tr>';
-        lucide.createIcons();
-        return;
-    }
-    
-    
-        // 更新統計
-    setTimeout(function() {
-        var total = filteredRecords.length;
-        var rtved = filteredRecords.filter(function(r) { return r.is_rtv === "Yes"; }).length;
-        var el = document.getElementById("record-count");
-        if (el) {
-            el.innerHTML = "筆數統計: " + total + " | <span style=\"color: #8b5cf6;\">RTVed: " + rtved + "</span>";
-        }
-    }, 100);
-    
-    recordsToRender.sort((a, b) => b.id - a.id);
-    recordsToRender.forEach(record => {
-        const tr = document.createElement('tr');
-        tr.className = 'hover:bg-indigo-50 transition-colors';
-        tr.dataset.id = record.id;
-        const tdCheckbox = document.createElement('td');
-        tdCheckbox.className = 'p-3 whitespace-nowrap';
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.dataset.id = record.id;
-        checkbox.className = "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500";
-        tdCheckbox.appendChild(checkbox);
-        tr.appendChild(tdCheckbox);
-        tableHeaders.forEach(headerKey => {
-            const td = document.createElement('td');
-            td.className = 'p-3 whitespace-nowrap text-sm text-gray-600';
-            if (headerKey === 'Result') {
-                const value = record.result || '';
-                if (value === 'Pass') td.innerHTML = '<span class="badge status-badge-pass">✓ Pass</span>';
-                else if (value === 'NG') td.innerHTML = '<span class="badge status-badge-ng">✗ NG</span>';
-                else td.textContent = value;
-            } else if (headerKey === 'IsRTV') {
-                const select = document.createElement('select');
-                select.className = 'table-select';
-                select.dataset.id = record.id;
-                select.innerHTML = '<option value=""></option><option value="Yes">Yes</option><option value="No">No</option><option value="Pending">Pending</option>';
-                select.value = record.is_rtv || '';
-                select.addEventListener('change', (e) => {
-                    const recordId = parseInt(e.target.dataset.id, 10);
-                    const recordIndex = records.findIndex(r => r.id === recordId);
-                    if (recordIndex > -1) {
-                        records[recordIndex].is_rtv = e.target.value;
-                        persistRecords();
-                        renderTableBody();
-                    }
-                });
-                td.appendChild(select);
-            } else if (headerKey === 'Actions') {
-                const isRTV = record.is_rtv === 'Yes';
-                if (isRTV) {
-                    const button = document.createElement('button');
-                    button.className = 'flex items-center px-3 py-1 text-xs font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-all shadow-sm';
-                    button.innerHTML = '<i data-lucide="truck" class="w-3 h-3 mr-1"></i>' + langDict[currentLang].ViewRTVInfo;
-                    button.onclick = () => { window.location.href = 'rtv-detail.html?id=' + record.id; };
-                    td.appendChild(button);
-                } else td.textContent = '-';
-            } else if (['QPN', 'SN', 'Dept', 'Requester', 'Verifier'].includes(headerKey)) {
-                const field = headerKey.toLowerCase();
-                td.textContent = record[field] || '';
-                if (adminMode) makeEditable(td, record.id, field);
-            } else if (headerKey === 'Time') {
-                td.textContent = record.timestamp || '';
-            }
-            tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
-    });
-    lucide.createIcons();
-}
-
-function makeEditable(cell, recordId, field) {
-    if (cell.dataset.listener) return;
-    cell.dataset.listener = 'true';
-    cell.style.cursor = 'pointer';
-    cell.addEventListener('dblclick', (e) => {
-        e.stopPropagation();
-        const originalValue = cell.textContent;
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.value = originalValue;
-        input.className = 'w-full p-1 border-2 border-indigo-400 rounded-md bg-white focus:ring-2 focus:ring-indigo-500';
-        cell.innerHTML = '';
-        cell.appendChild(input);
-        input.focus();
-        input.select();
-        const saveEdit = () => {
-            const newValue = input.value.trim();
-            if (newValue !== originalValue) {
-                const recordIndex = records.findIndex(r => r.id === recordId);
-                if (recordIndex > -1) {
-                    records[recordIndex][field] = newValue;
-                    persistRecords();
-                    updateStatus(langDict[currentLang].RecordSaved);
-                }
-            }
-            cell.textContent = newValue;
-        };
-        input.addEventListener('blur', saveEdit);
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') input.blur();
-            if (e.key === 'Escape') {
-                input.removeEventListener('blur', saveEdit);
-                cell.textContent = originalValue;
-            }
-        });
-    });
-}
-
-function clearForm() {
-    formFields.qpn.value = '';
-    formFields.sn.value = '';
-    formFields.dept.value = '';
-    formFields.verifier.value = '';
-    formFields.result.value = '';
-    formFields.qpn.focus();
-}
-
-function updateStatus(message, clearAfterMs = 3000) {
-    const statusBar = getEl('status-bar');
-    statusBar.textContent = message;
-    if (window.statusTimeout) clearTimeout(window.statusTimeout);
-    if (clearAfterMs > 0) {
-        window.statusTimeout = setTimeout(() => {
-            statusBar.textContent = langDict[currentLang].Ready;
-        }, clearAfterMs);
-    }
-}
-
-function updateRecordCount() {
-    const count = filteredRecords ? filteredRecords.length : 0;
-    getEl('record-count').textContent = langDict[currentLang].Count + ': ' + count;
-}
-
-function applyDateFilter() {
-    const startDateStr = getEl('start_date').value;
-    const endDateStr = getEl('end_date').value;
-    const startDate = startDateStr ? new Date(startDateStr) : null;
-    const endDate = endDateStr ? new Date(endDateStr) : null;
-    if(startDate) startDate.setHours(0,0,0,0);
-    if(endDate) endDate.setHours(23,59,59,999);
-    filteredRecords = records.filter(record => {
-        const recordDate = new Date(record.timestamp);
-        if (startDate && recordDate < startDate) return false;
-        if (endDate && recordDate > endDate) return false;
-        return true;
-    });
-    renderTableBody();
-    updateRecordCount();
-    updateStatus(langDict[currentLang].FilterApplied);
-}
-
-function clearDateFilter() {
-    getEl('start_date').value = '';
-    getEl('end_date').value = '';
-    filteredRecords = [...records];
-    renderTableBody();
-    updateRecordCount();
-    updateStatus(langDict[currentLang].FilterCleared);
-}
-
-async function toggleAdminMode() {
-    const lang = langDict[currentLang];
-    if (adminMode) {
-        adminMode = false;
-        updateStatus(lang.AdminModeDeactivated);
+    if (editingId !== null) {
+      const idx = window.allRecords.findIndex(r => r.id === editingId);
+      if (idx === -1) { alert('找不到要更新的紀錄'); return; }
+      const rec = window.allRecords[idx];
+      rec.qpn = qpn; rec.sn = sn; rec.dept = dept; rec.requester = requester; rec.verifier = verifier;
+      rec.result = result; rec.fail_note = fail_note || ''; rec.parts = parts; rec.updated_at = now;
+      window.allRecords[idx] = rec;
     } else {
-        const data = await showModal(lang.Password, '<label for="admin-pw" class="block text-sm font-medium text-gray-700 mb-2">' + lang.EnterAdminPassword + '</label><input type="password" id="admin-pw" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500" placeholder="Enter password">',
-            [{text: 'Login', class: 'bg-indigo-600 hover:bg-indigo-700', value: 'submit'}], true);
-        if (data && data['admin-pw'] === "11011163") {
-            adminMode = true;
-            updateStatus(lang.AdminModeActivated);
-        } else if (data !== null) {
-            showModal(lang.IncorrectPassword, '<p class="text-red-600 font-medium">' + lang.IncorrectPassword + '</p>');
-        }
+      const newId = (window.allRecords.length ? (Math.max(...window.allRecords.map(r => Number(r.id || 0))) + 1) : 1);
+      const newRecord = {
+        id: newId,
+        qpn, sn, dept, requester, verifier,
+        result,
+        fail_note: fail_note || '',
+        parts: parts,
+        is_rtv: 'No',
+        timestamp: now,
+        rtv_data: { stage_completion: {}, completion_dates: {}, tracking_number: '' }
+      };
+      window.allRecords.unshift(newRecord);
     }
-    renderTableBody();
-    applyLanguage();
-}
 
-async function searchSN() {
-    const lang = langDict[currentLang];
-    const data = await showModal(lang.Search, '<label for="search-sn" class="block text-sm font-medium text-gray-700 mb-2">' + lang.SearchPrompt + '</label><input type="text" id="search-sn" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500" placeholder="Enter SN">',
-        [{text: lang.Search, class: 'bg-indigo-600 hover:bg-indigo-700', value: 'submit'}], true);
-    if (data && data['search-sn']) {
-        const targetSn = data['search-sn'].toLowerCase().trim();
-        document.querySelectorAll('#records-table-body tr').forEach(row => row.classList.remove('highlight-row'));
-        const foundRow = Array.from(document.querySelectorAll('#records-table-body tr')).find(row => {
-            const cells = row.querySelectorAll('td');
-            return cells[2] && cells[2].textContent.toLowerCase() === targetSn;
-        });
-        if (foundRow) {
-            foundRow.classList.add('highlight-row');
-            foundRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            updateStatus(lang.SearchCompleted);
-        } else {
-            updateStatus(lang.NotFound);
-        }
-    }
-}
+    saveRecordsToStorage();
+    loadRecordsFromStorage();
+    resetForm();
+    alert('儲存完成');
+  }
 
-async function exportCSV() {
-    const lang = langDict[currentLang];
-    const recordsToExport = filteredRecords;
-    if (!recordsToExport || recordsToExport.length === 0) {
-        await showModal(lang.NoDataToExport, '<p class="text-gray-600">' + lang.NoDataToExport + '</p>');
-        return;
-    }
-    const headers = ['QPN', 'SN', 'Dept', 'Requester', 'Verifier', 'Result', 'Time', 'Is RTV'].map(h => '"' + h + '"').join(',');
-    const rows = recordsToExport.map(record => {
-        return [record.qpn || '', record.sn || '', record.dept || '', record.requester || '', record.verifier || '', record.result || '', record.timestamp || '', record.is_rtv || '']
-            .map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',');
+  // ---------- Reset ----------
+  function resetForm() {
+    const form = document.getElementById('retest-form');
+    if (form) form.reset();
+    renderPartsToForm([]);
+    editingId = null;
+    // clear errors
+    ['qpn','sn','dept','fail-note','requester','verifier'].forEach(id => {
+      const el = document.getElementById(id); if (el) clearFieldError(el);
     });
-    const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + [headers, ...rows].join('\n');
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    const timestamp = new Date().toISOString().slice(0,10);
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", 'IQC_Records_' + timestamp + '.csv');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    updateStatus(lang.CSVExported);
-}
+    document.getElementById('error-parts').textContent = '';
+    initFailNoteToggle();
+  }
 
-function showModal(title, bodyHtml, buttons = [{text: 'OK', class: 'bg-indigo-600 hover:bg-indigo-700', value: true}], focusInput = false) {
-    return new Promise(resolve => {
-        const modal = getEl('modal-template');
-        const modalTitle = getEl('modal-title');
-        const modalBody = getEl('modal-body');
-        const modalFooter = getEl('modal-footer');
-        const closeBtn = getEl('modal-close-btn');
-        modalTitle.textContent = title;
-        modalBody.innerHTML = bodyHtml;
-        modalFooter.innerHTML = '';
-        lucide.createIcons();
-        const onResolve = (value) => {
-            modal.classList.add('hidden');
-            modal.querySelector('.modal-content').classList.add('scale-95');
-            document.removeEventListener('keydown', escListener);
-            resolve(value);
-        };
-        buttons.forEach(btnInfo => {
-            const button = document.createElement('button');
-            button.textContent = btnInfo.text;
-            button.className = 'px-4 py-2 text-sm font-medium rounded-lg text-white transition-all ' + btnInfo.class;
-            button.onclick = () => {
-                if (btnInfo.value === 'submit') {
-                    const inputs = modalBody.querySelectorAll('input, select');
-                    const values = {};
-                    inputs.forEach(input => values[input.id] = input.value);
-                    onResolve(values);
-                } else {
-                    onResolve(btnInfo.value);
-                }
-            };
-            modalFooter.appendChild(button);
-        });
-        const escListener = (e) => {
-            if (e.key === 'Escape') onResolve(null);
-        };
-        closeBtn.onclick = () => onResolve(null);
-        modal.onclick = (e) => {
-            if (e.target === modal) onResolve(null);
-        };
-        document.addEventListener('keydown', escListener);
-        modal.classList.remove('hidden');
-        setTimeout(() => {
-            modal.querySelector('.modal-content').classList.remove('scale-95');
-            if(focusInput) {
-                const firstInput = modalBody.querySelector('input');
-                if(firstInput) firstInput.focus();
-            }
-        }, 10);
+  // ---------- Table rendering ----------
+  function renderTableBody() {
+    const container = document.getElementById('records-table');
+    if (!container) return;
+    container.innerHTML = '';
+    const table = document.createElement('table');
+    table.style.width = '100%';
+    const thead = document.createElement('thead');
+    thead.innerHTML = `<tr>
+      <th></th><th>ID</th><th>QPN</th><th>SN</th><th>Result</th><th>Parts</th><th>Fail Note</th><th>Actions</th>
+    </tr>`;
+    table.appendChild(thead);
+    const tbody = document.createElement('tbody');
+    (window.filteredRecords || []).forEach(rec => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><input type="checkbox" class="select-record" data-id="${rec.id}"></td>
+        <td>${rec.id}</td>
+        <td>${escapeHtml(rec.qpn || '')}</td>
+        <td>${escapeHtml(rec.sn || '')}</td>
+        <td>${escapeHtml(rec.result || '')}</td>
+        <td>${(rec.parts && rec.parts.length) ? rec.parts.length : ''}</td>
+        <td>${rec.fail_note ? escapeHtml(truncate(rec.fail_note, 60)) : ''}</td>
+        <td>
+          <button class="edit-record btn" data-id="${rec.id}">編輯</button>
+          <button class="view-rtv btn" data-id="${rec.id}">RTV</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
     });
-}
+    table.appendChild(tbody);
+    container.appendChild(table);
+
+    // wire handlers
+    document.querySelectorAll('.edit-record').forEach(btn => btn.addEventListener('click', (e) => {
+      const id = Number(e.currentTarget.dataset.id);
+      startEditRecord(id);
+    }));
+    const createGroupBtn = document.getElementById('create-rtv-group-from-selection');
+    document.querySelectorAll('.select-record').forEach(chk => {
+      chk.addEventListener('change', () => {
+        const selected = getSelectedRecordIds();
+        createGroupBtn.disabled = selected.length < 2;
+      });
+    });
+  }
+
+  function getSelectedRecordIds() {
+    const ids = [];
+    document.querySelectorAll('.select-record:checked').forEach(cb => ids.push(Number(cb.dataset.id)));
+    return ids;
+  }
+
+  function startEditRecord(id) {
+    const rec = window.allRecords.find(r => r.id === id);
+    if (!rec) return alert('找不到紀錄');
+    editingId = rec.id;
+    if (document.getElementById('qpn')) document.getElementById('qpn').value = rec.qpn || '';
+    if (document.getElementById('sn')) document.getElementById('sn').value = rec.sn || '';
+    if (document.getElementById('dept')) document.getElementById('dept').value = rec.dept || '';
+    if (document.getElementById('requester')) document.getElementById('requester').value = rec.requester || '';
+    if (document.getElementById('verifier')) document.getElementById('verifier').value = rec.verifier || '';
+    if (document.getElementById('result-select')) document.getElementById('result-select').value = rec.result || 'Pass';
+    if (document.getElementById('fail-note')) document.getElementById('fail-note').value = rec.fail_note || '';
+    renderPartsToForm(rec.parts || []);
+    initFailNoteToggle();
+  }
+
+  // Create RTV group from selection
+  function handleCreateGroupFromSelection() {
+    const selectedIds = getSelectedRecordIds();
+    if (selectedIds.length < 2) return alert('請選取至少兩筆紀錄以建立 RTV 群組');
+    const snList = window.allRecords.filter(r => selectedIds.includes(r.id)).map(r => r.sn);
+    const name = prompt('請輸入 RTV 群組名稱（可空）', 'RTV Group');
+    const tracking = prompt('輸入 tracking number（可空）', '');
+    const group = createRTVGroup(name, snList, tracking);
+    alert('已建立 RTV 群組: ' + group.id);
+    // optionally redirect to rtv-detail page with group id
+    // window.location.href = `rtv-detail.html?group=${group.id}`;
+  }
+
+  // ---------- Utilities ----------
+  function escapeHtml(str) {
+    return String(str || '').replace(/[&<>\"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'})[m]; });
+  }
+  function truncate(str, n) { return str.length > n ? str.substr(0,n) + '…' : str; }
+
+  // ---------- Initialization ----------
+  document.addEventListener('DOMContentLoaded', () => {
+    initFailNoteToggle();
+    document.getElementById('add-part-btn').addEventListener('click', () => addPartRow());
+    document.getElementById('save-btn').addEventListener('click', handleSaveRecord);
+    document.getElementById('reset-btn').addEventListener('click', resetForm);
+    document.getElementById('create-rtv-group-from-selection').addEventListener('click', handleCreateGroupFromSelection);
+
+    // live clear for basic fields
+    ['qpn','sn','dept'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', () => clearFieldError(el));
+    });
+
+    loadRecordsFromStorage();
+  });
+
+  // expose for debug
+  window.createRTVGroup = createRTVGroup;
+  window.getRTVGroups = getRTVGroups;
+  window.getSelectedRecordIds = getSelectedRecordIds;
+  window.loadRecordsFromStorage = loadRecordsFromStorage;
+
+})();

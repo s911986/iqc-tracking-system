@@ -1,200 +1,97 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌟 IQC Retest and FA Tracking System 🌟</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IQC Retest & FA Tracking</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="p-4 md:p-6">
-    <div class="relative min-h-screen">
-        <div id="main-content" class="max-w-7xl mx-auto space-y-6 app-container p-6 rounded-2xl">
-            
-            <div class="demo-notice">
-                <i data-lucide="info" class="w-5 h-5 inline mr-2"></i>
-                📌 線上測試環境 | Online Test Environment - 數據存儲於瀏覽器本地
-            </div>
+<body>
+  <div class="container">
+    <h1 class="app-title">IQC Retest & FA Tracking</h1>
 
-            <header class="flex flex-col md:flex-row justify-between items-center bg-gradient-to-r from-indigo-500 to-purple-600 p-6 rounded-xl shadow-lg text-white">
-                <div class="flex items-center space-x-3">
-                    <i data-lucide="clipboard-check" class="w-8 h-8"></i>
-                    <h1 class="text-2xl md:text-3xl font-bold" id="app-title">🌟 IQC Retest & FA Tracking 🌟</h1>
-                </div>
-                <div class="flex items-center space-x-2 mt-2 md:mt-0 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
-                    <i data-lucide="languages" class="w-4 h-4"></i>
-                    <span class="text-sm font-medium" id="lang-label">Language:</span>
-                    <select id="lang-selector" class="bg-white/90 text-gray-800 rounded-md border-0 shadow-sm focus:ring-2 focus:ring-white px-3 py-1">
-                        <option value="繁體中文">繁體中文</option>
-                        <option value="English">English</option>
-                        <option value="Tiếng Việt">Tiếng Việt</option>
-                    </select>
-                </div>
-            </header>
-
-            <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg">
-                <div class="flex items-start">
-                    <i data-lucide="lightbulb" class="w-5 h-5 text-blue-400 mr-3 mt-0.5 flex-shrink-0"></i>
-                    <div>
-                        <h3 class="text-sm font-semibold text-blue-800 mb-1">快速測試指南 Quick Guide</h3>
-                        <ul class="text-sm text-blue-700 space-y-1">
-                            <li>✅ 填寫所有必填欄位後點擊「儲存」Fill all required fields and click "Save"</li>
-                            <li>✅ 當 Is RTV = Yes 時，點擊「查看 RTV 信息」按鈕 Click "View RTV Info" when Is RTV = Yes</li>
-                            <li>✅ 管理員密碼 Admin password：<code class="bg-blue-200 px-2 py-0.5 rounded font-mono">11011163</code></li>
-                            <li>✅ 資料自動保存到本地 Data auto-saves to browser localStorage</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-card bg-white p-6 border-l-4 border-indigo-500">
-                <div class="flex items-center space-x-2 mb-4">
-                    <i data-lucide="file-plus" class="w-5 h-5 text-indigo-600"></i>
-                    <h2 class="text-lg font-semibold text-gray-800" id="form-title">新增 Retest 紀錄</h2>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div>
-                        <label for="qpn" class="block text-sm font-medium text-gray-700 mb-1" id="label-qpn">
-                            <span class="flex items-center"><i data-lucide="package" class="w-4 h-4 mr-1"></i>料號QPN <span class="text-red-500 ml-1">*</span></span>
-                        </label>
-                        <input type="text" id="qpn" list="qpn-suggestions" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="例如: BJ000000001">
-                        <datalist id="qpn-suggestions"></datalist>
-                    </div>
-                    <div>
-                        <label for="sn" class="block text-sm font-medium text-gray-700 mb-1" id="label-sn">
-                            <span class="flex items-center"><i data-lucide="hash" class="w-4 h-4 mr-1"></i>SN <span class="text-red-500 ml-1">*</span></span>
-                        </label>
-                        <input type="text" id="sn" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="例如: DK3XXXXXXXX0000XX">
-                    </div>
-                    <div>
-                        <label for="dept" class="block text-sm font-medium text-gray-700 mb-1" id="label-dept">
-                            <span class="flex items-center"><i data-lucide="building" class="w-4 h-4 mr-1"></i>部門 <span class="text-red-500 ml-1">*</span></span>
-                        </label>
-                        <select id="dept" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                            <option value="">--請選擇--</option>
-                            <option>PE</option>
-                            <option>SQE</option>
-                            <option>PD</option>
-                            <option>EE</option>
-                            <option>Others</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="requester" class="block text-sm font-medium text-gray-700 mb-1" id="label-requester">
-                            <span class="flex items-center"><i data-lucide="user" class="w-4 h-4 mr-1"></i>人員 <span class="text-red-500 ml-1">*</span></span>
-                        </label>
-                        <input type="text" id="requester" list="requester-suggestions" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="s911986">
-                        <datalist id="requester-suggestions"></datalist>
-                    </div>
-                    <div>
-                        <label for="verifier" class="block text-sm font-medium text-gray-700 mb-1" id="label-verifier">
-                            <span class="flex items-center"><i data-lucide="user-check" class="w-4 h-4 mr-1"></i>驗證人員 <span class="text-red-500 ml-1">*</span></span>
-                        </label>
-                        <input type="text" id="verifier" list="verifier-suggestions" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="驗證人員名稱">
-                        <datalist id="verifier-suggestions"></datalist>
-                    </div>
-                    <div>
-                        <label for="result" class="block text-sm font-medium text-gray-700 mb-1" id="label-result">
-                            <span class="flex items-center"><i data-lucide="check-circle" class="w-4 h-4 mr-1"></i>結果 <span class="text-red-500 ml-1">*</span></span>
-                        </label>
-                        <select id="result" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                            <option value="">--請選擇--</option>
-                            <option>Pass</option>
-                            <option>NG</option>
-                            <option>Not Test</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-card bg-white p-6">
-                <div class="flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center">
-                    <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-end w-full lg:w-auto">
-                        <div>
-                            <label for="start_date" class="block text-sm font-medium text-gray-700 mb-1" id="label-start_date">
-                                <i data-lucide="calendar" class="w-4 h-4 inline mr-1"></i>開始日期
-                            </label>
-                            <input type="date" id="start_date" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                        </div>
-                        <div>
-                            <label for="end_date" class="block text-sm font-medium text-gray-700 mb-1" id="label-end_date">
-                                <i data-lucide="calendar" class="w-4 h-4 inline mr-1"></i>結束日期
-                            </label>
-                            <input type="date" id="end_date" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                        </div>
-                        <div class="flex gap-2">
-                            <button id="filter-btn" class="flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 transition-all">
-                                <i data-lucide="filter" class="w-4 h-4 mr-2"></i><span id="btn-filter">篩選</span>
-                            </button>
-                            <button id="clear-filter-btn" class="flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-50 transition-all">
-                                <i data-lucide="rotate-cw" class="w-4 h-4 mr-2"></i><span id="btn-clear_filter">清除</span>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-wrap gap-2 justify-start lg:justify-end w-full lg:w-auto">
-                        <button id="save-btn" class="flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-emerald-600 hover:bg-emerald-700 transition-all shadow-md hover:shadow-lg">
-                            <i data-lucide="save" class="w-4 h-4 mr-2"></i><span id="btn-save">儲存</span>
-                        </button>
-                        <button id="export-btn" class="flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-sky-600 hover:bg-sky-700 transition-all shadow-md hover:shadow-lg">
-                            <i data-lucide="download" class="w-4 h-4 mr-2"></i><span id="btn-export">匯出</span>
-                        </button>
-                        <button id="delete-btn" class="flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 transition-all shadow-md hover:shadow-lg">
-                            <i data-lucide="trash-2" class="w-4 h-4 mr-2"></i><span id="btn-delete">刪除選中</span>
-                        </button>
-                        <button id="search-btn" class="flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-gray-700 hover:bg-gray-800 transition-all shadow-md hover:shadow-lg">
-                            <i data-lucide="search" class="w-4 h-4 mr-2"></i><span id="btn-search">搜尋 SN</span>
-                        </button>
-                        <button id="admin-btn" class="flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-purple-600 hover:bg-purple-700 transition-all shadow-md hover:shadow-lg">
-                            <i data-lucide="shield" class="w-4 h-4 mr-2"></i><span id="btn-admin">管理員模式</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="table-card bg-white overflow-hidden">
-                <div class="table-container border rounded-lg">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="p-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                                    <input type="checkbox" id="select-all-checkbox" class="rounded border-white/30">
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200" id="records-table-body"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <footer class="flex flex-col sm:flex-row justify-between items-center gap-3 text-sm text-gray-600 px-2 bg-white/50 backdrop-blur-sm p-4 rounded-lg">
-                <div class="flex items-center space-x-2">
-                    <i data-lucide="info" class="w-4 h-4"></i>
-                    <div id="status-bar">準備就緒。</div>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <i data-lucide="database" class="w-4 h-4"></i>
-                    <div id="record-count">筆數統計: 0</div>
-                </div>
-            </footer>
+    <form id="retest-form" class="form-card" novalidate>
+      <div class="form-grid">
+        <div class="form-row">
+          <label for="qpn">QPN <span class="required">*</span></label>
+          <input id="qpn" class="input" placeholder="例如: BJ000000001" />
+          <div class="field-error" id="error-qpn"></div>
         </div>
 
-        <div id="modal-template" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden">
-            <div class="modal-content bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 transform scale-95">
-                <div class="flex justify-between items-center border-b pb-3 mb-4">
-                    <h3 class="text-lg font-semibold text-gray-900" id="modal-title">Modal Title</h3>
-                    <button id="modal-close-btn" class="text-gray-400 hover:text-gray-600 transition-colors">
-                        <i data-lucide="x" class="w-6 h-6"></i>
-                    </button>
-                </div>
-                <div id="modal-body"></div>
-                <div class="mt-6 flex justify-end space-x-3" id="modal-footer"></div>
-            </div>
+        <div class="form-row">
+          <label for="sn">SN <span class="required">*</span></label>
+          <input id="sn" class="input" placeholder="例如: DK3XXXXXXXX00XXX" />
+          <div class="field-error" id="error-sn"></div>
         </div>
-    </div>
 
-    <script src="app.js"></script>
+        <div class="form-row">
+          <label for="dept">部門 <span class="required">*</span></label>
+          <select id="dept" class="input">
+            <option value="">-- 選擇 --</option>
+            <option value="PE">PE</option>
+            <option value="NPI">NPI</option>
+            <option value="RD">RD</option>
+            <option value="QA">QA</option>
+          </select>
+          <div class="field-error" id="error-dept"></div>
+        </div>
+
+        <div class="form-row">
+          <label for="requester">Requester</label>
+          <input id="requester" class="input" placeholder="填寫申請人" />
+        </div>
+
+        <div class="form-row">
+          <label for="verifier">Verifier</label>
+          <input id="verifier" class="input" placeholder="填寫驗證人" />
+        </div>
+
+        <div class="form-row">
+          <label for="result-select">Result</label>
+          <select id="result-select" name="result" class="input">
+            <option value="Pass">Pass</option>
+            <option value="Fail">Fail</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- FAIL NOTE (optional) -->
+      <div id="fail-info-section" class="form-row section-card" style="display:none;">
+        <label for="fail-note">Fail 備註（選填）</label>
+        <textarea id="fail-note" rows="3" placeholder="描述 fail 的情況（選填）" class="input"></textarea>
+        <div class="field-info">如果欄位留空，紀錄仍會儲存。</div>
+      </div>
+
+      <!-- PARTS (optional dynamic list) -->
+      <div id="parts-section" class="form-row section-card">
+        <label>Parts（選填）</label>
+        <div id="parts-list" style="margin-bottom:8px;"></div>
+        <div class="parts-actions">
+          <button type="button" id="add-part-btn" class="btn">＋ 新增 Part</button>
+          <div class="field-info">若不需備件，請留空。每筆 Part 需有 Part No 才會被儲存。</div>
+        </div>
+        <div class="field-error" id="error-parts"></div>
+      </div>
+
+      <div class="form-actions">
+        <button id="save-btn" type="button" class="btn-primary">儲存</button>
+        <button id="reset-btn" type="button" class="btn-secondary">重設</button>
+      </div>
+    </form>
+
+    <!-- table and other UI -->
+    <section id="records-section" class="section-card">
+      <div class="section-header">
+        <h2>Records</h2>
+        <div class="section-tools">
+          <button id="create-rtv-group-from-selection" class="btn" disabled>建立 RTV 群組（選取）</button>
+        </div>
+      </div>
+      <div id="records-table" class="records-table-wrapper"></div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
