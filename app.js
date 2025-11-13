@@ -153,7 +153,7 @@ let currentLang = '繁體中文';
 let adminMode = false;
 let records = [];
 let filteredRecords = [];
-const tableHeaders = ["QPN", "SN", "Dept", "Requester", "Verifier", "Result", "Time", "IsRTV", "Actions"];
+const tableHeaders = ["QPN", "SN", "Dept", "Requester", "Verifier", "Result", "Parts", "FailureDescription", "Time", "IsRTV", "Actions"];
 
 const getEl = (id) => document.getElementById(id);
 const formFields = {
@@ -250,8 +250,37 @@ function loadAutocompleteSuggestions() {
     const qpns = new Set(records.map(r => r.qpn));
     const requesters = new Set(records.map(r => r.requester));
     const verifiers = new Set(records.map(r => r.verifier));
-    const parts = new Set(records.map(r => r.parts).filter(p => p));
-    const failures = new Set(records.map(r => r.failure_description).filter(f => f));
+    
+    // Handle parts - support both array and string values
+    const parts = new Set();
+    records.forEach(r => {
+        const partsValue = r.parts || r.parts_list;
+        if (partsValue) {
+            if (Array.isArray(partsValue)) {
+                partsValue.forEach(p => {
+                    if (p && p.trim()) parts.add(p.trim());
+                });
+            } else if (typeof partsValue === 'string' && partsValue.trim()) {
+                parts.add(partsValue.trim());
+            }
+        }
+    });
+    
+    // Handle failure_description - support both array and string values
+    const failures = new Set();
+    records.forEach(r => {
+        const failureValue = r.failure_description || r.failure;
+        if (failureValue) {
+            if (Array.isArray(failureValue)) {
+                failureValue.forEach(f => {
+                    if (f && f.trim()) failures.add(f.trim());
+                });
+            } else if (typeof failureValue === 'string' && failureValue.trim()) {
+                failures.add(failureValue.trim());
+            }
+        }
+    });
+    
     updateDatalist('qpn-suggestions', Array.from(qpns));
     updateDatalist('requester-suggestions', Array.from(requesters));
     updateDatalist('verifier-suggestions', Array.from(verifiers));
@@ -373,6 +402,15 @@ function renderTableBody() {
                 if (value === 'Pass') td.innerHTML = '<span class="badge status-badge-pass">✓ Pass</span>';
                 else if (value === 'NG') td.innerHTML = '<span class="badge status-badge-ng">✗ NG</span>';
                 else td.textContent = value;
+            } else if (headerKey === 'Parts') {
+                const partsValue = record.parts || record.parts_list || '';
+                if (Array.isArray(partsValue)) {
+                    td.textContent = partsValue.join(', ');
+                } else {
+                    td.textContent = partsValue;
+                }
+            } else if (headerKey === 'FailureDescription') {
+                td.textContent = record.failure_description || record.failure || '';
             } else if (headerKey === 'IsRTV') {
                 const select = document.createElement('select');
                 select.className = 'table-select';
