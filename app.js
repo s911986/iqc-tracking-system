@@ -153,7 +153,7 @@ let currentLang = '繁體中文';
 let adminMode = false;
 let records = [];
 let filteredRecords = [];
-const tableHeaders = ["QPN", "SN", "Dept", "Requester", "Verifier", "Result", "Time", "IsRTV", "Actions"];
+const tableHeaders = ["QPN", "SN", "Dept", "Requester", "Verifier", "Result", "Parts", "FailureDescription", "Time", "IsRTV", "Actions"];
 
 const getEl = (id) => document.getElementById(id);
 const formFields = {
@@ -250,13 +250,42 @@ function loadAutocompleteSuggestions() {
     const qpns = new Set(records.map(r => r.qpn));
     const requesters = new Set(records.map(r => r.requester));
     const verifiers = new Set(records.map(r => r.verifier));
-    const parts = new Set(records.map(r => r.parts).filter(p => p));
-    const failures = new Set(records.map(r => r.failure_description).filter(f => f));
+    
+    // Handle parts: can be array or comma-separated string
+    const partsSet = new Set();
+    records.forEach(r => {
+        const p = r.parts || r.parts_list;
+        if (p) {
+            if (Array.isArray(p)) {
+                p.forEach(item => partsSet.add(item));
+            } else if (typeof p === 'string') {
+                p.split(',').forEach(item => {
+                    const trimmed = item.trim();
+                    if (trimmed) partsSet.add(trimmed);
+                });
+            }
+        }
+    });
+    
+    // Handle failure_description: can be array or comma-separated string
+    const failuresSet = new Set();
+    records.forEach(r => {
+        const f = r.failure_description || r.failure;
+        if (f) {
+            if (Array.isArray(f)) {
+                f.forEach(item => failuresSet.add(item));
+            } else if (typeof f === 'string') {
+                const trimmed = f.trim();
+                if (trimmed) failuresSet.add(trimmed);
+            }
+        }
+    });
+    
     updateDatalist('qpn-suggestions', Array.from(qpns));
     updateDatalist('requester-suggestions', Array.from(requesters));
     updateDatalist('verifier-suggestions', Array.from(verifiers));
-    updateDatalist('parts-suggestions', Array.from(parts));
-    updateDatalist('failure-suggestions', Array.from(failures));
+    updateDatalist('parts-suggestions', Array.from(partsSet));
+    updateDatalist('failure-suggestions', Array.from(failuresSet));
 }
 
 function updateDatalist(id, suggestions) {
@@ -373,6 +402,15 @@ function renderTableBody() {
                 if (value === 'Pass') td.innerHTML = '<span class="badge status-badge-pass">✓ Pass</span>';
                 else if (value === 'NG') td.innerHTML = '<span class="badge status-badge-ng">✗ NG</span>';
                 else td.textContent = value;
+            } else if (headerKey === 'Parts') {
+                const parts = record.parts || record.parts_list || '';
+                if (Array.isArray(parts)) {
+                    td.textContent = parts.join(', ');
+                } else {
+                    td.textContent = parts || '';
+                }
+            } else if (headerKey === 'FailureDescription') {
+                td.textContent = record.failure_description || record.failure || '';
             } else if (headerKey === 'IsRTV') {
                 const select = document.createElement('select');
                 select.className = 'table-select';
