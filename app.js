@@ -153,7 +153,7 @@ let currentLang = '繁體中文';
 let adminMode = false;
 let records = [];
 let filteredRecords = [];
-const tableHeaders = ["QPN", "SN", "Dept", "Requester", "Verifier", "Result", "Time", "IsRTV", "Actions"];
+const tableHeaders = ["QPN", "SN", "Dept", "Requester", "Verifier", "Result", "Parts", "FailureDescription", "Time", "IsRTV", "Actions"];
 
 const getEl = (id) => document.getElementById(id);
 const formFields = {
@@ -250,13 +250,38 @@ function loadAutocompleteSuggestions() {
     const qpns = new Set(records.map(r => r.qpn));
     const requesters = new Set(records.map(r => r.requester));
     const verifiers = new Set(records.map(r => r.verifier));
-    const parts = new Set(records.map(r => r.parts).filter(p => p));
-    const failures = new Set(records.map(r => r.failure_description).filter(f => f));
+    
+    // Handle parts - can be array or string
+    const partsSet = new Set();
+    records.forEach(r => {
+        const partsVal = r.parts || r.parts_list;
+        if (partsVal) {
+            if (Array.isArray(partsVal)) {
+                partsVal.forEach(p => p && partsSet.add(p));
+            } else {
+                partsSet.add(partsVal);
+            }
+        }
+    });
+    
+    // Handle failure descriptions - can be array or string
+    const failuresSet = new Set();
+    records.forEach(r => {
+        const failureVal = r.failure_description || r.failure;
+        if (failureVal) {
+            if (Array.isArray(failureVal)) {
+                failureVal.forEach(f => f && failuresSet.add(f));
+            } else {
+                failuresSet.add(failureVal);
+            }
+        }
+    });
+    
     updateDatalist('qpn-suggestions', Array.from(qpns));
     updateDatalist('requester-suggestions', Array.from(requesters));
     updateDatalist('verifier-suggestions', Array.from(verifiers));
-    updateDatalist('parts-suggestions', Array.from(parts));
-    updateDatalist('failure-suggestions', Array.from(failures));
+    updateDatalist('parts-suggestions', Array.from(partsSet));
+    updateDatalist('failure-suggestions', Array.from(failuresSet));
 }
 
 function updateDatalist(id, suggestions) {
@@ -373,6 +398,15 @@ function renderTableBody() {
                 if (value === 'Pass') td.innerHTML = '<span class="badge status-badge-pass">✓ Pass</span>';
                 else if (value === 'NG') td.innerHTML = '<span class="badge status-badge-ng">✗ NG</span>';
                 else td.textContent = value;
+            } else if (headerKey === 'Parts') {
+                const partsVal = record.parts || record.parts_list || '';
+                if (Array.isArray(partsVal)) {
+                    td.textContent = partsVal.join(', ');
+                } else {
+                    td.textContent = partsVal || '';
+                }
+            } else if (headerKey === 'FailureDescription') {
+                td.textContent = record.failure_description || record.failure || '';
             } else if (headerKey === 'IsRTV') {
                 const select = document.createElement('select');
                 select.className = 'table-select';
