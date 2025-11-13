@@ -153,7 +153,7 @@ let currentLang = '繁體中文';
 let adminMode = false;
 let records = [];
 let filteredRecords = [];
-const tableHeaders = ["QPN", "SN", "Dept", "Requester", "Verifier", "Result", "Time", "IsRTV", "Actions"];
+const tableHeaders = ["QPN", "SN", "Dept", "Requester", "Verifier", "Result", "Parts", "FailureDescription", "Time", "IsRTV", "Actions"];
 
 const getEl = (id) => document.getElementById(id);
 const formFields = {
@@ -250,7 +250,11 @@ function loadAutocompleteSuggestions() {
     const qpns = new Set(records.map(r => r.qpn));
     const requesters = new Set(records.map(r => r.requester));
     const verifiers = new Set(records.map(r => r.verifier));
-    const parts = new Set(records.map(r => r.parts).filter(p => p));
+    const partsFlat = records.flatMap(r => {
+        if (Array.isArray(r.parts)) return r.parts;
+        return r.parts ? [r.parts] : [];
+    });
+    const parts = new Set(partsFlat.filter(p => p));
     const failures = new Set(records.map(r => r.failure_description).filter(f => f));
     updateDatalist('qpn-suggestions', Array.from(qpns));
     updateDatalist('requester-suggestions', Array.from(requesters));
@@ -373,6 +377,15 @@ function renderTableBody() {
                 if (value === 'Pass') td.innerHTML = '<span class="badge status-badge-pass">✓ Pass</span>';
                 else if (value === 'NG') td.innerHTML = '<span class="badge status-badge-ng">✗ NG</span>';
                 else td.textContent = value;
+            } else if (headerKey === 'Parts') {
+                const partsValue = record.parts;
+                if (Array.isArray(partsValue)) {
+                    td.textContent = partsValue.join(', ');
+                } else {
+                    td.textContent = partsValue || '';
+                }
+            } else if (headerKey === 'FailureDescription') {
+                td.textContent = record.failure_description || record.failure || '';
             } else if (headerKey === 'IsRTV') {
                 const select = document.createElement('select');
                 select.className = 'table-select';
